@@ -257,12 +257,6 @@ akPu3PFCombinedSecondaryVertexMVABJetTags.tagInfos = cms.VInputTag(cms.InputTag(
 akPu3PFSoftMuonTagInfos                = softMuonTagInfos.clone()
 akPu3PFSoftMuonTagInfos.jets           = cms.InputTag("akPu3PFJets")
 akPu3PFSoftMuonTagInfos.primaryVertex  = cms.InputTag("hiSelectedVertex")
-akPu3PFSoftMuonBJetTags                = softMuonBJetTags.clone()
-akPu3PFSoftMuonBJetTags.tagInfos       = cms.VInputTag(cms.InputTag("akPu3PFSoftMuonTagInfos"))
-akPu3PFSoftMuonByIP3dBJetTags          = softMuonByIP3dBJetTags.clone()
-akPu3PFSoftMuonByIP3dBJetTags.tagInfos = cms.VInputTag(cms.InputTag("akPu3PFSoftMuonTagInfos"))
-akPu3PFSoftMuonByPtBJetTags            = softMuonByPtBJetTags.clone()
-akPu3PFSoftMuonByPtBJetTags.tagInfos   = cms.VInputTag(cms.InputTag("akPu3PFSoftMuonTagInfos"))
 
 # ghost tracks
 akPu3PFGhostTrackVertexTagInfos                 = ghostTrackVertexTagInfos.clone()
@@ -289,10 +283,11 @@ akPu3PFJetBtaggingSV = cms.Sequence(akPu3PFImpactParameterTagInfos *
                                           )
 
 
-akPu3PFJetBtaggingMu = cms.Sequence(akPu3PFSoftMuonTagInfos * (akPu3PFSoftMuonBJetTags +
-                                                                           akPu3PFSoftMuonByIP3dBJetTags +
-                                                                           akPu3PFSoftMuonByPtBJetTags
-                                                                           )
+akPu3PFJetBtaggingMu = cms.Sequence(akPu3PFSoftMuonTagInfos
+#                                    * (akPu3PFSoftMuonBJetTags +
+#                                                                           akPu3PFSoftMuonByIP3dBJetTags +
+#                                                                           akPu3PFSoftMuonByPtBJetTags
+#                                                                           )
                                           )
 
 akPu3PFJetBtagging = cms.Sequence(akPu3PFJetBtaggingIP 
