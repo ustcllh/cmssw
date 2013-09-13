@@ -148,11 +148,6 @@ icPu5SoftMuonTagInfos                = softMuonTagInfos.clone()
 icPu5SoftMuonTagInfos.jets           = cms.InputTag("iterativeConePu5CaloJets")
 icPu5SoftMuonTagInfos.primaryVertex  = cms.InputTag("hiSelectedVertex")
 
-icPu5SoftMuonByIP3dBJetTags          = softMuonByIP3dBJetTags.clone()
-icPu5SoftMuonByIP3dBJetTags.tagInfos = cms.VInputTag(cms.InputTag("icPu5SoftMuonTagInfos"))
-icPu5SoftMuonByPtBJetTags            = softMuonByPtBJetTags.clone()
-icPu5SoftMuonByPtBJetTags.tagInfos   = cms.VInputTag(cms.InputTag("icPu5SoftMuonTagInfos"))
-
 # ghost tracks
 icPu5GhostTrackVertexTagInfos                 = ghostTrackVertexTagInfos.clone()
 icPu5GhostTrackVertexTagInfos.trackIPTagInfos = cms.InputTag("icPu5ImpactParameterTagInfos")
