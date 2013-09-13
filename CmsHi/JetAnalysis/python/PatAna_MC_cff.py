@@ -147,7 +147,7 @@ icPu5CombinedSecondaryVertexMVABJetTags.tagInfos = cms.VInputTag(cms.InputTag("i
 icPu5SoftMuonTagInfos                = softMuonTagInfos.clone()
 icPu5SoftMuonTagInfos.jets           = cms.InputTag("iterativeConePu5CaloJets")
 icPu5SoftMuonTagInfos.primaryVertex  = cms.InputTag("hiSelectedVertex")
-icPu5SoftMuonBJetTags                = softMuonBJetTags.clone()
+
 icPu5SoftMuonBJetTags.tagInfos       = cms.VInputTag(cms.InputTag("icPu5SoftMuonTagInfos"))
 icPu5SoftMuonByIP3dBJetTags          = softMuonByIP3dBJetTags.clone()
 icPu5SoftMuonByIP3dBJetTags.tagInfos = cms.VInputTag(cms.InputTag("icPu5SoftMuonTagInfos"))
