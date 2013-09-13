@@ -173,10 +173,11 @@ icPu5JetBtaggingSV = cms.Sequence(icPu5ImpactParameterTagInfos *
                                           )
 
 
-icPu5JetBtaggingMu = cms.Sequence(icPu5SoftMuonTagInfos * (icPu5SoftMuonBJetTags +
-                                                                           icPu5SoftMuonByIP3dBJetTags +
-                                                                           icPu5SoftMuonByPtBJetTags
-                                                                           )
+icPu5JetBtaggingMu = cms.Sequence(icPu5SoftMuonTagInfos
+#                                  * (icPu5SoftMuonBJetTags +
+#                                  icPu5SoftMuonByIP3dBJetTags +
+#                                  icPu5SoftMuonByPtBJetTags
+#                                  )
                                           )
 
 icPu5JetBtagging = cms.Sequence(icPu5JetBtaggingIP 
