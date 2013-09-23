@@ -14,31 +14,48 @@ collisionParameters2760GeV = cms.PSet(aBeamTarget = cms.double(208.0), ## beam/t
 
 collisionParameters = collisionParameters2760GeV.clone()
 
-qgpParameters = cms.PSet(qgpInitialTemperature = cms.double(1.0), ## initial temperature of QGP; allowed range [0.2,2.0]GeV;
-                         qgpProperTimeFormation = cms.double(0.1), ## proper time of QGP formation; allowed range [0.01,10.0]fm/c;
-                         hadronFreezoutTemperature = cms.double(0.14),
-                         doRadiativeEnLoss = cms.bool(True), ## if true, perform partonic radiative en loss
-                         doCollisionalEnLoss = cms.bool(False),
-                         qgpNumQuarkFlavor = cms.int32(0),  ## number of active quark flavors in qgp; allowed values: 0,1,2,3 
-                         numQuarkFlavor = cms.int32(0) ## to be removed
-                         )
-
 pyquenParameters  = cms.PSet(doIsospin = cms.bool(True),
                              angularSpectrumSelector = cms.int32(0), ## angular emitted gluon spectrum :
                              embeddingMode = cms.bool(False),
                              backgroundLabel = cms.InputTag("generator") ## ineffective in no mixing
                              )
 
-hydjetParameters = cms.PSet(sigmaInelNN = cms.double(58),
-                            shadowingSwitch = cms.int32(0),
-                            nMultiplicity = cms.int32(21500),
-                            fracSoftMultiplicity = cms.double(1.),
-                            maxLongitudinalRapidity = cms.double(4.5),
-                            maxTransverseRapidity = cms.double(1.),
-                            rotateEventPlane = cms.bool(True),
-                            allowEmptyEvents = cms.bool(False),
-                            embeddingMode = cms.bool(False)                            
-                            )
+hydjetCommonParameters = cms.PSet(collisionParameters,
+                                  rotateEventPlane = cms.bool(True),
+                                  allowEmptyEvents = cms.bool(False),
+                                  embeddingMode = cms.bool(False),
+                                  qgpInitialTemperature = cms.double(1.0), ## initial temperature of QGP; allowed range [0.2,2.0]GeV;
+                                  qgpProperTimeFormation = cms.double(0.1), ## proper time of QGP formation; allowed range [0.01,10.0]fm/c;
+                                  qgpNumQuarkFlavor = cms.int32(0),  ## number of active quark flavors in qgp; allowed values: 0,1,2,3
+                                  fracSoftMultiplicity = cms.double(1.),                                  
+                                  )
+
+hydjetBassParameters = cms.PSet(hydjetCommonParameters,
+                                sigmaInelNN = cms.double(58),
+                                shadowingSwitch = cms.int32(0),
+                                nMultiplicity = cms.int32(21500),
+                                maxLongitudinalRapidity = cms.double(4.5),
+                                maxTransverseRapidity = cms.double(1.),
+                                hadronFreezoutTemperature = cms.double(0.14),
+                                doQuench = cms.bool(True),
+                                doCollisionalEnLoss = cms.bool(False),
+                                doRadiativeEnLoss = cms.bool(True), ## if true, perform partonic radiative en loss
+                                )
+
+
+hydjetDrumParameters = cms.PSet(hydjetCommonParameters,
+                                sigmaInelNN = cms.double(64),
+                                shadowingSwitch = cms.int32(1),
+                                nMultiplicity = cms.int32(18500),
+                                maxLongitudinalRapidity = cms.double(4.5),
+                                maxTransverseRapidity = cms.double(1.15),
+                                hadronFreezoutTemperature = cms.double(0.125),
+                                doQuench = cms.bool(True),                                
+                                doCollisionalEnLoss = cms.bool(True),
+                                doRadiativeEnLoss = cms.bool(True), ## if true, perform partonic radiative en loss
+                                )
+
+
 
 pyquenPythiaDefaultBlock = cms.PSet(
     pythiaUESettingsBlock,
@@ -239,8 +256,8 @@ pyquenPythiaDefaultBlock = cms.PSet(
     'PARJ(71)=40.'
     ),
     myParameters = cms.vstring(
-    )
-    
+    ),
+    decayParameters = cms.vstring('MDCY(310,1)=0'),        
 )    
 
 # This one is not to be used
