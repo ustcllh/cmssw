@@ -32,6 +32,7 @@ hcalnoise.trackCollName = 'hiGeneralTracks'
 # Global + High-Level Reco Sequence
 globalRecoPbPb = cms.Sequence(heavyIonTracking
                               * hiIterTracking
+                              * hiConformalPixelTracks
                               * hiEcalClusters
                               * hiRecoJets
                               * muonRecoPbPb
