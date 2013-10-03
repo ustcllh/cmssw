@@ -49,7 +49,7 @@ hiCaloTracks = cms.EDFilter("TrackSelector",
                             )
 
 hiTracks = cms.EDFilter("TrackSelector",
-                                src = cms.InputTag("hiGeneralCaloMatchedTracks"),
+                                src = cms.InputTag("hiGeneralTracks"),
                                 cut = cms.string(
     'quality("highPurity")')
                                 )
@@ -71,8 +71,6 @@ hiMergedTracksGeneralCalo = hiGoodMergedTracks.clone(
             TrackProducer2  = "hiConformalPixelTracks")
 
 ##################################################
-
-heavyIonTracking *= hiIterTracking
 
 rechits = cms.Sequence(siPixelRecHits * siStripMatchedRecHits)
 hiTrackReco = cms.Sequence(hiTracks * hiCaloTracks* hiMergedTracks)
