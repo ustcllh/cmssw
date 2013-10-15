@@ -376,6 +376,11 @@ ak5Calocorr = akPu3PFcorr.clone(src = cms.InputTag("ak5CaloJets"),payload = cms.
 # We don't have corrections for ak6calo. This algorithm will be kept for debugging
 ak6Calocorr = akPu3PFcorr.clone(src = cms.InputTag("ak6CaloJets"),payload = cms.string('AK5Calo_HI'))
 
+#akVs3PFcorr = akPu3PFcorr.clone(src = cms.InputTag("akVs3PFJets"),payload = cms.string('AKPu3PF_generalTracks'))
+#akVs3Calocorr = akPu3PFcorr.clone(src = cms.InputTag("akVs3CaloJets"),payload = cms.string('AKPu3Calo_HI'))
+akVs3PFcorr = icPu5corr.clone(src = cms.InputTag("akVs3PFJets"))
+akVs3Calocorr = icPu5corr.clone(src = cms.InputTag("akVs3CaloJets"))
+
 # Gen stuff
 
 ak1clean = akPu3PFclean.clone(src = cms.InputTag("ak1HiGenJets"))
@@ -392,12 +397,14 @@ akPu3PFmatch = akPu3PFmatch.clone(src = cms.InputTag("akPu3PFJets"), matched = c
 akPu4PFmatch = akPu3PFmatch.clone(src = cms.InputTag("akPu4PFJets"), matched = cms.InputTag("ak4clean"))
 akPu5PFmatch = akPu3PFmatch.clone(src = cms.InputTag("akPu5PFJets"), matched = cms.InputTag("ak5clean"))
 akPu6PFmatch = akPu3PFmatch.clone(src = cms.InputTag("akPu6PFJets"), matched = cms.InputTag("ak6clean"))
+akVs3PFmatch = akPu3PFmatch.clone(src = cms.InputTag("akVs3PFJets"), matched = cms.InputTag("ak3clean"))
 akPu1Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akPu1CaloJets"), matched = cms.InputTag("ak1clean"))
 akPu2Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akPu2CaloJets"), matched = cms.InputTag("ak2clean"))
 akPu3Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akPu3CaloJets"), matched = cms.InputTag("ak3clean"))
 akPu4Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akPu4CaloJets"), matched = cms.InputTag("ak4clean"))
 akPu5Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akPu5CaloJets"), matched = cms.InputTag("ak5clean"))
 akPu6Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akPu6CaloJets"), matched = cms.InputTag("ak6clean"))
+akVs3Calomatch = akPu3PFmatch.clone(src = cms.InputTag("akVs3CaloJets"), matched = cms.InputTag("ak3clean"))
 ak1PFmatch = akPu3PFmatch.clone(src = cms.InputTag("ak1PFJets"), matched = cms.InputTag("ak1clean"))
 ak2PFmatch = akPu3PFmatch.clone(src = cms.InputTag("ak2PFJets"), matched = cms.InputTag("ak2clean"))
 ak3PFmatch = akPu3PFmatch.clone(src = cms.InputTag("ak3PFJets"), matched = cms.InputTag("ak3clean"))
@@ -413,6 +420,7 @@ ak6Calomatch = akPu3PFmatch.clone(src = cms.InputTag("ak6CaloJets"), matched = c
 akPu1PFparton = akPu3PFparton.clone(src = cms.InputTag("akPu1PFJets"))
 akPu2PFparton = akPu3PFparton.clone(src = cms.InputTag("akPu2PFJets"))
 akPu3PFparton = akPu3PFparton.clone(src = cms.InputTag("akPu3PFJets"))
+akVs3PFparton = akPu3PFparton.clone(src = cms.InputTag("akVs3PFJets"),matched = cms.InputTag("hiGenParticles"))
 akPu4PFparton = akPu3PFparton.clone(src = cms.InputTag("akPu4PFJets"))
 akPu5PFparton = akPu3PFparton.clone(src = cms.InputTag("akPu5PFJets"))
 akPu6PFparton = akPu3PFparton.clone(src = cms.InputTag("akPu6PFJets"))
@@ -422,6 +430,7 @@ akPu3Caloparton = akPu3PFparton.clone(src = cms.InputTag("akPu3CaloJets"))
 akPu4Caloparton = akPu3PFparton.clone(src = cms.InputTag("akPu4CaloJets"))
 akPu5Caloparton = akPu3PFparton.clone(src = cms.InputTag("akPu5CaloJets"))
 akPu6Caloparton = akPu3PFparton.clone(src = cms.InputTag("akPu6CaloJets"))
+akVs3Caloparton = akPu3PFparton.clone(src = cms.InputTag("akVs3CaloJets"),matched = cms.InputTag("hiGenParticles"))
 ak1PFparton = akPu3PFparton.clone(src = cms.InputTag("ak1PFJets"))
 ak2PFparton = akPu3PFparton.clone(src = cms.InputTag("ak2PFJets"))
 ak3PFparton = akPu3PFparton.clone(src = cms.InputTag("ak3PFJets"))
@@ -463,6 +472,9 @@ ak4CalopatJets = akPu3PFpatJets.clone(jetSource = cms.InputTag("ak4CaloJets"), j
 ak5CalopatJets = akPu3PFpatJets.clone(jetSource = cms.InputTag("ak5CaloJets"), jetCorrFactorsSource = cms.VInputTag(cms.InputTag("ak5Calocorr")), genJetMatch = cms.InputTag("ak5Calomatch"), genPartonMatch = cms.InputTag("ak5Caloparton"),jetIDMap = cms.InputTag("ak5CaloJetID"))
 ak6CalopatJets = akPu3PFpatJets.clone(jetSource = cms.InputTag("ak6CaloJets"), jetCorrFactorsSource = cms.VInputTag(cms.InputTag("ak6Calocorr")), genJetMatch = cms.InputTag("ak6Calomatch"), genPartonMatch = cms.InputTag("ak6Caloparton"),jetIDMap = cms.InputTag("ak6CaloJetID"))
 
+akVs3PFpatJets = akPu3PFpatJets.clone(jetSource = cms.InputTag("akVs3PFJets"), jetCorrFactorsSource = cms.VInputTag(cms.InputTag("akVs3PFcorr")), genJetMatch = cms.InputTag("akVs3PFmatch"), genPartonMatch = cms.InputTag("akVs3PFparton"),jetIDMap = cms.InputTag("akVs3PFJetID"))
+akVs3CalopatJets = akPu3PFpatJets.clone(jetSource = cms.InputTag("akVs3CaloJets"), jetCorrFactorsSource = cms.VInputTag(cms.InputTag("akVs3Calocorr")), genJetMatch = cms.InputTag("akVs3Calomatch"), genPartonMatch = cms.InputTag("akVs3Caloparton"),jetIDMap = cms.InputTag("akVs3CaloJetID"))
+
 icPu5patSequence = cms.Sequence(icPu5corr * icPu5clean * icPu5match * icPu5parton  *  icPu5patJets)
 
 akPu1PFpatSequence = cms.Sequence(akPu1PFcorr+ak1clean+akPu1PFmatch+akPu1PFparton+akPu1PFpatJets)
@@ -471,6 +483,7 @@ akPu3PFpatSequence = cms.Sequence(akPu3PFcorr+ak3clean+akPu3PFmatch+akPu3PFparto
 akPu4PFpatSequence = cms.Sequence(akPu4PFcorr+ak4clean+akPu4PFmatch+akPu4PFparton+akPu4PFpatJets)
 akPu5PFpatSequence = cms.Sequence(akPu5PFcorr+ak5clean+akPu5PFmatch+akPu5PFparton+akPu5PFpatJets)
 akPu6PFpatSequence = cms.Sequence(akPu6PFcorr+ak6clean+akPu6PFmatch+akPu6PFparton+akPu6PFpatJets)
+akVs3PFpatSequence = cms.Sequence(akVs3PFcorr+ak3clean+akVs3PFmatch+akVs3PFparton+akVs3PFpatJets)
 
 akPu1CalopatSequence = cms.Sequence(akPu1Calocorr+ak1clean+akPu1Calomatch+akPu1Caloparton+akPu1CalopatJets)
 akPu2CalopatSequence = cms.Sequence(akPu2Calocorr+ak2clean+akPu2Calomatch+akPu2Caloparton+akPu2CalopatJets)
@@ -478,6 +491,7 @@ akPu3CalopatSequence = cms.Sequence(akPu3Calocorr+ak3clean+akPu3Calomatch+akPu3C
 akPu4CalopatSequence = cms.Sequence(akPu4Calocorr+ak4clean+akPu4Calomatch+akPu4Caloparton+akPu4CalopatJets)
 akPu5CalopatSequence = cms.Sequence(akPu5Calocorr+ak5clean+akPu5Calomatch+akPu5Caloparton+akPu5CalopatJets)
 akPu6CalopatSequence = cms.Sequence(akPu6Calocorr+ak6clean+akPu6Calomatch+akPu6Caloparton+akPu6CalopatJets)
+akVs3CalopatSequence = cms.Sequence(akVs3Calocorr+ak3clean+akVs3Calomatch+akVs3Caloparton+akVs3CalopatJets)
 
 ak1PFpatSequence = cms.Sequence(ak1PFcorr+ak1clean+ak1PFmatch+ak1PFparton+ak1PFpatJets)
 ak2PFpatSequence = cms.Sequence(ak2PFcorr+ak2clean+ak2PFmatch+ak2PFparton+ak2PFpatJets)
@@ -546,6 +560,11 @@ makeHeavyIonJets2to5 = cms.Sequence(
                                 ak5CalopatSequence 
                                 
                                 )
+
+makeHeavyIonVsJets = cms.Sequence(
+    akVs3PFpatSequence 
+    #+ akVs3CalopatJets
+)
                                
 akPu3PFpatSequence_withBtagging = cms.Sequence(akPu3PFcorr * akPu3PFclean * akPu3PFmatch * akPu3PFparton * akPu3PFPatJetFlavourId * akPu3PFJetTracksAssociator *akPu3PFJetBtagging * akPu3PFpatJets)
 
