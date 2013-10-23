@@ -6,17 +6,19 @@ from CmsHi.JetAnalysis.inclusiveJetAnalyzer_cff import *
 
 akVs5PFmatch = patJetGenJetMatch.clone(
     src = cms.InputTag("akVs5PFJets"),
-    matched = cms.InputTag("ak5GenJets")
+    matched = cms.InputTag("ak5HiGenJets")
     )
 
 akVs5PFparton = patJetPartonMatch.clone(src = cms.InputTag("akVs5PFJets"),
-                                                        matched = cms.InputTag("genParticles")
+                                                        matched = cms.InputTag("hiGenParticles")
                                                         )
 
 akVs5PFcorr = patJetCorrFactors.clone(
+    useNPV = False,
+#    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("akVs5PFJets"),
-    payload = "CAPak5OBJECT"
+    payload = "AK5PF_hiIterativeTracks"
     )
 
 akVs5PFpatJets = patJets.clone(jetSource = cms.InputTag("akVs5PFJets"),
@@ -24,22 +26,34 @@ akVs5PFpatJets = patJets.clone(jetSource = cms.InputTag("akVs5PFJets"),
                                                genJetMatch = cms.InputTag("akVs5PFmatch"),
                                                genPartonMatch = cms.InputTag("akVs5PFparton"),
                                                jetIDMap = cms.InputTag("akVs5PFJetID"),
-                                               )
+                                               addBTagInfo         = False,
+                                               addTagInfos         = False,
+                                               addDiscriminators   = False,
+                                               addAssociatedTracks = False,
+                                               addJetCharge        = False,
+                                               addJetID            = True,
+                                               getJetMCFlavour     = False,
+                                               addGenPartonMatch   = True,
+                                               addGenJetMatch      = True,
+                                               embedGenJetMatch    = True,
+                                               embedGenPartonMatch = True,
+                                               embedCaloTowers     = False,
+				            )
 
 akVs5PFAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs5PFpatJets"),
-                                                             genjetTag = 'ak5GenJets',
+                                                             genjetTag = 'ak5HiGenJets',
                                                              rParam = 0.5,
                                                              matchJets = cms.untracked.bool(True),
                                                              matchTag = 'akVs5PFpatJets',
-                                                             pfCandidateLabel = cms.untracked.InputTag('particleFlow'),
-                                                             trackTag = cms.InputTag("TRACKS"),
+                                                             pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
+                                                             trackTag = cms.InputTag("hiGeneralTracks"),
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles")
                                                              )
 
 
-akVs5PFSequence_mc = cms.Sequence(akVs5PFmatch
+akVs5PFJetSequence_mc = cms.Sequence(akVs5PFmatch
                                                   *
                                                   akVs5PFparton
                                                   *
@@ -50,12 +64,11 @@ akVs5PFSequence_mc = cms.Sequence(akVs5PFmatch
                                                   akVs5PFAnalyzer
                                                   )
 
-akVs5PFSequence_data = cms.Sequence(akVs5PFcorr
+akVs5PFJetSequence_data = cms.Sequence(akVs5PFcorr
                                                     *
                                                     akVs5PFpatJets
                                                     *
                                                     akVs5PFAnalyzer
                                                     )
 
-
-akVs5PFSequence = akVs5PFSequence_data
+akVs5PFJetSequence = cms.Sequence(akVs5PFJetSequence_data)
