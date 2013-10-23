@@ -17,9 +17,9 @@ ivars.register ('randomNumber',
                 "Random Seed")
 
 ivars.randomNumber = 1
-ivars.inputFiles = "file:/mnt/hadoop/cms/store/user/yilmaz/Hydjet_Drum_53X_test01/Hydjet_Drum_53X_RECO_v10/d28447d1a42bac5ad506ba0e951d23b3/step3_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_82_2_pU9.root"
+ivars.inputFiles = "file:step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_2.root"
 ivars.outputFile = 'HiForest.root'
-ivars.maxEvents = 10
+ivars.maxEvents = -1
 
 ivars.parseArguments()
 
@@ -90,36 +90,13 @@ process.TFileService = cms.Service("TFileService",
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
-process.load('CmsHi.JetAnalysis.PatAna_MC_cff')
-process.pat_step = cms.Path(process.makeHeavyIonVsJets)
+process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_mc_cff')
+process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_mc_cff')
 
-process.akVs3PFJetAnalyzer = cms.EDAnalyzer("HiInclusiveJetAnalyzer",
-                                            jetTag = cms.InputTag("akVs3PFpatJets"),
-                                            matchTag = cms.untracked.InputTag("akVs3PFpatJets"),
-                                            genjetTag = cms.InputTag("iterativeCone5HiGenJets"),
-                                            eventInfoTag = cms.InputTag("generator"),
-                                            isMC = cms.untracked.bool(False), 
-                                            fillGenJets = cms.untracked.bool(False),
-                                            rParam = cms.double(0.3),
-                                            trackTag = cms.InputTag("hiGeneralTracks"),
-                                            useQuality = cms.untracked.bool(True),
-                                            trackQuality  = cms.untracked.string("highPurity"),
-                                            useCentrality = cms.untracked.bool(False),
-                                            doLifeTimeTagging = cms.untracked.bool(False),
-                                            L1gtReadout = cms.InputTag("gtDigis"),
-                                            skipCorrections = cms.untracked.bool(True),
-                                            hltTrgResults = cms.untracked.string("TriggerResults::HLT"),
-                                            hltTrgNames  = cms.untracked.vstring('HLT_HIMinBiasHfOrBSC_Core',
-                                                                                 'HLT_HIJet35U',
-                                                                                 'HLT_HIJet35U_Core',
-                                                                                 'HLT_HIJet50U_Core')
-)
-
-#process.JetSequence = cms.Sequence( akVs3PFJetAnalyzer)
-
-process.ana_step = cms.Path( process.HiForest +
-                             process.akVs3PFJetAnalyzer
-)
+process.ana_step = cms.Path(process.akVs3PFJetSequence
+                            +
+                            process.akPu3PFJetSequence                            
+                            )
 
 process.load('CmsHi.HiHLTAlgos.hltanalysis_cff')
 process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","RECO")
