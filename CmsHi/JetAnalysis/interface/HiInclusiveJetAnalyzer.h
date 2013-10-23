@@ -100,6 +100,9 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   bool saveBfragments_;
   bool skipCorrections_;
 
+  bool doHiJetID_;
+  bool doStandardJetID_;
+
   double rParam;
   double hardPtMin_;
   double jetPtMin_;

@@ -62,6 +62,8 @@ HiInclusiveJetAnalyzer::HiInclusiveJetAnalyzer(const edm::ParameterSet& iConfig)
   fillGenJets_ = iConfig.getUntrackedParameter<bool>("fillGenJets",false);
 
   doTrigger_ = iConfig.getUntrackedParameter<bool>("doTrigger",false);
+  doHiJetID_ = iConfig.getUntrackedParameter<bool>("doHiJetID",false);
+  doStandardJetID_ = iConfig.getUntrackedParameter<bool>("doStandardJetID",false);
 
   rParam = iConfig.getParameter<double>("rParam");
   hardPtMin_ = iConfig.getUntrackedParameter<double>("hardPtMin",4);  
@@ -164,6 +166,7 @@ HiInclusiveJetAnalyzer::beginJob() {
   t->Branch("jtm",jets_.jtm,"jtm[nref]/F");
 
   // jet ID information, jet composition
+  if(doHiJetID_){
   t->Branch("discr_fr01", jets_.discr_fr01,"discr_fr01[nref]/F");
 
   t->Branch("trackMax", jets_.trackMax,"trackMax[nref]/F");
@@ -198,8 +201,9 @@ HiInclusiveJetAnalyzer::beginJob() {
   t->Branch("muMax", jets_.muMax,"muMax[nref]/F");
   t->Branch("muSum", jets_.muSum,"muSum[nref]/F");
   t->Branch("muN", jets_.muN,"muN[nref]/I");
+  }
 
-
+  if(doStandardJetID_){
   t->Branch("fHPD",jets_.fHPD,"fHPD[nref]/F");
   t->Branch("fRBX",jets_.fRBX,"fRBX[nref]/F");
   t->Branch("n90",jets_.n90,"n90[nref]/I");
@@ -227,7 +231,7 @@ HiInclusiveJetAnalyzer::beginJob() {
   t->Branch("fShort",jets_.fShort,"fShort[nref]/F");
   t->Branch("fLS",jets_.fLS,"fLS[nref]/F");
   t->Branch("fHFOOT",jets_.fHFOOT,"fHFOOT[nref]/F");
-
+  }
 
   // Jet ID
 
@@ -560,6 +564,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
      }
 
+     if(doHiJetID_){
      // Jet ID variables
 
      jets_.muMax[jets_.nref] = 0;
@@ -718,7 +723,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
          jets_.ecalSum[jets_.nref] += getEt(pos,hit.energy());
        }
      }
-
+     }
      // Jet ID for CaloJets
 
 

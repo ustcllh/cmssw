@@ -31,27 +31,27 @@ akPu5PFpatJets = patJets.clone(jetSource = cms.InputTag("akPu5PFJets"),
                                                addDiscriminators   = False,
                                                addAssociatedTracks = False,
                                                addJetCharge        = False,
-                                               addJetID            = True,
+                                               addJetID            = False,
                                                getJetMCFlavour     = False,
-                                               addGenPartonMatch   = True,
-                                               addGenJetMatch      = True,
-                                               embedGenJetMatch    = True,
-                                               embedGenPartonMatch = True,
+                                               addGenPartonMatch   = False,
+                                               addGenJetMatch      = False,
+                                               embedGenJetMatch    = False,
+                                               embedGenPartonMatch = False,
                                                embedCaloTowers     = False,
+                                               embedPFCandidates = False
 				            )
 
-akPu5PFAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu5PFpatJets"),
+akPu5PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu5PFpatJets"),
                                                              genjetTag = 'ak5HiGenJets',
                                                              rParam = 0.5,
-                                                             matchJets = cms.untracked.bool(True),
-                                                             matchTag = 'akPu5PFpatJets',
+                                                             matchJets = cms.untracked.bool(False),
+                                                             matchTag = 'akPu5CalopatJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
-                                                             fillGenJets = True,
-                                                             isMC = True,
+                                                             fillGenJets = False,
+                                                             isMC = False,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles")
                                                              )
-
 
 akPu5PFJetSequence_mc = cms.Sequence(akPu5PFmatch
                                                   *
@@ -61,14 +61,14 @@ akPu5PFJetSequence_mc = cms.Sequence(akPu5PFmatch
                                                   *
                                                   akPu5PFpatJets
                                                   *
-                                                  akPu5PFAnalyzer
+                                                  akPu5PFJetAnalyzer
                                                   )
 
 akPu5PFJetSequence_data = cms.Sequence(akPu5PFcorr
                                                     *
                                                     akPu5PFpatJets
                                                     *
-                                                    akPu5PFAnalyzer
+                                                    akPu5PFJetAnalyzer
                                                     )
 
 akPu5PFJetSequence = cms.Sequence(akPu5PFJetSequence_data)

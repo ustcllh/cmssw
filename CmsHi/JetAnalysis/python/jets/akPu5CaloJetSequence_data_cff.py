@@ -18,7 +18,7 @@ akPu5Calocorr = patJetCorrFactors.clone(
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("akPu5CaloJets"),
-    payload = "AK5Calo_hiIterativeTracks"
+    payload = "AK5Calo_HI"
     )
 
 akPu5CalopatJets = patJets.clone(jetSource = cms.InputTag("akPu5CaloJets"),
@@ -31,27 +31,27 @@ akPu5CalopatJets = patJets.clone(jetSource = cms.InputTag("akPu5CaloJets"),
                                                addDiscriminators   = False,
                                                addAssociatedTracks = False,
                                                addJetCharge        = False,
-                                               addJetID            = True,
+                                               addJetID            = False,
                                                getJetMCFlavour     = False,
-                                               addGenPartonMatch   = True,
-                                               addGenJetMatch      = True,
-                                               embedGenJetMatch    = True,
-                                               embedGenPartonMatch = True,
+                                               addGenPartonMatch   = False,
+                                               addGenJetMatch      = False,
+                                               embedGenJetMatch    = False,
+                                               embedGenPartonMatch = False,
                                                embedCaloTowers     = False,
+                                               embedPFCandidates = False
 				            )
 
-akPu5CaloAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu5CalopatJets"),
+akPu5CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu5CalopatJets"),
                                                              genjetTag = 'ak5HiGenJets',
                                                              rParam = 0.5,
-                                                             matchJets = cms.untracked.bool(True),
+                                                             matchJets = cms.untracked.bool(False),
                                                              matchTag = 'akPu5CalopatJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
-                                                             fillGenJets = True,
-                                                             isMC = True,
+                                                             fillGenJets = False,
+                                                             isMC = False,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles")
                                                              )
-
 
 akPu5CaloJetSequence_mc = cms.Sequence(akPu5Calomatch
                                                   *
@@ -61,14 +61,14 @@ akPu5CaloJetSequence_mc = cms.Sequence(akPu5Calomatch
                                                   *
                                                   akPu5CalopatJets
                                                   *
-                                                  akPu5CaloAnalyzer
+                                                  akPu5CaloJetAnalyzer
                                                   )
 
 akPu5CaloJetSequence_data = cms.Sequence(akPu5Calocorr
                                                     *
                                                     akPu5CalopatJets
                                                     *
-                                                    akPu5CaloAnalyzer
+                                                    akPu5CaloJetAnalyzer
                                                     )
 
 akPu5CaloJetSequence = cms.Sequence(akPu5CaloJetSequence_data)

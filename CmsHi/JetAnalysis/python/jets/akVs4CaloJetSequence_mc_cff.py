@@ -18,7 +18,7 @@ akVs4Calocorr = patJetCorrFactors.clone(
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("akVs4CaloJets"),
-    payload = "AK4Calo_hiIterativeTracks"
+    payload = "AK4Calo_HI"
     )
 
 akVs4CalopatJets = patJets.clone(jetSource = cms.InputTag("akVs4CaloJets"),
@@ -31,27 +31,27 @@ akVs4CalopatJets = patJets.clone(jetSource = cms.InputTag("akVs4CaloJets"),
                                                addDiscriminators   = False,
                                                addAssociatedTracks = False,
                                                addJetCharge        = False,
-                                               addJetID            = True,
+                                               addJetID            = False,
                                                getJetMCFlavour     = False,
-                                               addGenPartonMatch   = True,
-                                               addGenJetMatch      = True,
-                                               embedGenJetMatch    = True,
-                                               embedGenPartonMatch = True,
+                                               addGenPartonMatch   = False,
+                                               addGenJetMatch      = False,
+                                               embedGenJetMatch    = False,
+                                               embedGenPartonMatch = False,
                                                embedCaloTowers     = False,
+                                               embedPFCandidates = False
 				            )
 
-akVs4CaloAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs4CalopatJets"),
+akVs4CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs4CalopatJets"),
                                                              genjetTag = 'ak4HiGenJets',
-                                                             rParam = 0.5,
-                                                             matchJets = cms.untracked.bool(True),
+                                                             rParam = 0.4,
+                                                             matchJets = cms.untracked.bool(False),
                                                              matchTag = 'akVs4CalopatJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
-                                                             fillGenJets = True,
-                                                             isMC = True,
+                                                             fillGenJets = False,
+                                                             isMC = False,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles")
                                                              )
-
 
 akVs4CaloJetSequence_mc = cms.Sequence(akVs4Calomatch
                                                   *
@@ -61,14 +61,14 @@ akVs4CaloJetSequence_mc = cms.Sequence(akVs4Calomatch
                                                   *
                                                   akVs4CalopatJets
                                                   *
-                                                  akVs4CaloAnalyzer
+                                                  akVs4CaloJetAnalyzer
                                                   )
 
 akVs4CaloJetSequence_data = cms.Sequence(akVs4Calocorr
                                                     *
                                                     akVs4CalopatJets
                                                     *
-                                                    akVs4CaloAnalyzer
+                                                    akVs4CaloJetAnalyzer
                                                     )
 
 akVs4CaloJetSequence = cms.Sequence(akVs4CaloJetSequence_mc)
