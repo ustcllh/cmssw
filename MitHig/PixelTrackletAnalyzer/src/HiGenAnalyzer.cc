@@ -171,7 +171,7 @@ HiGenAnalyzer::HiGenAnalyzer(const edm::ParameterSet& iConfig)
   doVertex_ = iConfig.getUntrackedParameter<Bool_t>("doVertex", false);
   etaMax_ = iConfig.getUntrackedParameter<Double_t>("etaMax", 2);
   ptMin_ = iConfig.getUntrackedParameter<Double_t>("ptMin", 0);
-  chargedOnly_ = iConfig.getUntrackedParameter<Bool_t>("chargedOnly", true);
+  chargedOnly_ = iConfig.getUntrackedParameter<Bool_t>("chargedOnly", false);
   src_ = iConfig.getUntrackedParameter<edm::InputTag>("src",edm::InputTag("generator"));
   genParticleSrc_ = iConfig.getUntrackedParameter<edm::InputTag>("genpSrc",edm::InputTag("hiGenParticles"));
   genHIsrc_ = iConfig.getUntrackedParameter<edm::InputTag>("genHiSrc",edm::InputTag("heavyIon"));
