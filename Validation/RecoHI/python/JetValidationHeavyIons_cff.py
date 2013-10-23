@@ -11,7 +11,7 @@ ak5HiCleanedGenJets = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak5HiGen
 ak7HiCleanedGenJets = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak7HiGenJets'))
 
 ### jet analyzer for two radii (0.5, 0.7) and three algorithms:
-### iterative cone with PU, anti-kt with PU, anti-kt with fastjet PU
+### iterative cone with PU, anti-kt with PU
 
 JetAnalyzerICPU5Calo = cms.EDAnalyzer("CaloJetTester",
     src = cms.InputTag("iterativeConePu5CaloJets"),
