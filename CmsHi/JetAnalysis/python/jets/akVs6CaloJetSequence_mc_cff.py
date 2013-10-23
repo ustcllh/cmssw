@@ -1,12 +1,12 @@
 
+
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.PatAlgos.patHeavyIonSequences_cff import *
 from CmsHi.JetAnalysis.inclusiveJetAnalyzer_cff import *
 
-
 akVs6Calomatch = patJetGenJetMatch.clone(
     src = cms.InputTag("akVs6CaloJets"),
-    matched = cms.InputTag("ak6HiGenJets")
+    matched = cms.InputTag("ak6HiGenJetsCleaned")
     )
 
 akVs6Caloparton = patJetPartonMatch.clone(src = cms.InputTag("akVs6CaloJets"),
@@ -33,27 +33,28 @@ akVs6CalopatJets = patJets.clone(jetSource = cms.InputTag("akVs6CaloJets"),
                                                addJetCharge        = False,
                                                addJetID            = False,
                                                getJetMCFlavour     = False,
-                                               addGenPartonMatch   = False,
-                                               addGenJetMatch      = False,
-                                               embedGenJetMatch    = False,
-                                               embedGenPartonMatch = False,
+                                               addGenPartonMatch   = True,
+                                               addGenJetMatch      = True,
+                                               embedGenJetMatch    = True,
+                                               embedGenPartonMatch = True,
                                                embedCaloTowers     = False,
                                                embedPFCandidates = False
 				            )
 
 akVs6CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs6CalopatJets"),
-                                                             genjetTag = 'ak6HiGenJets',
+                                                             genjetTag = 'ak6HiGenJetsCleaned',
                                                              rParam = 0.6,
-                                                             matchJets = cms.untracked.bool(False),
+                                                             matchJets = cms.untracked.bool(True),
                                                              matchTag = 'akVs6CalopatJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
-                                                             fillGenJets = False,
-                                                             isMC = False,
+                                                             fillGenJets = True,
+                                                             isMC = True,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles")
                                                              )
 
-akVs6CaloJetSequence_mc = cms.Sequence(akVs6Calomatch
+akVs6CaloJetSequence_mc = cms.Sequence(
+						  akVs6Calomatch
                                                   *
                                                   akVs6Caloparton
                                                   *

@@ -50,6 +50,7 @@ HiInclusiveJetAnalyzer::HiInclusiveJetAnalyzer(const edm::ParameterSet& iConfig)
   geo(0)
 {
 
+   doMatch_ = iConfig.getUntrackedParameter<bool>("matchJets",false);
   jetTag_ = iConfig.getParameter<InputTag>("jetTag");
   matchTag_ = iConfig.getUntrackedParameter<InputTag>("matchTag",jetTag_);
 
@@ -234,10 +235,11 @@ HiInclusiveJetAnalyzer::beginJob() {
   }
 
   // Jet ID
-
+  if(doMatch_){
   if(!skipCorrections_) t->Branch("matchedPt", jets_.matchedPt,"matchedPt[nref]/F");
   t->Branch("matchedRawPt", jets_.matchedRawPt,"matchedRawPt[nref]/F");
   t->Branch("matchedR", jets_.matchedR,"matchedR[nref]/F");
+  }
 
   // b-jet discriminators
   if (doLifeTimeTagging_) {
@@ -723,14 +725,13 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
          jets_.ecalSum[jets_.nref] += getEt(pos,hit.energy());
        }
      }
+     
      }
      // Jet ID for CaloJets
 
 
 
-
-
-
+     if(doMatch_){
 
      // Alternative reconstruction matching (PF for calo, calo for PF)
 
@@ -746,8 +747,12 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 	   drMin = dr;
 	}
      }
-   
+
+     }   
      //     if(etrk.quality(reco::TrackBase::qualityByName(qualityString_))) pev_.trkQual[pev_.nTrk]=1;
+
+
+     if(doHiJetID_){
 
 	/////////////////////////////////////////////////////////////////
 	// Jet core pt^2 discriminant for fake jets
@@ -810,6 +815,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 		pseudorapidity_adapt = pseudorapidity_adapt_new;
 		azimuth_adapt = azimuth_adapt_new;
 	}
+     }
 
      jets_.jtpt[jets_.nref] = jet.pt();                            
      jets_.jteta[jets_.nref] = jet.eta();
@@ -820,6 +826,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 	 
      if(usePat_){
 
+	if(doStandardJetID_){
        jets_.fHPD[jets_.nref] = (*patjets)[j].jetID().fHPD;
        jets_.fRBX[jets_.nref] = (*patjets)[j].jetID().fRBX;
        jets_.n90[jets_.nref] = (*patjets)[j].n90();
@@ -848,7 +855,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
        jets_.fShort[jets_.nref] = (*patjets)[j].jetID().fShort;
        jets_.fLS[jets_.nref] = (*patjets)[j].jetID().fLS;
        jets_.fHFOOT[jets_.nref] = (*patjets)[j].jetID().fHFOOT;
-
+	}
 
      }
 

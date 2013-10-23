@@ -82,7 +82,7 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
 
   /// verbose ?
   bool   verbose_;
-
+  bool  doMatch_;
   bool useCentrality_;
   bool useVtx_;
   bool useJEC_;

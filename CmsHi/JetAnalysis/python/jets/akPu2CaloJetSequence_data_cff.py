@@ -1,12 +1,12 @@
 
+
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.PatAlgos.patHeavyIonSequences_cff import *
 from CmsHi.JetAnalysis.inclusiveJetAnalyzer_cff import *
 
-
 akPu2Calomatch = patJetGenJetMatch.clone(
     src = cms.InputTag("akPu2CaloJets"),
-    matched = cms.InputTag("ak2HiGenJets")
+    matched = cms.InputTag("ak2HiGenJetsCleaned")
     )
 
 akPu2Caloparton = patJetPartonMatch.clone(src = cms.InputTag("akPu2CaloJets"),
@@ -42,9 +42,9 @@ akPu2CalopatJets = patJets.clone(jetSource = cms.InputTag("akPu2CaloJets"),
 				            )
 
 akPu2CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu2CalopatJets"),
-                                                             genjetTag = 'ak2HiGenJets',
+                                                             genjetTag = 'ak2HiGenJetsCleaned',
                                                              rParam = 0.2,
-                                                             matchJets = cms.untracked.bool(False),
+                                                             matchJets = cms.untracked.bool(True),
                                                              matchTag = 'akPu2CalopatJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
@@ -53,7 +53,8 @@ akPu2CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu2Ca
                                                              genParticles = cms.untracked.InputTag("hiGenParticles")
                                                              )
 
-akPu2CaloJetSequence_mc = cms.Sequence(akPu2Calomatch
+akPu2CaloJetSequence_mc = cms.Sequence(
+						  akPu2Calomatch
                                                   *
                                                   akPu2Caloparton
                                                   *

@@ -16,6 +16,9 @@ inclusiveJetAnalyzer = cms.EDAnalyzer("HiInclusiveJetAnalyzer",
                                       doLifeTimeTagging = cms.untracked.bool(False),
                                       L1gtReadout = cms.InputTag("gtDigis"),
 
+                                      doHiJetID = cms.untracked.bool(True),
+                                      doStandardJetID = cms.untracked.bool(False),
+                                      
                                       hltTrgResults = cms.untracked.string("TriggerResults::HLT"),
                                       hltTrgNames  = cms.untracked.vstring('HLT_HIMinBiasHfOrBSC_Core',
                                                                            'HLT_HIJet35U',
