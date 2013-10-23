@@ -119,7 +119,24 @@ def overrideCentrality(process):
                                           connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                                           label = cms.untracked.string("HFtowersHydjet_Drum")
                                           ),
-
+        
+        cms.PSet(record = cms.string("HeavyIonRcd"),
+                 tag = cms.string("CentralityTable_PixelHits40_Glauber2010A_v3_effB_offline"),
+                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 label = cms.untracked.string("PixelHits")
+                 ),
+        
+        cms.PSet(record = cms.string("HeavyIonRcd"),
+                 tag = cms.string("CentralityTable_HFhits40_Glauber2010A_v3_effB_offline"),
+                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 label = cms.untracked.string("HFhits")
+                 ),
+        
+        cms.PSet(record = cms.string("HeavyIonRcd"),
+                 tag = cms.string("CentralityTable_HFtowers40_Glauber2010A_v3_effB_offline"),
+                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 label = cms.untracked.string("HFtowers")
+                 ),
 
 #==================== pPb data taking 2013 =====================================
 

@@ -56,10 +56,10 @@ process.maxEvents = cms.untracked.PSet(
 # Load Global Tag, Geometry, etc.
 #####################################################################################
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.Geometry.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.load('Configuration.StandardSequences.Digi_cff')
 process.load('Configuration.StandardSequences.SimL1Emulator_cff')
@@ -69,16 +69,18 @@ process.load('Configuration.StandardSequences.ReconstructionHeavyIons_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
-process.GlobalTag.globaltag = 'START53_V10::All'
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:starthi_HIon', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
+overrideJEC_pp2760(process)
 
-# process.HeavyIonGlobalParameters = cms.PSet(
-#     centralityVariable = cms.string("HFtowersPlusTrunc"),
-#     nonDefaultGlauberModel = cms.string("Hijing"),
-#     centralitySrc = cms.InputTag("pACentrality")
-#     )
+process.HeavyIonGlobalParameters = cms.PSet(
+    centralityVariable = cms.string("HFtowers"),
+    nonDefaultGlauberModel = cms.string(""),
+    centralitySrc = cms.InputTag("hiCentrality")
+    )
 
 #####################################################################################
 # Define tree output
@@ -90,12 +92,43 @@ process.TFileService = cms.Service("TFileService",
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
-process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_mc_cff')
-process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_mc_cff')
 
-process.ana_step = cms.Path(process.akVs3PFJetSequence
+process.load('Configuration.StandardSequences.Generator_cff')
+process.load('RecoJets.Configuration.GenJetParticles_cff')
+process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
+process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
+process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
+
+process.hiGenParticles.srcVector = cms.vstring('generator')
+
+
+process.load('CmsHi.JetAnalysis.jets.HiGenJetsCleaned_cff')
+process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_mc_cff')
+process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_mc_cff')
+
+process.load('CmsHi.JetAnalysis.jets.akVs3CaloJetSequence_mc_cff')
+process.load('CmsHi.JetAnalysis.jets.akPu3CaloJetSequence_mc_cff')
+
+process.load('CmsHi.HiHLTAlgos.hievtanalyzer_mc_cfi')
+process.load('CmsHi.JetAnalysis.HiGenAnalyzer_cfi')
+
+process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
+                             *
+                             process.ak6HiGenJets +
+                             process.ak7HiGenJets)
+
+process.ana_step = cms.Path(process.heavyIon*
+                            process.hiEvtAnalyzer*
+                            process.HiGenParticleAna*
+                            process.hiGenJetsCleaned
                             +
-                            process.akPu3PFJetSequence                            
+                            process.akVs3CaloJetSequence
+                            +
+                            process.akPu3CaloJetSequence
+                            +
+                            process.akVs3PFJetSequence
+                            +
+                            process.akPu3PFJetSequence
                             )
 
 process.load('CmsHi.HiHLTAlgos.hltanalysis_cff')

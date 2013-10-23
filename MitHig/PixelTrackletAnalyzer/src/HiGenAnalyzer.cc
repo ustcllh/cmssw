@@ -357,6 +357,7 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       edm::Handle<GenHIEvent> higen;
       iEvent.getByLabel(genHIsrc_,higen);
 
+      b = higen->b();
       npart = higen->Npart();
       ncoll = higen->Ncoll();
       nhard = higen->Nhard();
