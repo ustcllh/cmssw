@@ -3,93 +3,98 @@
 echo "import FWCore.ParameterSet.Config as cms" > HiGenJetsCleaned_cff.py
 echo "from PhysicsTools.PatAlgos.patHeavyIonSequences_cff import *" >> HiGenJetsCleaned_cff.py
 
-
-for sample in mc data
+for system in PbPb pp pPb
   do
-  for algo in ak
+  for sample in mc data
     do
-    for sub in Vs Pu
+    for algo in ak
       do
-      for radius in 2 3 4 5 6 7
+      for sub in Vs Pu
 	do
-	matchobject="Calo"
-	for object in PF Calo
+	for radius in 2 3 4 5 6 7
 	  do
-	  ismc="False"
-	  corrlabel="_hiIterativeTracks"
-	  if [ $object == "Calo" ]; then
-	      corrlabel="_HI"
-	  fi
-	  if [ $sample == "mc" ]; then
-              ismc="True"
-          fi
-	  corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${radius}${object}${corrlabel}
-#	  genjets="HiGenJets"
-          genjets="HiGenJetsCleaned"
+	  matchobject="Calo"
+	  for object in PF Calo
+	    do
+	    ismc="False"
+	    corrlabel="_hiIterativeTracks"
+            domatch="True"
+	    corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${radius}${object}${corrlabel}
+            genjets="HiGenJetsCleaned"
+	    genparticles="hiGenParticles"
+            tracks="hiGeneralTracks"
+            pflow="particleFlowTmp"
+            match=${algo}${sub}${radius}${matchobject}
+            echo "" > $algo$sub$radius${object}JetSequence_${system}_${sample}_cff.py
 
-          genparticles="hiGenParticles"
-	  tracks="hiGeneralTracks"
-	  pflow="particleFlowTmp"
-	  match=${algo}${sub}${radius}${matchobject}
-	  domatch="True"
-#	  matchobject="PF"
+            if [ $system != "PbPb" ]; then
+		corrlabel="_generalTracks"
+		tracks="generalTracks"
+		genparticles="genParticles"
+            fi
 
-	  echo "" > $algo$sub$radius${object}JetSequence_${sample}_cff.py
+	    if [ $object == "Calo" ]; then
+		corrlabel="_HI"
+		domatch="False"
+	    fi
 
-          if [ $sample == "mc" ] && [ $object == "PF" ] && [ $sub == "Vs" ]; then
- 
-#	      echo "$algo${radius}HiGenJetsCleaned" >> HiGenJetsCleaned_cff.py 
-#	      echo "from CmsHi.JetAnalysis.jets.$algo${radius}HiGenJetsCleaned_cff import *" >> $algo$sub$radius${object}JetSequence_${sample}_cff.py
+	    if [ $sample == "mc" ]; then
+		ismc="True"
+	    fi
 
-	      cat templateClean_cff.py.txt \
-		  | sed "s/ALGO_/$algo/g" \
-		  | sed "s/SUB_/$sub/g" \
-		  | sed "s/RADIUS_/$radius/g" \
-		  | sed "s/OBJECT_/$object/g" \
-		  | sed "s/SAMPLE_/$sample/g" \
-		  | sed "s/CORRNAME_/$corrname/g" \
-		  | sed "s/MATCHED_/$match/g" \
-		  | sed "s/ISMC/$ismc/g" \
-		  | sed "s/GENJETS/$genjets/g" \
-		  | sed "s/GENPARTICLES/$genparticles/g" \
-		  | sed "s/TRACKS/$tracks/g" \
-		  | sed "s/PARTICLEFLOW/$pflow/g" \
-		  | sed "s/DOMATCH/$domatch/g" \
-		  >> HiGenJetsCleaned_cff.py
-	  fi
+	    if [ $system == "pp" ]; then
+		genjets="HiGenJets"
+	    fi
 
-	  cat templateSequence_cff.py.txt \
-	  | sed "s/ALGO_/$algo/g" \
-	  | sed "s/SUB_/$sub/g" \
-	  | sed "s/RADIUS_/$radius/g" \
-	  | sed "s/OBJECT_/$object/g" \
-	  | sed "s/SAMPLE_/$sample/g" \
-	  | sed "s/CORRNAME_/$corrname/g" \
-	  | sed "s/MATCHED_/$match/g" \
-	  | sed "s/ISMC/$ismc/g" \
-	  | sed "s/GENJETS/$genjets/g" \
-	  | sed "s/GENPARTICLES/$genparticles/g" \
-	  | sed "s/TRACKS/$tracks/g" \
-	  | sed "s/PARTICLEFLOW/$pflow/g" \
-	  | sed "s/DOMATCH/$domatch/g" \
-	  >> $algo$sub$radius${object}JetSequence_${sample}_cff.py
-	  	  
+	    if [ $system == "PbPb" ] && [ $sample == "mc" ] && [ $object == "PF" ] && [ $sub == "Vs" ]; then
+		
+		cat templateClean_cff.py.txt \
+		    | sed "s/ALGO_/$algo/g" \
+		    | sed "s/SUB_/$sub/g" \
+		    | sed "s/RADIUS_/$radius/g" \
+		    | sed "s/OBJECT_/$object/g" \
+		    | sed "s/SAMPLE_/$sample/g" \
+		    | sed "s/CORRNAME_/$corrname/g" \
+		    | sed "s/MATCHED_/$match/g" \
+		    | sed "s/ISMC/$ismc/g" \
+		    | sed "s/GENJETS/$genjets/g" \
+		    | sed "s/GENPARTICLES/$genparticles/g" \
+		    | sed "s/TRACKS/$tracks/g" \
+		    | sed "s/PARTICLEFLOW/$pflow/g" \
+		    | sed "s/DOMATCH/$domatch/g" \
+		    >> HiGenJetsCleaned_cff.py
+	    fi
+	    
+	    cat templateSequence_cff.py.txt \
+		| sed "s/ALGO_/$algo/g" \
+		| sed "s/SUB_/$sub/g" \
+		| sed "s/RADIUS_/$radius/g" \
+		| sed "s/OBJECT_/$object/g" \
+		| sed "s/SAMPLE_/$sample/g" \
+		| sed "s/CORRNAME_/$corrname/g" \
+		| sed "s/MATCHED_/$match/g" \
+		| sed "s/ISMC/$ismc/g" \
+		| sed "s/GENJETS/$genjets/g" \
+		| sed "s/GENPARTICLES/$genparticles/g" \
+		| sed "s/TRACKS/$tracks/g" \
+		| sed "s/PARTICLEFLOW/$pflow/g" \
+		| sed "s/DOMATCH/$domatch/g" \
+		>> $algo$sub$radius${object}JetSequence_${system}_${sample}_cff.py
+	    
+	  done
 	done
       done
     done
   done
 done
 
-
+echo "" >> HiGenJetsCleaned_cff.py
 echo "hiGenJetsCleaned = cms.Sequence(" >> HiGenJetsCleaned_cff.py
 
 for algo in ak
   do
   for radius in 2 3 4 5 6 7
     do
-    
-    
-	
     echo "$algo${radius}HiGenJetsCleaned" >> HiGenJetsCleaned_cff.py
     if [ $radius -ne 7 ]; then
 	echo "+" >> HiGenJetsCleaned_cff.py

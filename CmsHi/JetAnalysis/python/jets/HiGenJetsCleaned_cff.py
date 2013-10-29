@@ -12,6 +12,7 @@ ak5HiGenJetsCleaned = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak5HiGen
 ak6HiGenJetsCleaned = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak6HiGenJets') )
 
 ak7HiGenJetsCleaned = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak7HiGenJets') )
+
 hiGenJetsCleaned = cms.Sequence(
 ak2HiGenJetsCleaned
 +

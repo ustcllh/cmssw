@@ -103,11 +103,12 @@ process.hiGenParticles.srcVector = cms.vstring('generator')
 
 
 process.load('CmsHi.JetAnalysis.jets.HiGenJetsCleaned_cff')
-process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_mc_cff')
-process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_mc_cff')
 
-process.load('CmsHi.JetAnalysis.jets.akVs3CaloJetSequence_mc_cff')
-process.load('CmsHi.JetAnalysis.jets.akPu3CaloJetSequence_mc_cff')
+process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mc_cff')
+process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_PbPb_mc_cff')
+
+process.load('CmsHi.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_mc_cff')
+process.load('CmsHi.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mc_cff')
 
 process.load('CmsHi.HiHLTAlgos.hievtanalyzer_mc_cfi')
 process.load('CmsHi.JetAnalysis.HiGenAnalyzer_cfi')
