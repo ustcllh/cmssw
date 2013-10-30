@@ -19,7 +19,6 @@ for system in PbPb pp pPb
 	    ismc="False"
 	    corrlabel="_hiIterativeTracks"
             domatch="True"
-	    corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${radius}${object}${corrlabel}
             genjets="HiGenJetsCleaned"
 	    genparticles="hiGenParticles"
             tracks="hiGeneralTracks"
@@ -45,6 +44,8 @@ for system in PbPb pp pPb
 	    if [ $system == "pp" ]; then
 		genjets="HiGenJets"
 	    fi
+
+            corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${radius}${object}${corrlabel}
 
 	    if [ $system == "PbPb" ] && [ $sample == "mc" ] && [ $object == "PF" ] && [ $sub == "Vs" ]; then
 		
