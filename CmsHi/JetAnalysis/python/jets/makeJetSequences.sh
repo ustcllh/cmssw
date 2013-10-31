@@ -9,13 +9,19 @@ for system in PbPb pp pPb
     do
     for algo in ak
       do
-      for sub in Vs Pu
+      for sub in Vs Pu NONE
 	do
 	for radius in 2 3 4 5 6 7
 	  do
 	  matchobject="Calo"
 	  for object in PF Calo
 	    do
+
+	    subt=$sub
+	    if [ $sub == "NONE" ]; then
+		subt=""
+	    fi
+	    
 	    ismc="False"
 	    corrlabel="_hiIterativeTracks"
             domatch="True"
@@ -23,8 +29,8 @@ for system in PbPb pp pPb
 	    genparticles="hiGenParticles"
             tracks="hiGeneralTracks"
             pflow="particleFlowTmp"
-            match=${algo}${sub}${radius}${matchobject}
-            echo "" > $algo$sub$radius${object}JetSequence_${system}_${sample}_cff.py
+            match=${algo}${subt}${radius}${matchobject}
+            echo "" > $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 
             if [ $system != "PbPb" ]; then
 		corrlabel="_generalTracks"
@@ -51,7 +57,7 @@ for system in PbPb pp pPb
 		
 		cat templateClean_cff.py.txt \
 		    | sed "s/ALGO_/$algo/g" \
-		    | sed "s/SUB_/$sub/g" \
+		    | sed "s/SUB_/$subt/g" \
 		    | sed "s/RADIUS_/$radius/g" \
 		    | sed "s/OBJECT_/$object/g" \
 		    | sed "s/SAMPLE_/$sample/g" \
@@ -68,7 +74,7 @@ for system in PbPb pp pPb
 	    
 	    cat templateSequence_cff.py.txt \
 		| sed "s/ALGO_/$algo/g" \
-		| sed "s/SUB_/$sub/g" \
+		| sed "s/SUB_/$subt/g" \
 		| sed "s/RADIUS_/$radius/g" \
 		| sed "s/OBJECT_/$object/g" \
 		| sed "s/SAMPLE_/$sample/g" \
@@ -80,7 +86,7 @@ for system in PbPb pp pPb
 		| sed "s/TRACKS/$tracks/g" \
 		| sed "s/PARTICLEFLOW/$pflow/g" \
 		| sed "s/DOMATCH/$domatch/g" \
-		>> $algo$sub$radius${object}JetSequence_${system}_${sample}_cff.py
+		>> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 	    
 	  done
 	done
