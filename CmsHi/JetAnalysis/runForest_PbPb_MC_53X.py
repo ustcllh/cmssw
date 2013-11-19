@@ -17,11 +17,15 @@ ivars.register ('randomNumber',
                 "Random Seed")
 
 ivars.randomNumber = 1
-ivars.inputFiles = "file:step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_2.root"
+#ivars.inputFiles = "file:step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_2.root"
+ivars.inputFiles = "file:/mnt/hadoop/cms/store/user/yilmaz/hydjetTuneDrum_QuenchedMB_53X_GEN-SIM_v2/Hydjet_Drum_53X_RECO_test16/16a66057d6b9b6b77f83d561b8cd7aea/step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_87_1_v07.root"
 ivars.outputFile = 'HiForest.root'
-ivars.maxEvents = -1
+ivars.maxEvents = 10
 
 ivars.parseArguments()
+
+hiTrackQuality = "highPurity"              # iterative tracks
+#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
 
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
@@ -60,7 +64,6 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.Geometry.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-
 process.load('Configuration.StandardSequences.Digi_cff')
 process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
@@ -113,6 +116,62 @@ process.load('CmsHi.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mc_cff')
 process.load('CmsHi.HiHLTAlgos.hievtanalyzer_mc_cfi')
 process.load('CmsHi.JetAnalysis.HiGenAnalyzer_cfi')
 
+process.load('CmsHi.JetAnalysis.ExtraTrackReco_cff')
+process.load('CmsHi.JetAnalysis.ExtraPfReco_cff')
+process.load('CmsHi.JetAnalysis.TrkAnalyzers_MC_cff')
+process.load("MitHig.PixelTrackletAnalyzer.METAnalyzer_cff")
+process.load("CmsHi.JetAnalysis.pfcandAnalyzer_cfi")
+process.load('CmsHi.JetAnalysis.rechitanalyzer_cfi')
+process.rechitAna = cms.Sequence(process.rechitanalyzer+process.pfTowers)
+process.pfcandAnalyzer.skipCharged = False
+process.pfcandAnalyzer.pfPtMin = 0
+
+#########################
+# Track Analyzer
+#########################
+process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
+process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
+process.mergedTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
+
+#photons
+process.RandomNumberGeneratorService.generator.initialSeed = ivars.randomNumber 
+process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
+process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
+process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
+process.load('CmsHi.JetAnalysis.ExtraEGammaReco_cff')
+process.load('CmsHi.JetAnalysis.EGammaAnalyzers_cff')
+process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
+process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
+process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
+process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
+process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
+process.photonStep.remove(process.interestingTrackEcalDetIds)
+process.photonMatch.matched = cms.InputTag("hiGenParticles")
+process.patPhotons.addPhotonID = cms.bool(False)
+process.extrapatstep = cms.Path(process.selectedPatPhotons)
+process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
+process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
+
+process.hiTracks.cut = cms.string('quality("' + hiTrackQuality+  '")')
+process.pfTrack.TrackQuality = cms.string(hiTrackQuality)
+process.reco_extra =  cms.Path(
+    #process.hiTrackReco
+    #+process.hiTrackDebug
+    
+    #        *process.muonRecoPbPb
+    process.HiParticleFlowLocalReco
+    *process.HiParticleFlowReco
+    #*process.iterativeConePu5CaloJets
+    *process.PFTowers
+)
+# set track collection to iterative tracking
+process.pfTrack.TkColList = cms.VInputTag("hiGeneralTracks")
+process.anaTrack.doSimVertex = False
+process.anaTrack.doSimTrack = False
+process.mergedTrack.doSimTrack = False
+process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
+
+
 process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
                              *
                              process.ak6HiGenJets +
@@ -129,8 +188,18 @@ process.ana_step = cms.Path(process.heavyIon*
                             +
                             process.akVs3PFJetSequence
                             +
-                            process.akPu3PFJetSequence
+                            process.akPu3PFJetSequence +
+                            process.multiPhotonAnalyzer +
+                            process.anaTrack + 
+                            #process.hiTracks + 
+                            #process.mergedTrack +
+                            process.pfcandAnalyzer +
+                            process.rechitAna 
                             )
+
+# Customization
+from CmsHi.JetAnalysis.customise_cfi import *
+setPhotonObject(process,"cleanPhotons")
 
 process.load('CmsHi.HiHLTAlgos.hltanalysis_cff')
 process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","RECO")

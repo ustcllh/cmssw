@@ -391,7 +391,7 @@ TrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   pev_.nParticle = 0;
   pev_.nTrk = 0;
 
-  //  cout <<"Fill Vtx"<<endl;
+  //cout <<"Fill Vtx"<<endl;
   fillVertices(iEvent);
 
   if(useCentrality_){
@@ -402,11 +402,11 @@ TrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   //cout <<"Fill Tracks"<<endl;
   if (doTrack_) fillTracks(iEvent, iSetup);
-  //  cout <<"Tracks filled!"<<endl;
+  //cout <<"Tracks filled!"<<endl;
   if (doSimTrack_) fillSimTracks(iEvent, iSetup);
-  //  cout <<"SimTracks filled!"<<endl;
+  //cout <<"SimTracks filled!"<<endl;
   trackTree_->Fill();
-  //  cout <<"Tree filled!"<<endl;
+  //cout <<"Tree filled!"<<endl;
   memset(&pev_,0,sizeof pev_);
 
 }
@@ -460,6 +460,7 @@ TrackAnalyzer::fillVertices(const edm::Event& iEvent){
     int nVertex = 0;
     unsigned int greatestvtx = 0;
 
+
     nVertex = recoVertices->size();
     pev_.nVtx = nVertex;
     for (unsigned int i = 0 ; i< recoVertices->size(); ++i){
@@ -477,21 +478,25 @@ TrackAnalyzer::fillVertices(const edm::Event& iEvent){
 
     
       float vtxSumPt=0.;
-      for (reco::Vertex::trackRef_iterator it = (*recoVertices)[i].tracks_begin(); it != (*recoVertices)[i].tracks_end(); it++) {
-	vtxSumPt += (**it).pt();
+      //  Track-Vtx association is to be revisited, the vtx must be
+      //  associated to the same tracks as the input to the analyzer,
+      //  and be careful of cases where association is not 1-to-1
+      
+      // for (reco::Vertex::trackRef_iterator it = (*recoVertices)[i].tracks_begin(); it != (*recoVertices)[i].tracks_end(); it++) {
+      // 	vtxSumPt += (**it).pt();
 
-	Handle<vector<Track> > etracks;
-	iEvent.getByLabel(trackSrc_, etracks);
+      // 	Handle<vector<Track> > etracks;
+      // 	iEvent.getByLabel(trackSrc_, etracks);
 
-	for(unsigned itrack=0; itrack<etracks->size(); ++itrack){
-	  reco::TrackRef trackRef=reco::TrackRef(etracks,itrack);
-	  //cout<<" trackRef.key() "<<trackRef.key()<< " it->key() "<<it->key()<<endl;
-	  if(trackRef.key()==it->key()){
-	    pev_.trkVtxIndex[itrack] = i+1;  // note that index starts from 1 
-	    //cout<< " matching track "<<itrack<<endl;
-	  }
-	}
-      }
+      // 	for(unsigned itrack=0; itrack<etracks->size(); ++itrack){
+      // 	  reco::TrackRef trackRef=reco::TrackRef(etracks,itrack);
+      // 	  //cout<<" trackRef.key() "<<trackRef.key()<< " it->key() "<<it->key()<<endl;
+      // 	  if(trackRef.key()==it->key()){
+      // 	    pev_.trkVtxIndex[itrack] = i+1;  // note that index starts from 1 
+      // 	    //cout<< " matching track "<<itrack<<endl;
+      // 	  }
+      // 	}
+      // }
 
       pev_.sumPtVtx[i] = vtxSumPt;
 	  
