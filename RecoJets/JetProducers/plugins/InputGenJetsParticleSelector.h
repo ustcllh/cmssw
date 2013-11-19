@@ -89,7 +89,8 @@ class InputGenJetsParticleSelector : public edm::EDProducer {
   bool			partonicFinalState;
   bool			excludeResonances;
   bool			tausAsJets;
-  double			ptMin;
+  bool                  chargedJets;
+    double			ptMin;
   
   
   

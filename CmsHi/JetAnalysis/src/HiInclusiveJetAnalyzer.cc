@@ -384,7 +384,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
   double hf = 0.;
   double b = 999.;
 
-  if(!geo){
+  if(doHiJetID_ && !geo){
     edm::ESHandle<CaloGeometry> pGeo;
     iSetup.get<CaloGeometryRecord>().get(pGeo);
     geo = pGeo.product();
@@ -422,7 +422,10 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
    edm::Handle<pat::JetCollection> patjets;
    if(usePat_)iEvent.getByLabel(jetTag_, patjets);
 
-   edm::Handle<pat::JetCollection> matchedjets;
+   edm::Handle<pat::JetCollection> patmatchedjets;
+   iEvent.getByLabel(matchTag_, patmatchedjets);
+
+   edm::Handle<reco::JetView> matchedjets;
    iEvent.getByLabel(matchTag_, matchedjets);
    
    edm::Handle<reco::JetView> jets;
@@ -737,12 +740,16 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
      double drMin = 100;
      for(unsigned int imatch = 0 ; imatch < matchedjets->size(); ++imatch){
-	const pat::Jet& mjet = (*matchedjets)[imatch];
+	const reco::Jet& mjet = (*matchedjets)[imatch];
 
 	double dr = deltaR(jet,mjet);
 	if(dr < drMin){
 	   jets_.matchedPt[jets_.nref] = mjet.pt();
-           jets_.matchedRawPt[jets_.nref] = mjet.correctedJet("Uncorrected").pt();
+
+	   if(usePat_){
+	     const pat::Jet& mpatjet = (*patmatchedjets)[imatch];
+	     jets_.matchedRawPt[jets_.nref] = mpatjet.correctedJet("Uncorrected").pt();
+	   }
            jets_.matchedR[jets_.nref] = dr;
 	   drMin = dr;
 	}
@@ -857,8 +864,8 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
        jets_.fHFOOT[jets_.nref] = (*patjets)[j].jetID().fHFOOT;
 	}
 
-     }
-
+          }
+ 
      if(isMC_){
 
        for(UInt_t i = 0; i < genparts->size(); ++i){
