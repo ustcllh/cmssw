@@ -16,11 +16,20 @@ ivars.register ('randomNumber',
                 ivars.varType.int,
                 "Random Seed")
 
+ivars.register('hasMergedTruth',
+               False,
+               ivars.multiplicity.singleton,
+               ivars.varType.bool,
+               "Flag for using mergedtruth info in recodebug")
+
 ivars.randomNumber = 1
 #ivars.inputFiles = "file:step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_2.root"
-ivars.inputFiles = "file:/mnt/hadoop/cms/store/user/yilmaz/hydjetTuneDrum_QuenchedMB_53X_GEN-SIM_v2/Hydjet_Drum_53X_RECO_test16/16a66057d6b9b6b77f83d561b8cd7aea/step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_87_1_v07.root"
+#ivars.inputFiles = "file:/mnt/hadoop/cms/store/user/yilmaz/hydjetTuneDrum_QuenchedMB_53X_GEN-SIM_v2/Hydjet_Drum_53X_RECO_test16/16a66057d6b9b6b77f83d561b8cd7aea/step3_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_87_1_v07.root"
+#purportedly RECODEBUG MC:
+ivars.inputFiles = "file:/mnt/hadoop/cms/store/user/yilmaz/hydjetTuneDrum_QuenchedMB_53X_GEN-SIM_v2/Pythia30_53X_RECO_test20/3647b3b65acd3fdf5c74732e421c8ff4/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_1_1_Oky.root"
 ivars.outputFile = 'HiForest.root'
 ivars.maxEvents = 10
+ivars.hasMergedTruth = False
 
 ivars.parseArguments()
 
@@ -133,7 +142,7 @@ process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPurity
 process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 process.mergedTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 
-#photons
+# photons
 process.RandomNumberGeneratorService.generator.initialSeed = ivars.randomNumber 
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
@@ -151,6 +160,7 @@ process.patPhotons.addPhotonID = cms.bool(False)
 process.extrapatstep = cms.Path(process.selectedPatPhotons)
 process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
 process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
+#####################
 
 process.hiTracks.cut = cms.string('quality("' + hiTrackQuality+  '")')
 process.pfTrack.TrackQuality = cms.string(hiTrackQuality)
@@ -166,10 +176,23 @@ process.reco_extra =  cms.Path(
 )
 # set track collection to iterative tracking
 process.pfTrack.TkColList = cms.VInputTag("hiGeneralTracks")
-process.anaTrack.doSimVertex = False
-process.anaTrack.doSimTrack = False
-process.mergedTrack.doSimTrack = False
 process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
+
+if not ivars.hasMergedTruth:
+    process.anaTrack.doSimVertex = False
+    process.anaTrack.doSimTrack = False
+    #process.mergedTrack.doSimTrack = False
+
+# muons
+######################
+process.load("MuTrig.HLTMuTree.hltMuTree_cfi")
+process.hltMuTree.doGen = cms.untracked.bool(True)
+process.load("RecoHI.HiMuonAlgos.HiRecoMuon_cff")
+process.muons.JetExtractorPSet.JetCollectionLabel = cms.InputTag("akVs3PFJets")
+process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
+process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
+process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
+
 
 
 process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
@@ -190,20 +213,38 @@ process.ana_step = cms.Path(process.heavyIon*
                             +
                             process.akPu3PFJetSequence +
                             process.multiPhotonAnalyzer +
-                            process.anaTrack + 
-                            #process.hiTracks + 
-                            #process.mergedTrack +
                             process.pfcandAnalyzer +
-                            process.rechitAna 
+                            process.rechitAna +
+                            process.hltMuTree +
+                            process.HiForest
                             )
+
+if ivars.hasMergedTruth:
+    #process.hitrkEffAnalyzer_MergedSelected.jets = "akVs3PFpatJets"
+    process.ana_step += (process.cutsTPForFak +
+                         process.cutsTPForEff +
+                         #process.trackeff_seq +
+                         process.anaTrack)
+                         #process.mergedTrack)
+else:
+    process.ana_step += process.anaTrack
+
+process.load('CmsHi.JetAnalysis.EventSelection_cff')
+process.phltJetHI = cms.Path( process.hltJetHI )
+process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
+process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
+process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
 from CmsHi.JetAnalysis.customise_cfi import *
 setPhotonObject(process,"cleanPhotons")
 
 process.load('CmsHi.HiHLTAlgos.hltanalysis_cff')
-process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","RECO")
-process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","SIM")
+#process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","RECO")
+#process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","SIM")
+process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","HiForest")
+process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","HiForest")
+
 
 process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)
