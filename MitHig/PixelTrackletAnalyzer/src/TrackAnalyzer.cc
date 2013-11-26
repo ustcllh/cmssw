@@ -332,6 +332,12 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
    doTrackExtra_             = iConfig.getUntrackedParameter<bool>  ("doTrackExtra",false);
    doSimTrack_             = iConfig.getUntrackedParameter<bool>  ("doSimTrack",false);
    fillSimTrack_             = iConfig.getUntrackedParameter<bool>  ("fillSimTrack",false);
+   doSimVertex_             = iConfig.getUntrackedParameter<bool>  ("doSimVertex",false);
+
+   if(!doSimTrack_){
+     fillSimTrack_ = 0;
+     doSimVertex_ = 0;
+   }
 
    doDeDx_             = iConfig.getUntrackedParameter<bool>  ("doDeDx",false);
    doDebug_             = iConfig.getUntrackedParameter<bool>  ("doDebug",false);
@@ -358,8 +364,6 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
    simVertexSrc_ =  iConfig.getUntrackedParameter<edm::InputTag>("tpVtxSrc",edm::InputTag("mergedtruth","MergedTrackTruth"));
    beamSpotProducer_  = iConfig.getUntrackedParameter<edm::InputTag>("beamSpotSrc",edm::InputTag("offlineBeamSpot"));   
    pfCandSrc_ = iConfig.getParameter<edm::InputTag>("pfCandSrc");
-
-  doSimVertex_             = iConfig.getUntrackedParameter<bool>  ("doSimVertex",false);
 
 }
 

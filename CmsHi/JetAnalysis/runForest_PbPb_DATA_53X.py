@@ -1,11 +1,3 @@
-#!/usr/bin/env python2
-# Run the foresting configuration on PbPb in CMSSW_5_3_X, using the new HF/Voronoi jets
-# Author: Alex Barbieri
-# Date: 2013-10-15
-
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(
@@ -28,7 +20,7 @@ process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:input.root"))
+                            fileNames = cms.untracked.vstring("file:/home/llr/cms/yilmaz/prod/RECO/HiData2011_FT_R_53_LV5/step3_RAW2DIGI_RECO_01.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -43,6 +35,7 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.Geometry.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
 process.load('Configuration.StandardSequences.Digi_cff')
 process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
@@ -52,7 +45,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'FT_R_53_LV5::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
@@ -60,7 +53,7 @@ overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowers"),
-    nonDefaultGlauberModel = cms.string("Hydjet_Drum"),
+    nonDefaultGlauberModel = cms.string(""),
     centralitySrc = cms.InputTag("hiCentrality")
     )
 
@@ -75,24 +68,15 @@ process.TFileService = cms.Service("TFileService",
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
 
-process.load('Configuration.StandardSequences.Generator_cff')
-process.load('RecoJets.Configuration.GenJetParticles_cff')
-process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
 process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
 process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
 
-#process.hiGenParticles.srcVector = cms.vstring('generator')
+process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_PbPb_data_cff')
+process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_PbPb_data_cff')
 
-process.load('CmsHi.JetAnalysis.jets.HiGenJetsCleaned_cff')
+process.load('CmsHi.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_data_cff')
+process.load('CmsHi.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_data_cff')
 
-process.load('CmsHi.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mc_cff')
-process.load('CmsHi.JetAnalysis.jets.akPu3PFJetSequence_PbPb_mc_cff')
-
-process.load('CmsHi.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_mc_cff')
-process.load('CmsHi.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mc_cff')
-
-process.load('CmsHi.HiHLTAlgos.hievtanalyzer_mc_cfi')
-process.load('CmsHi.JetAnalysis.HiGenAnalyzer_cfi')
 
 #####################################################################################
 # To be cleaned
@@ -114,8 +98,14 @@ process.pfcandAnalyzer.pfPtMin = 0
 #########################
 process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
-process.mergedTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
+process.hiTracks.cut = cms.string('quality("highPurity")')
 
+# set track collection to iterative tracking
+process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
+
+process.anaTrack.doSimTrack = False
+
+#####################
 # photons
 process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
 process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
@@ -125,20 +115,15 @@ process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
 process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
 process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
-process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
 process.photonMatch.matched = cms.InputTag("hiGenParticles")
 process.patPhotons.addPhotonID = cms.bool(False)
-process.extrapatstep = cms.Path(process.selectedPatPhotons)
 process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
 process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
+process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
+
 #####################
 
-process.hiTracks.cut = cms.string('quality("' + hiTrackQuality+  '")')
-
-# set track collection to iterative tracking
-process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
-
+######################
 # muons
 ######################
 process.load("MuTrig.HLTMuTree.hltMuTree_cfi")
@@ -147,47 +132,48 @@ process.load("RecoHI.HiMuonAlgos.HiRecoMuon_cff")
 process.muons.JetExtractorPSet.JetCollectionLabel = cms.InputTag("akVs3PFJets")
 process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
-process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
+process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit","tevMuons:picky", "tevMuons:dyt"]
 
-process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
-                             *
-                             process.ak6HiGenJets +
-                             process.ak7HiGenJets)
+process.hltMuTree.doGen = False
 
-process.ana_step = cms.Path(process.heavyIon*
-                            process.hiEvtAnalyzer*
-                            process.HiGenParticleAna*
-                            process.hiGenJetsCleaned
-                            +
-                            process.akVs3CaloJetSequence
-                            +
-                            process.akPu3CaloJetSequence
-                            +
-                            process.akVs3PFJetSequence
-                            +
+######################
+
+process.load('CmsHi.HiHLTAlgos.hievtanalyzer_data_cfi')
+process.load('CmsHi.HiHLTAlgos.hltanalysis_cff')
+process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","HLT")
+process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","HiForest")
+
+
+#Filtering
+# Minimum bias trigger selection (later runs)
+process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
+process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
+process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
+process.filterSequence = cms.Sequence(process.hltMinBiasHFOrBSC*process.collisionEventSelection)
+process.skimanalysis.superFilters = cms.vstring("ana_step")
+
+process.photonStep = cms.Sequence(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons * process.selectedPatPhotons)
+process.photonStep.remove(process.interestingTrackEcalDetIds)
+process.photonStep.remove(process.photonMatch)
+
+process.ana_step = cms.Path(process.filterSequence *
+                            process.photonStep *
+                            process.hltanalysis *
+                            process.hiEvtAnalyzer *
+                            process.akVs3CaloJetSequence *
+                            process.akPu3CaloJetSequence *
+                            process.akVs3PFJetSequence *
                             process.akPu3PFJetSequence +
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
                             process.hltMuTree +
-                            process.HiForest +
-                            process.cutsTPForFak +
-                            process.cutsTPForEff +
-                            process.anaTrack)
+                            process.HiForest +                            
+                            process.anaTrack
+                            )
 
-process.load('CmsHi.JetAnalysis.EventSelection_cff')
-process.phltJetHI = cms.Path( process.hltJetHI )
-process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
-process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
-process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
-
-# Customization
-from CmsHi.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
-process.load('CmsHi.HiHLTAlgos.hltanalysis_cff')
-process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","HISIGNAL")
-process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","HiForest")
-
-process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)
+
+
+
