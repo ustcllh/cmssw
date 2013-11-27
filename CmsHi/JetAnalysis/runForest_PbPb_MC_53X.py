@@ -28,7 +28,7 @@ process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:input.root"))
+                            fileNames = cms.untracked.vstring("/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -114,8 +114,15 @@ process.pfcandAnalyzer.pfPtMin = 0
 #########################
 process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
-process.mergedTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
+process.hiTracks.cut = cms.string('quality("highPurity")')
 
+# set track collection to iterative tracking
+process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
+
+# clusters missing in recodebug - to be resolved
+process.anaTrack.doPFMatching = False
+
+#####################
 # photons
 process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
 process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
@@ -132,13 +139,9 @@ process.patPhotons.addPhotonID = cms.bool(False)
 process.extrapatstep = cms.Path(process.selectedPatPhotons)
 process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
 process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
+process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
+
 #####################
-
-process.hiTracks.cut = cms.string('quality("' + hiTrackQuality+  '")')
-
-# set track collection to iterative tracking
-process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
-
 # muons
 ######################
 process.load("MuTrig.HLTMuTree.hltMuTree_cfi")
@@ -151,6 +154,7 @@ process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standA
 
 process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
                              *
+                             process.ak2HiGenJets +
                              process.ak6HiGenJets +
                              process.ak7HiGenJets)
 
@@ -169,7 +173,7 @@ process.ana_step = cms.Path(process.heavyIon*
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
-                            process.hltMuTree +
+#temp                            process.hltMuTree +
                             process.HiForest +
                             process.cutsTPForFak +
                             process.cutsTPForEff +

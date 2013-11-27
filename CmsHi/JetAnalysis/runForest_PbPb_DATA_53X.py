@@ -20,7 +20,7 @@ process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:/home/llr/cms/yilmaz/prod/RECO/HiData2011_FT_R_53_LV5/step3_RAW2DIGI_RECO_01.root"))
+                            fileNames = cms.untracked.vstring("/store/user/yilmaz/HIMinBiasUPC/HIMinBias2011_FT_R_53_LV5_test04/a8911ef3cf889025c21f68cf3fe817c8/step3_RAW2DIGI_RECO_1_1_0yo.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -103,6 +103,9 @@ process.hiTracks.cut = cms.string('quality("highPurity")')
 # set track collection to iterative tracking
 process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
 
+# clusters missing in recodebug - to be resolved
+process.anaTrack.doPFMatching = False
+
 process.anaTrack.doSimTrack = False
 
 #####################
@@ -161,6 +164,7 @@ process.ana_step = cms.Path(process.filterSequence *
                             process.photonStep *
                             process.hltanalysis *
                             process.hiEvtAnalyzer *
+                            process.PFTowers * # temp
                             process.akVs3CaloJetSequence *
                             process.akPu3CaloJetSequence *
                             process.akVs3PFJetSequence *
@@ -168,7 +172,7 @@ process.ana_step = cms.Path(process.filterSequence *
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
-                            process.hltMuTree +
+#temp                            process.hltMuTree +
                             process.HiForest +                            
                             process.anaTrack
                             )
