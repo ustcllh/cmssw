@@ -17,7 +17,7 @@ from RecoHI.HiJetAlgos.HiRecoJets_cff import *
 # Muon Reco
 from RecoHI.HiMuonAlgos.HiRecoMuon_cff import * 
 # keep regit seperate for the moment
-from RecoHI.HiMuonAlgos.HiReRecoMuon_cff import *
+from RecoHI.HiMuonAlgos.HiRegionalRecoMuon_cff import *
 
 from RecoHI.Configuration.Reconstruction_hiPF_cff import *
 
@@ -34,7 +34,7 @@ globalRecoPbPb = cms.Sequence(hiTracking
                               * hiEcalClusters
                               * hiRecoJets
                               * muonRecoPbPb
-                              * reMuonRecoPbPb
+                              * regionalMuonRecoPbPb
                               * hiElectronSequence
                               * HiParticleFlowLocalReco
                               * hiEgammaSequence
