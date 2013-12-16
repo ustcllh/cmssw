@@ -1,23 +1,3 @@
-// -*- C++ -*-
-//
-// Package:    VoronoiBackgroundProducer
-// Class:      VoronoiBackgroundProducer
-// 
-/**\class VoronoiBackgroundProducer VoronoiBackgroundProducer.cc RecoHI/VoronoiBackgroundProducer/plugins/VoronoiBackgroundProducer.cc
-
- Description: [one line class summary]
-
- Implementation:
-     [Notes on implementation]
-*/
-//
-// Original Author:  Yetkin Yilmaz
-//         Created:  Tue, 09 Jul 2013 14:28:26 GMT
-// $Id$
-//
-//
-
-
 // system include files
 #include <memory>
 
@@ -49,15 +29,8 @@ class VoronoiBackgroundProducer : public edm::EDProducer {
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
    private:
-      virtual void beginJob();
       virtual void produce(edm::Event&, const edm::EventSetup&);
-      virtual void endJob();
       
-      //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
-      //virtual void endRun(edm::Run const&, edm::EventSetup const&) override;
-      //virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
-      //virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
-
       // ----------member data ---------------------------
 
    edm::InputTag src_;
@@ -88,18 +61,12 @@ VoronoiBackgroundProducer::VoronoiBackgroundProducer(const edm::ParameterSet& iC
    //register your products
 
    produces<reco::VoronoiMap>();
-   //   produces<reco::VoronoiBackgroundMap>();
-   //   produces<reco::PFVoronoiBackgroundMap>();
 
 }
 
 
 VoronoiBackgroundProducer::~VoronoiBackgroundProducer()
 {
- 
-   // do anything here that needs to be done at desctruction time
-   // (e.g. close files, deallocate resources etc.)
-
 }
 
 
@@ -122,13 +89,8 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    reco::VoronoiMap::Filler filler(*mapout);
    vvm.clear();
 
-   //   edm::Handle<reco::PFCandidateCollection> inputsHandle;
-   //   iEvent.getByLabel(src_,inputsHandle);
-   //   std::auto_ptr<reco::PFVoronoiBackgroundMap> mapout(new reco::PFVoronoiBackgroundMap());
-
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
-      //      edm::Ref<reco::PFCandidateCollection> ref(inputsHandle,i);
       voronoi_->push_back_particle(ref->pt(),ref->eta(),ref->phi(),0);
    }
 
@@ -136,8 +98,6 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
-      //      edm::Ref<reco::PFCandidateCollection> ref(inputsHandle,i);
-
       reco::VoronoiBackground bkg(0,0,momentum_perp_subtracted[i],0,0,0,0);
 
       vvm.push_back(bkg);
@@ -150,54 +110,9 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
  
 }
 
-// ------------ method called once each job just before starting event loop  ------------
-void 
-VoronoiBackgroundProducer::beginJob()
-{
-}
-
-// ------------ method called once each job just after ending the event loop  ------------
-void 
-VoronoiBackgroundProducer::endJob() {
-}
-
-// ------------ method called when starting to processes a run  ------------
-/*
-void
-VoronoiBackgroundProducer::beginRun(edm::Run const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method called when ending the processing of a run  ------------
-/*
-void
-VoronoiBackgroundProducer::endRun(edm::Run const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method called when starting to processes a luminosity block  ------------
-/*
-void
-VoronoiBackgroundProducer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method called when ending the processing of a luminosity block  ------------
-/*
-void
-VoronoiBackgroundProducer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
-{
-}
-*/
- 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
 VoronoiBackgroundProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
   desc.setUnknown();
   descriptions.addDefault(desc);

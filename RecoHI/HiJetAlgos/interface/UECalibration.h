@@ -1,5 +1,5 @@
-#ifndef __UECalibration_h__
-#define __UECalibration_h__
+#ifndef __HiJetAlgos_UECalibration_h__
+#define __HiJetAlgos_UECalibration_h__
 
 /////////////////////////////////////////////////////////////////////
 // SVD Block Predictor
