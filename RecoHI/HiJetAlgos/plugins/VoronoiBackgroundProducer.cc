@@ -138,7 +138,7 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       reco::CandidateViewRef ref(inputsHandle,i);
       //      edm::Ref<reco::PFCandidateCollection> ref(inputsHandle,i);
 
-      reco::VoronoiBackground bkg(0,0,momentum_perp_subtracted[i],0,0,0);
+      reco::VoronoiBackground bkg(0,0,momentum_perp_subtracted[i],0,0,0,0);
 
       vvm.push_back(bkg);
 
