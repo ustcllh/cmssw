@@ -27,7 +27,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
 // centrality
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "HeavyIonsAnalysis/CentralityAnalysis/interface/CentralityProvider.h"
 
 /**\class PFCandidateTrackAnalyzer 
 \brief produces IsolatedPFCandidates from PFCandidates
