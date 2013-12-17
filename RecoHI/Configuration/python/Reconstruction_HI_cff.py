@@ -4,8 +4,7 @@ import FWCore.ParameterSet.Config as cms
 # HIGH LEVEL RECO
 
 # Tracking
-from RecoHI.HiTracking.LowPtTracking_PbPb_cff import *    # above 0.9 GeV
-from RecoHI.HiTracking.hiIterTracking_cff import *    # two additional steps
+from RecoHI.HiTracking.HiTracking_cff import *    # two additional steps
 
 # Egamma
 from RecoHI.HiEgammaAlgos.HiEgamma_cff import *
@@ -31,6 +30,20 @@ hcalnoise.trackCollName = 'hiGeneralTracks'
 
 # Global + High-Level Reco Sequence
 globalRecoPbPb = cms.Sequence(hiTracking
+                              * hiEcalClusters
+                              * hiRecoJets
+                              * muonRecoPbPb
+                              * regionalMuonRecoPbPb
+                              * hiElectronSequence
+                              * HiParticleFlowLocalReco
+                              * hiEgammaSequence
+                              * HiParticleFlowReco
+                              * hiCentrality
+                              * hiEvtPlane
+                              * hcalnoise
+                              )
+
+globalRecoPbPb_woPixelTracks = cms.Sequence(hiTracking_woPixelTracks
                               * hiEcalClusters
                               * hiRecoJets
                               * muonRecoPbPb
