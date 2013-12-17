@@ -16,7 +16,7 @@
 <use   name="DataFormats/HeavyIonEvent"/>
 <use   name="CondFormats/HIObjects"/>
 <use   name="DataFormats/Math"/>
-<use   name="HeavyIonsAnalysis/CentralityAnalysis"/>
+<use   name="RecoHI/HiCentralityAlgos"/>
 <flags   EDM_PLUGIN="1"/>
 <export>
   <lib   name="1"/>

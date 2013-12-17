@@ -18,7 +18,7 @@
 #include "DataFormats/HeavyIonEvent/interface/Centrality.h"
 #include "DataFormats/HeavyIonEvent/interface/EvtPlane.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-#include "HeavyIonsAnalysis/CentralityAnalysis/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 
 #include "SimDataFormats/HiGenData/interface/GenHIEvent.h"
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"

@@ -23,10 +23,9 @@
 <use   name="Geometry/EcalAlgo"/>
 <use   name="RecoHI/HiEgammaAlgos"/>
 <use   name="DataFormats/HeavyIonEvent"/>
+<use   name="HeavyIonsAnalysis/CentralityAnalysis"/>
 <use   name="CLHEP"/>
 <use   name="root"/>
 <flags   EDM_PLUGIN="1"/>
-<export>
-</export>
 <library   name="UserCodeDataAnalyzers_plugins" file="*.cc">
 </library>

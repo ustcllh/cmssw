@@ -35,7 +35,7 @@ Prepare the Treack Tree for analysis
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/HeavyIonEvent/interface/Centrality.h"
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "HeavyIonsAnalysis/CentralityAnalysis/interface/CentralityProvider.h"
 #include "DataFormats/TrackerRecHit2D/interface/SiPixelRecHitCollection.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"

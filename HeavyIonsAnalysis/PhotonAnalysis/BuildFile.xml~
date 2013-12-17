@@ -9,6 +9,7 @@
 <use   name="Geometry/CaloGeometry"/>
 <use   name="RecoCaloTools/MetaCollections"/>
 <use   name="DataFormats/HepMCCandidate"/>
+<use   name="HeavyIonsAnalysis/CentralityAnalysis"/>
 <use   name="clhep"/>
 <use   name="root"/>
 <export>

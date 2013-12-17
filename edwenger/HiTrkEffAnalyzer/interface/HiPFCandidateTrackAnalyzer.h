@@ -27,17 +27,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
 // centrality
-#include "HeavyIonsAnalysis/CentralityAnalysis/interface/CentralityProvider.h"
-
-/**\class PFCandidateTrackAnalyzer 
-\brief produces IsolatedPFCandidates from PFCandidates
-
-\author Colin Bernet
-\date   february 2008
---> Modified by Ed Wenger, Matt Nguyen, and Andre Yoon
-*/
-
-
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 
 
 class HiPFCandidateTrackAnalyzer : public edm::EDAnalyzer {

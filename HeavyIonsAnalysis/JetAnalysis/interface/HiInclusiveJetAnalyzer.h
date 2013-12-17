@@ -19,7 +19,7 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 
 #include "DataFormats/PatCandidates/interface/Jet.h"

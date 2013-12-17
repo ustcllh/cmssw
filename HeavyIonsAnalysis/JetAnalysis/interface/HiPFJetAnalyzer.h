@@ -22,9 +22,7 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
-
-
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
 
 //

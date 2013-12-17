@@ -30,6 +30,7 @@
 <use name="CondFormats/JetMETObjects"/>
 <use name="CalibFormats/HcalObjects"/>
 <use name="RecoLocalCalo/HcalRecAlgos"/>
+<use name="HeavyIonsAnalysis/CentralityAnalysis"/>
 <flags EDM_PLUGIN="1"/>
 
 

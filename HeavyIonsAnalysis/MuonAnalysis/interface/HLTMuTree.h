@@ -39,7 +39,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/HeavyIonEvent/interface/Centrality.h"
-#include "HeavyIonsAnalysis/CentralityAnalysis/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticleFwd.h"
 

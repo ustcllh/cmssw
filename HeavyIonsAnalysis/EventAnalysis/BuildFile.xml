@@ -7,5 +7,5 @@
 <use name="DataFormats/VertexReco"/>
 <use name="SimDataFormats/HiGenData"/>
 <use name="SimDataFormats/GeneratorProducts"/>
-<use name="HeavyIonsAnalysis/CentralityAnalysis"/>
+<use name="RecoHI/HiCentralityAlgos"/>
 <flags EDM_PLUGIN="1"/>

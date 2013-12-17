@@ -30,5 +30,5 @@
 <use   name="RecoTracker/Record"/>
 <use   name="HLTrigger/HLTcore"/>
 <use   name="RecoBTag/SecondaryVertex"/>
-<use   name="HeavyIonsAnalysis/CentralityAnalysis"/>
+<use   name="RecoHI/HiCentralityAlgos"/>
 <flags   EDM_PLUGIN="1"/>

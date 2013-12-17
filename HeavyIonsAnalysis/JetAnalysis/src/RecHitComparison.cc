@@ -48,7 +48,7 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/HeavyIonEvent/interface/CentralityBins.h"
 #include "DataFormats/CaloTowers/interface/CaloTower.h"
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 #include "SimDataFormats/HiGenData/interface/GenHIEvent.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
