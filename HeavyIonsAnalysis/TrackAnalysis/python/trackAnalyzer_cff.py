@@ -1,4 +1,4 @@
 import FWCore.ParameterSet.Config as cms
 
-from MitHig.PixelTrackletAnalyzer.trackAnalyzer_cfi import *
+from HeavyIonsAnalysis.TrackAnalysis.trackAnalyzer_cfi import *
 
