@@ -1314,9 +1314,6 @@ class ConfigBuilder(object):
         if self._options.gflash==True:
                 self.loadAndRemember("Configuration/StandardSequences/GFlashDIGI_cff")
 
-        if self._options.himix==True:
-            self.loadAndRemember("SimGeneral/MixingModule/himixDIGI_cff")
-
 	if self._options.restoreRNDSeeds:
 		self.executeAndRemember("process.mix.playback = True")
 
