@@ -202,6 +202,7 @@ namespace {
 		static const char range			= 'R';
 	protected:
 		bool _optimized;
+		bool _variable_named;
 
 		std::vector<double> _rhs;
 		std::vector<char> _constraint_sense;
@@ -291,9 +292,13 @@ namespace {
 			column_pointer.push_back(row_index.size() + index_start);
 		}
 	public:
-		problem_t(void)
-			: _optimized(false)
+		problem_t(const bool variable_named)
+			: _optimized(false), _variable_named(variable_named)
 		{
+		}
+		~problem_t(void)
+		{
+			clear();
 		}
 		void clear(void)
 		{
@@ -316,12 +321,14 @@ namespace {
 			_rhs.push_back(rhs);
 			_constraint_sense.push_back(constraint_sense);
 
-			static const size_t name_length = 24;
-			char *name = new char[name_length];
+			if (_variable_named) {
+				static const size_t name_length = 24;
+				char *name = new char[name_length];
 
-			snprintf(name, name_length, "c%llu",
-					 static_cast<unsigned long long>(_rhs.size()));
-			_row_name.push_back(name);
+				snprintf(name, name_length, "c%llu",
+						 static_cast<unsigned long long>(_rhs.size()));
+				_row_name.push_back(name);
+			}
 		}
 		void push_back_row(const std::string &constraint_sense,
 						   const double rhs)
@@ -353,12 +360,15 @@ namespace {
 			_lower_bound.push_back(lower_bound);
 			_upper_bound.push_back(upper_bound);
 
-			static const size_t name_length = 24;
-			char *name = new char[name_length];
+			if (_variable_named) {
+				static const size_t name_length = 24;
+				char *name = new char[name_length];
 
-			snprintf(name, name_length, "x%llu",
-					 static_cast<unsigned long long>(_objective.size()));
-			_column_name.push_back(name);
+				snprintf(name, name_length, "x%llu",
+						 static_cast<unsigned long long>(
+							_objective.size()));
+				_column_name.push_back(name);
+			}
 		}
 		void push_back_coefficient(
 			const int row, const int column, const double value)
@@ -641,7 +651,8 @@ namespace {
 		}
 	public:
 		bpmpd_problem_t(void)
-			: _objective_sense(1.0), _objective_value(NAN)
+			: problem_t(false), _objective_sense(1.0),
+			  _objective_value(NAN)
 		{
 		}
 		inline size_t nrow(void) const
@@ -1876,7 +1887,7 @@ namespace {
 					}
 
 					const int index_azimuth = floor(
-						(iterator_particle->momentum.pseudorapidity() + M_PI) *
+						(iterator_particle->momentum.azimuth() + M_PI) *
 						((nsector_azimuth >> 1) / M_PI));
 
 					if (index_pseudorapidity != -1) {
