@@ -39,7 +39,7 @@ jetEtFilter = cms.EDFilter("EtMinCaloJetCountFilter",
 #    )
 
 #from RecoHI.HiEgammaAlgos.hiEcalSpikeFilter_cfi import *
-from CmsHi.PhotonAnalysis.hiEcalRecHitSpikeFilter_cfi import *
+from HeavyIonsAnalysis.PhotonAnalysis.hiEcalRecHitSpikeFilter_cfi import *
 hiEcalRecHitSpikeFilter.minEt = 20.0
 
 #HCAL cleaning

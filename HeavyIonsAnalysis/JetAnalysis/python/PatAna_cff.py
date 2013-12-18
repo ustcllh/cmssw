@@ -1,5 +1,5 @@
 
-from CmsHi.JetAnalysis.PatAna_MC_cff import *
+from HeavyIonsAnalysis.JetAnalysis.PatAna_MC_cff import *
 
 makeHeavyIonPhotons.remove(photonMatch)
 

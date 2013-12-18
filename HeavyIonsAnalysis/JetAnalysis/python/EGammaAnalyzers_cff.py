@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-from CmsHi.PhotonAnalysis.MultiPhotonAnalyzer_cfi import *
+from HeavyIonsAnalysis.PhotonAnalysis.MultiPhotonAnalyzer_cfi import *
 multiPhotonAnalyzer.GenParticleProducer = cms.InputTag("hiGenParticles")
 multiPhotonAnalyzer.PhotonProducer = cms.InputTag("selectedPatPhotons")
 multiPhotonAnalyzer.VertexProducer = cms.InputTag("hiSelectedVertex")

@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-from MitHig.PixelTrackletAnalyzer.trackAnalyzer_cff import *
+from HeavyIonsAnalysis.TrackAnalysis.trackAnalyzer_cff import *
 
 anaTrack.trackPtMin = 0.
 anaTrack.useQuality = False

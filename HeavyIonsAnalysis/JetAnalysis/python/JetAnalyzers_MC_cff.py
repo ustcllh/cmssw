@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 
-from CmsHi.JetAnalysis.JetAnalyzers_cff import *
+from HeavyIonsAnalysis.JetAnalysis.JetAnalyzers_cff import *
 
 icPu5JetAnalyzer.fillGenJets   = cms.untracked.bool(True)
 akPu1PFJetAnalyzer.fillGenJets = cms.untracked.bool(True)

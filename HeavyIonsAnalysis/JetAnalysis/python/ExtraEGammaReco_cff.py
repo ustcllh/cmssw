@@ -4,9 +4,9 @@ import FWCore.ParameterSet.Config as cms
 from RecoHI.HiEgammaAlgos.HiEgamma_cff import *
 
 # detector responce
-from CmsHi.PhotonAnalysis.isoConeInspector_cfi import *
-from CmsHi.PhotonAnalysis.ecalHistProducer_cfi import *
-from CmsHi.PhotonAnalysis.SpikeInspector_cfi import *
+from HeavyIonsAnalysis.PhotonAnalysis.isoConeInspector_cfi import *
+from HeavyIonsAnalysis.PhotonAnalysis.ecalHistProducer_cfi import *
+from HeavyIonsAnalysis.PhotonAnalysis.SpikeInspector_cfi import *
 
 # spike cleaner for island superclsters
 cleanPhotons.maxHoverEBarrel = cms.double(100)

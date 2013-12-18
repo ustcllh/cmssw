@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
-from CmsHi.JetAnalysis.TrkAnalyzers_cff import *
-from CmsHi.JetAnalysis.TrkEfficiency_cff import *
+from HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff import *
+from HeavyIonsAnalysis.JetAnalysis.TrkEfficiency_cff import *
 
 anaTrack.doSimVertex = True
 anaTrack.doSimTrack = True
