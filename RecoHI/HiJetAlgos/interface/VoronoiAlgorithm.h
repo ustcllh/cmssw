@@ -1257,7 +1257,7 @@ namespace {
 		bpmpd_problem_t _lp_problem;
 #ifndef STANDALONE
 		// calibrations
-	        UECalibration ue;
+	        UECalibration* ue;
 #endif // STANDALONE
 	private:
 		void initialize_geometry(void)
@@ -1517,7 +1517,7 @@ namespace {
 #ifdef STANDALONE
 						ue_predictor_pf[j][predictor_index]
 #else // STANDALONE
-						ue.ue_predictor_pf[j][predictor_index]
+						ue->ue_predictor_pf[j][predictor_index]
 #endif // STANDALONE
 						;
 					double pred = 0;
@@ -1580,17 +1580,17 @@ namespace {
 #else // STANDALONE
 					if (j == 0) {
 						interp =
-							ue.ue_interpolation_pf0[predictor_index][
+							ue->ue_interpolation_pf0[predictor_index][
 								interpolation_index];
 					}
 					else if (j == 1) {
 						interp =
-							ue.ue_interpolation_pf1[predictor_index][
+							ue->ue_interpolation_pf1[predictor_index][
 								interpolation_index];
 					}
 					else if (j == 2) {
 						interp =
-							ue.ue_interpolation_pf2[predictor_index][
+							ue->ue_interpolation_pf2[predictor_index][
 								interpolation_index];
 					}
 #endif // STANDALONE
@@ -2113,14 +2113,16 @@ namespace {
 		}
 	public:
 		VoronoiAlgorithm(const double dr_max,
-						 const bool remove_nonpositive = true)
+				 bool isRealData = true, 
+				 const bool remove_nonpositive = true)
 			: _remove_nonpositive(remove_nonpositive),
 			  _radial_distance_square_max(dr_max * dr_max),
 			  _positive_bound_scale(0.2),
-			  _subtracted(false)
+		  _subtracted(false),
+		  ue(0)
 		{
 			initialize_geometry();
-
+			ue = new UECalibration(isRealData);
 			static const size_t nedge_pseudorapidity = 7 + 1;
 			static const double edge_pseudorapidity[nedge_pseudorapidity] = {
 				-5.191, -3.0, -1.479, -0.522, 0.522, 1.479, 3.0, 5.191

@@ -53,10 +53,10 @@ class VoronoiBackgroundProducer : public edm::EDProducer {
 // constructors and destructor
 //
 VoronoiBackgroundProducer::VoronoiBackgroundProducer(const edm::ParameterSet& iConfig):
+   voronoi_(0),
    equalizeR_(iConfig.getParameter<double>("equalizeR"))
 {
 
-   voronoi_ = new VoronoiAlgorithm(equalizeR_);
    src_ = iConfig.getParameter<edm::InputTag>("src");
    //register your products
 
@@ -79,6 +79,11 @@ void
 VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
+   if(voronoi_ == 0){
+     bool data = iEvent.isRealData();
+     voronoi_ = new VoronoiAlgorithm(equalizeR_,data);
+   }
+
    voronoi_->clear();
 
    edm::Handle<reco::CandidateView> inputsHandle;
