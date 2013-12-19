@@ -46,6 +46,8 @@
 #include "DataFormats/SiPixelDetId/interface/PXBDetId.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
 
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
@@ -105,6 +107,7 @@ class CentralityProducer : public edm::EDFilter {
    edm::InputTag srcPixelhits_;
    edm::InputTag srcTracks_;
    edm::InputTag srcPixelTracks_;
+   edm::InputTag srcVertex_;
 
    edm::InputTag reuseTag_;
 
@@ -169,7 +172,10 @@ class CentralityProducer : public edm::EDFilter {
      srcPixelhits_ = iConfig.getParameter<edm::InputTag>("srcPixelhits");
      doPixelCut_ = iConfig.getParameter<bool>("doPixelCut");
    }
-   if(produceTracks_) srcTracks_ = iConfig.getParameter<edm::InputTag>("srcTracks");
+   if(produceTracks_) {
+     srcTracks_ = iConfig.getParameter<edm::InputTag>("srcTracks");
+     srcVertex_ = iConfig.getParameter<edm::InputTag>("srcVertex");
+   }
    if(producePixelTracks_) srcPixelTracks_ = iConfig.getParameter<edm::InputTag>("srcPixelTracks");
    
    reuseAny_ = !produceHFhits_ || !produceHFtowers_ || !produceBasicClusters_ || !produceEcalhits_ || !produceZDChits_;
@@ -346,6 +352,36 @@ CentralityProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   }
 
   if(produceTracks_){
+
+     double vx=-999.;
+     double vy=-999.;
+     double vz=-999.;
+     double vxError=-999.;
+     double vyError=-999.;
+     double vzError=-999.;
+     math::XYZVector vtxPos(0,0,0);
+
+     edm::Handle<reco::VertexCollection> recoVertices;
+     iEvent.getByLabel(srcVertex_,recoVertices);
+     unsigned int daughter = 0;
+     int greatestvtx = 0;
+    
+     for (unsigned int i = 0 ; i< recoVertices->size(); ++i){
+      daughter = (*recoVertices)[i].tracksSize();
+      if( daughter > (*recoVertices)[greatestvtx].tracksSize()) greatestvtx = i;
+     }
+
+     if(recoVertices->size()>0){
+      vx = (*recoVertices)[greatestvtx].position().x();
+      vy = (*recoVertices)[greatestvtx].position().y();
+      vz = (*recoVertices)[greatestvtx].position().z();
+      vxError = (*recoVertices)[greatestvtx].xError();
+      vyError = (*recoVertices)[greatestvtx].yError();
+      vzError = (*recoVertices)[greatestvtx].zError();
+     }
+    
+     vtxPos = math::XYZVector(vx,vy,vz);
+
      edm::Handle<reco::TrackCollection> tracks;
      iEvent.getByLabel(srcTracks_,tracks);
      int nTracks = 0;
@@ -357,13 +393,20 @@ CentralityProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
      for(unsigned int i = 0 ; i < tracks->size(); ++i){
        const Track& track = (*tracks)[i];
        if(useQuality_ && !track.quality(trackQuality_)) continue;
-       nTracks++;
 
        if( track.pt() > trackPtCut_)  trackCounter++;
        if(fabs(track.eta())<trackEtaCut_) {
 	 trackCounterEta++;
 	 if (track.pt() > trackPtCut_) trackCounterEtaPt++;
        }
+
+       math::XYZPoint v1(vx,vy, vz);    
+       double dz= track.dz(v1);
+       double dzsigma = sqrt(track.dzError()*track.dzError()+vzError*vzError);    
+       double dxy= track.dxy(v1);
+       double dxysigma = sqrt(track.dxyError()*track.dxyError()+vxError*vyError);
+       if( track.quality(trackQuality_) && track.pt()>0.4 && fabs(track.eta())<2.4 && track.ptError()/track.pt()<0.1 && fabs(dz/dzsigma)<3.0 && fabs(dxy/dxysigma)<3.0) nTracks++;
+
      }
 
      creco->trackMultiplicity_ = nTracks;
