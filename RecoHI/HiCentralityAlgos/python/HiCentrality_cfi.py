@@ -15,6 +15,7 @@ hiCentrality = cms.EDFilter("reco::CentralityProducer",
                             producePixelTracks = cms.bool(True),
                             trackEtaCut = cms.double(2),
                             trackPtCut = cms.double(1),
+                            hfEtaCut = cms.double(4), #hf above the absolute value of this cut is used
                             
                             midRapidityRange = cms.double(1),
                             
@@ -25,6 +26,7 @@ hiCentrality = cms.EDFilter("reco::CentralityProducer",
                             srcBasicClustersEB = cms.InputTag("hybridSuperClusters","hybridBarrelBasicClusters"),
                             srcBasicClustersEE = cms.InputTag("multi5x5SuperClusters","multi5x5EndcapBasicClusters"),
                             srcZDChits = cms.InputTag("zdcreco"),
+			    lowGainZDC = cms.untracked.bool(True),
                             srcPixelhits = cms.InputTag("siPixelRecHits"),
                             doPixelCut = cms.bool(False),
                             srcTracks = cms.InputTag("hiSelectedTracks"),
