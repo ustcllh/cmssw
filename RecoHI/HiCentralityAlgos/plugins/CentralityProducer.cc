@@ -91,6 +91,7 @@ class CentralityProducer : public edm::EDFilter {
   double midRapidityRange_;
   double trackPtCut_;
   double trackEtaCut_;
+  double hfEtaCut_;
 
   bool lowGainZDC_;
 
@@ -146,6 +147,8 @@ class CentralityProducer : public edm::EDFilter {
    midRapidityRange_ = iConfig.getParameter<double>("midRapidityRange");
    trackPtCut_ = iConfig.getParameter<double>("trackPtCut");
    trackEtaCut_ = iConfig.getParameter<double>("trackEtaCut");
+
+   hfEtaCut_ = iConfig.getParameter<double>("hfEtaCut");
 
    if(produceHFhits_)  srcHFhits_ = iConfig.getParameter<edm::InputTag>("srcHFhits");
    if(produceHFtowers_ || produceETmidRap_) srcTowers_ = iConfig.getParameter<edm::InputTag>("srcTowers");
@@ -251,13 +254,17 @@ CentralityProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	   if(produceHFtowers_){
 	      if(isHF && eta > 0){
 		 creco->etHFtowerSumPlus_ += tower.pt();
+		 if(eta > hfEtaCut_) creco->etHFtruncatedPlus_ += tower.pt();
 	      }
 	      if(isHF && eta < 0){
 		 creco->etHFtowerSumMinus_ += tower.pt();
+		 if(eta < -hfEtaCut_) creco->etHFtruncatedMinus_ += tower.pt();
 	      }
 	   }else{
 	      creco->etHFtowerSumMinus_ = inputCentrality->EtHFtowerSumMinus();
 	      creco->etHFtowerSumPlus_ = inputCentrality->EtHFtowerSumPlus();
+	      creco->etHFtruncatedMinus_ = inputCentrality->EtHFtruncatedMinus();
+	      creco->etHFtruncatedPlus_ = inputCentrality->EtHFtruncatedPlus();
 	   }
 	   if(produceETmidRap_){
 	      if(fabs(eta) < midRapidityRange_) creco->etMidRapiditySum_ += tower.pt()/(midRapidityRange_*2.);
@@ -390,18 +397,20 @@ CentralityProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
      if(zdcAvailable){
 	for( size_t ihit = 0; ihit<hits->size(); ++ ihit){
 	   const ZDCRecHit & rechit = (*hits)[ ihit ];
-	   if(rechit.id().zside() > 0 )
+	   if(rechit.id().zside() > 0 ) {
 	     if(lowGainZDC_){
 	       creco->zdcSumPlus_ += rechit.lowGainEnergy();
 	     }else{
 	       creco->zdcSumPlus_ += rechit.energy();
 	     }
-	   if(rechit.id().zside() < 0)
+	   }
+	   if(rechit.id().zside() < 0) {
              if(lowGainZDC_){
 	      creco->zdcSumMinus_ += rechit.lowGainEnergy();
 	     }else{
 	       creco->zdcSumMinus_ += rechit.energy();
 	     }
+           }
 	}
      }else{
 	creco->zdcSumPlus_ = -9;
