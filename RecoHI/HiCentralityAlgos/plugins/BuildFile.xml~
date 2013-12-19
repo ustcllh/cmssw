@@ -1,4 +1,0 @@
-<use   name="HeavyIonsAnalysis/CentralityAnalysis"/>
-<flags   EDM_PLUGIN="1"/>
-<library   file="*.cc" name="CentralityAnalysisPlugins">
-</library>
