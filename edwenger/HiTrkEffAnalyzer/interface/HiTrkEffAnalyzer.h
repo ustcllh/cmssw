@@ -18,7 +18,7 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
 #include "edwenger/HiTrkEffAnalyzer/interface/HiTrkEffHistograms.h"
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 
 // define track efficiency analyzer class
 class HiTrkEffAnalyzer : public edm::EDAnalyzer {

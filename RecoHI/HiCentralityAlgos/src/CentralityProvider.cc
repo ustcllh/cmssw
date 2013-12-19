@@ -1,4 +1,4 @@
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 
 CentralityProvider::CentralityProvider(const edm::EventSetup& iSetup) :
    prevRun_(0),
