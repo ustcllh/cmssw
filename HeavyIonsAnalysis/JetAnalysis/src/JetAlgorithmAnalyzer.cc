@@ -7,7 +7,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "DataFormats/HeavyIonEvent/interface/CentralityProvider.h"
+#include "RecoHI/HiCentralityAlgos/interface/CentralityProvider.h"
 #include "DataFormats/HeavyIonEvent/interface/EvtPlane.h"
 #include "TNtuple.h"
 #include "TH2D.h"
