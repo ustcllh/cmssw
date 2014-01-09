@@ -17,7 +17,7 @@ hltanalysis = hltbitanalysis.clone(
     )
 
 skimanalysis = cms.EDAnalyzer("FilterAnalyzer",
-                              hltresults = cms.InputTag("TriggerResults","","hiForestAna2011"),
+                              hltresults = cms.InputTag("TriggerResults","","HiForest"),
                               superFilters = cms.vstring("")
                               )
 
