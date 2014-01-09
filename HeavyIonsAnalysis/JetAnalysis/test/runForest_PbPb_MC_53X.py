@@ -190,8 +190,6 @@ from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
 setPhotonObject(process,"cleanPhotons")
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
-process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","HISIGNAL")
-process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","HiForest")
 
 process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)

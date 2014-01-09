@@ -145,9 +145,6 @@ process.hltMuTree.doGen = False
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_data_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
-process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","HLT")
-process.skimanalysis.hltresults = cms.InputTag("TriggerResults","","HiForest")
-
 
 #Filtering
 # Minimum bias trigger selection (later runs)
