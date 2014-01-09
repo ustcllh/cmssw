@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-import Appeltel.RpPbAnalysis.PAPileUpVertexFilter_cfi
+import HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cfi
 
-pileupVertexFilterCutG = Appeltel.RpPbAnalysis.PAPileUpVertexFilter_cfi.pileupVertexFilter.clone()
+pileupVertexFilterCutG = HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cfi.pileupVertexFilter.clone()
 
 pileupVertexFilterCutGloose = pileupVertexFilterCutG.clone(
     dzCutByNtrk = cms.vdouble(

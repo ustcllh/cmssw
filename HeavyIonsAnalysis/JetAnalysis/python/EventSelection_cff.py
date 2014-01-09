@@ -63,7 +63,7 @@ HBHENoiseFilter.maxRatio = cms.double(99999.0)
 HBHENoiseFilter.minZeros = cms.int32(100)
 
 
-from Appeltel.RpPbAnalysis.PAPileUpVertexFilter_cff import *
+from HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff import *
 
 
 # jet skim sequence
