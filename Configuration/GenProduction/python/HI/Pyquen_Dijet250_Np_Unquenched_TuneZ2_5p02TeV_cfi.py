@@ -8,7 +8,7 @@ hiSignal = cms.EDFilter("PyquenGeneratorFilter",
 
                         doQuench = cms.bool(False),
                         doIsospin = cms.bool(True),
-                        protonSide = cms.untracked.int32(2),
+                        protonSide = cms.untracked.int32(1),
                         
                         bFixed = cms.double(0.0), ## fixed impact param (fm); valid only if cflag_=0
                         PythiaParameters = cms.PSet(pyquenPythiaDefaultBlock,
@@ -28,7 +28,7 @@ hiSignal.embeddingMode = True
 
 configurationMetadata = cms.untracked.PSet(
     version = cms.untracked.string('$Revision: 1.5 $'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/GenProduction/python/HI/Pyquen_Dijet250_Np_Unquenched_TuneZ2_5p02TeV_cff.py,v $'),
+    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/GenProduction/python/HI/Pyquen_Dijet250_pN_Unquenched_TuneZ2_5p02TeV_cff.py,v $'),
     annotation = cms.untracked.string('PYQUEN UNquenched dijets (pt-hat > 250 GeV) at sqrt(s) = 5.02TeV')
     )
 
