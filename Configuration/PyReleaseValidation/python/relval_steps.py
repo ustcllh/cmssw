@@ -620,6 +620,7 @@ steps['RECO_ID']=merge([{'--hltProcess':'HLT2'},steps['RECO']])
 
 steps['RECOHI']=merge([hiDefaults,step3Defaults])
 steps['DIGIHISt3']=steps['DIGIHI']
+steps['DIGIHIMIXSt3']=merge([{'--himix':''}, steps['DIGIHI']])
 
 steps['RECOHID11St3']=merge([{
                               '--process':'ZStoRECO'},
@@ -673,6 +674,7 @@ steps['ALCAHARVD']={'-s':'ALCAHARVEST:BeamSpotByRun+BeamSpotByLumi+SiStripQualit
                     '--filein':'file:PromptCalibProd.root'}
 
 steps['RECOHISt4']=steps['RECOHI']
+steps['RECOHIMIXSt4']=merge([{'--himix':''},steps['RECOHI']])
 
 steps['ALCANZS']=merge([{'-s':'ALCA:HcalCalMinBias','--mc':''},step4Defaults])
 steps['HARVGEN']={'-s':'HARVESTING:genHarvesting',
