@@ -586,7 +586,8 @@ steps['RECOCOSD']=merge([{'--scenario':'cosmics',
 step2HImixDefaults=merge([{'-n':'10',
                            '--himix':'',
                            '--filein':'file.root',
-                           '--process':'HISIGNAL'
+                           '--process':'HISIGNAL',
+                           '--beamspot':'MatchHI'
                            },hiDefaults,step1Defaults])
 steps['Pyquen_GammaJet_pt20_2760GeV']=merge([{'cfg':'Pyquen_GammaJet_pt20_2760GeV_cfi'},step2HImixDefaults])
 steps['Pyquen_DiJet_pt80to120_2760GeV']=merge([{'cfg':'Pyquen_DiJet_pt80to120_2760GeV_cfi'},step2HImixDefaults])
