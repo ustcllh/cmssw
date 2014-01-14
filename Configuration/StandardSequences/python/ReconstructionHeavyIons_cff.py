@@ -48,7 +48,7 @@ localReco_HcalNZS = cms.Sequence(offlineBeamSpot*muonReco*caloRecoNZS)
 # Main Sequences
 
 reconstructionHeavyIons = cms.Sequence(localReco*globalRecoPbPb*CastorFullReco)
-reconstructionHeavyIons_woPixelTracks = cms.Sequence(localReco*globalRecoPbPb_woPixelTracks*CastorFullReco)
+reconstructionHeavyIons_wConformalPixel = cms.Sequence(localReco*globalRecoPbPb_wConformalPixel*CastorFullReco)
 reconstructionHeavyIons_HcalNZS = cms.Sequence(localReco_HcalNZS*globalRecoPbPb)
 
 #--------------------------------------------------------------------------
