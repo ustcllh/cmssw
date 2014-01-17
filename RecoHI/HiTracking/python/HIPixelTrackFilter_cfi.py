@@ -14,7 +14,7 @@ HiFilterBlock = cms.PSet(
     nSigmaTipMaxTolerance = cms.double( 6.0 ),
     tipMax = cms.double( 0 ),
     nSigmaLipMaxTolerance = cms.double( 0 ),
-    lipMax = cms.double( 999 )
+    lipMax = cms.double( 0.3 )
     )
 
 KinematicFilterBlock = cms.PSet(
@@ -23,7 +23,7 @@ KinematicFilterBlock = cms.PSet(
     nSigmaInvPtTolerance = cms.double( 0.0 ),
     ptMin = cms.double( 0.7 ),
     tipMax = cms.double( 1.0 ),
-    chi2 = cms.double( 80.0 )
+    chi2 = cms.double( 1000.0 )
     )
 
 HiProtoTrackFilterBlock = cms.PSet( 
@@ -31,7 +31,7 @@ HiProtoTrackFilterBlock = cms.PSet(
     ptMin = cms.double( 1.0 ),
     doVariablePtMin = cms.bool( True ),
     tipMax = cms.double( 1.0 ),
-    chi2 = cms.double( 80.0 ),
+    chi2 = cms.double( 1000.0 ),
     beamSpot = cms.InputTag( "offlineBeamSpot" ),
     siPixelRecHits = cms.InputTag( "siPixelRecHits" )
     )
@@ -47,4 +47,3 @@ HiConformalPixelFilterBlock = cms.PSet(
     nSigmaLipMaxTolerance = cms.double( 14.0 ),
     lipMax = cms.double( 999.0 )
     )
-
