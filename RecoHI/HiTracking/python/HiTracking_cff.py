@@ -11,7 +11,6 @@ hiTracking = cms.Sequence(
     *hiSecondPixelTripletStep
     *hiPixelPairStep
     *hiGeneralTracks
-    *hiConformalPixelTracks    
     )
 
 hiTracking_wConformalPixel = cms.Sequence(
