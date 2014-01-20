@@ -108,8 +108,6 @@ process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 
-process.anaTrack.doSimTrack = False
-
 #####################
 # photons
 process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
