@@ -73,6 +73,7 @@ Prepare the Treack Tree for analysis
 #include "SimTracker/Records/interface/TrackAssociatorRecord.h"
 #include "DataFormats/RecoCandidate/interface/TrackAssociation.h"
 #include "SimTracker/TrackAssociation/interface/TrackAssociatorByHits.h"
+#include "SimTracker/TrackAssociation/interface/TrackAssociatorByChi2.h"
 #include "DataFormats/TrackReco/interface/DeDxData.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
@@ -286,6 +287,7 @@ class TrackAnalyzer : public edm::EDAnalyzer {
     bool useQuality_;
    bool doDeDx_;
     bool doDebug_;
+  bool associateChi2_;
 
     double trackPtMin_;
    std::vector<std::string> qualityStrings_;
@@ -337,6 +339,8 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
    if(!doSimTrack_){
      fillSimTrack_ = 0;
      doSimVertex_ = 0;
+   }else{
+     associateChi2_             = iConfig.getParameter<bool>  ("associateChi2");
    }
 
    doDeDx_             = iConfig.getUntrackedParameter<bool>  ("doDeDx",false);
@@ -563,7 +567,6 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
   Handle<edm::View<reco::Track> >  trackCollection;
   iEvent.getByLabel(trackSrc_, trackCollection);
   ESHandle<TrackAssociatorBase> theAssociator;
-  const TrackAssociatorByHits *theAssociatorByHits;
   reco::RecoToSimCollection recSimColl;
 
   Handle<DeDxDataValueMap> DeDxMap;
@@ -573,11 +576,17 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   if(doSimTrack_) {
     iEvent.getByLabel(tpFakeSrc_,TPCollectionHfake);
-    iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByHits",theAssociator);
-    theAssociatorByHits = (const TrackAssociatorByHits*) theAssociator.product();
-
-    //       simRecColl= theAssociatorByHits->associateSimToReco(trackCollection,TPCollectionHeff,&iEvent);
-    recSimColl= theAssociatorByHits->associateRecoToSim(trackCollection,TPCollectionHfake,&iEvent);
+    if(associateChi2_){
+      const TrackAssociatorByChi2 *theAssociatorByChi2;
+      iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByChi2",theAssociator);
+      theAssociatorByChi2 = (const TrackAssociatorByChi2*) theAssociator.product();
+      recSimColl= theAssociatorByChi2->associateRecoToSim(trackCollection,TPCollectionHfake,&iEvent);
+    }else{
+      const TrackAssociatorByHits *theAssociatorByHits;
+      iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByHits",theAssociator);
+      theAssociatorByHits = (const TrackAssociatorByHits*) theAssociator.product();
+      recSimColl= theAssociatorByHits->associateRecoToSim(trackCollection,TPCollectionHfake,&iEvent);
+    }
   }
 
   pev_.nTrk=0;
@@ -764,11 +773,18 @@ TrackAnalyzer::fillSimTracks(const edm::Event& iEvent, const edm::EventSetup& iS
 
   iEvent.getByLabel(tpEffSrc_,TPCollectionHeff);
   iEvent.getByLabel(trackSrc_,trackCollection);
+  reco::SimToRecoCollection simRecColl;
 
   // Make simtrk-to-rectrk association
-  iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByHits",theAssociator);
-  const TrackAssociatorByHits * theAssociatorByHits = (const TrackAssociatorByHits*) theAssociator.product();
-  reco::SimToRecoCollection simRecColl = theAssociatorByHits->associateSimToReco(trackCollection,TPCollectionHeff,&iEvent);
+  if(associateChi2_){
+    iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByChi2",theAssociator);
+    const TrackAssociatorByChi2 * theAssociatorByChi2 = (const TrackAssociatorByChi2*) theAssociator.product();
+    simRecColl = theAssociatorByChi2->associateSimToReco(trackCollection,TPCollectionHeff,&iEvent);
+  }else{
+    iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByHits",theAssociator);
+    const TrackAssociatorByHits * theAssociatorByHits = (const TrackAssociatorByHits*) theAssociator.product();
+    simRecColl = theAssociatorByHits->associateSimToReco(trackCollection,TPCollectionHeff,&iEvent);
+  }
 
   // Loop through sim tracks
   pev_.nParticle = 0;

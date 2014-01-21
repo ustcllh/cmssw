@@ -2,6 +2,8 @@ import FWCore.ParameterSet.Config as cms
 
 from HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff import *
 from HeavyIonsAnalysis.JetAnalysis.TrkEfficiency_cff import *
+from SimTracker.TrackAssociation.TrackAssociatorByChi2_cfi import *
+TrackAssociatorByChi2ESProducer.chi2cut = cms.double(10.0)
 
 anaTrack.doSimVertex = True
 anaTrack.doSimTrack = True
