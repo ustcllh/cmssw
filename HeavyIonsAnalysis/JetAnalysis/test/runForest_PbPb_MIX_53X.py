@@ -28,7 +28,10 @@ process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"))
+                            fileNames = cms.untracked.vstring(
+    "/store/caf/user/pkurt/pthat80_Reco/pkurt/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/HydjetDrum_Pyquen_Dijet80_Embedded_d20140121_RECODEBUG_FIXtracking/656b6622b67cf72e1b4d4cddeec1b2a4/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_1_1_n4K.root",
+#    "/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"
+    ))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -121,6 +124,7 @@ process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
 
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
+process.pixelTrack.doPFMatching = False
 
 #####################
 # photons
