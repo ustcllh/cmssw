@@ -137,6 +137,8 @@ class HiGenAnalyzer : public edm::EDAnalyzer {
     Double_t etaMax_;
     Double_t ptMin_;
     Bool_t chargedOnly_;
+  Bool_t stableOnly_;
+
     edm::InputTag src_;
     edm::InputTag genParticleSrc_;
     edm::InputTag genHIsrc_;
@@ -172,6 +174,7 @@ HiGenAnalyzer::HiGenAnalyzer(const edm::ParameterSet& iConfig)
   etaMax_ = iConfig.getUntrackedParameter<Double_t>("etaMax", 2);
   ptMin_ = iConfig.getUntrackedParameter<Double_t>("ptMin", 0);
   chargedOnly_ = iConfig.getUntrackedParameter<Bool_t>("chargedOnly", false);
+  stableOnly_ = iConfig.getUntrackedParameter<Bool_t>("stableOnly", true);
   src_ = iConfig.getUntrackedParameter<edm::InputTag>("src",edm::InputTag("generator"));
   genParticleSrc_ = iConfig.getUntrackedParameter<edm::InputTag>("genpSrc",edm::InputTag("hiGenParticles"));
   genHIsrc_ = iConfig.getUntrackedParameter<edm::InputTag>("genHiSrc",edm::InputTag("heavyIon"));
@@ -328,7 +331,7 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByLabel(genParticleSrc_,parts);
     for(UInt_t i = 0; i < parts->size(); ++i){
       const reco::GenParticle& p = (*parts)[i];
-      //      if (p.status()!=1) continue;
+      if (stableOnly_ && p.status()!=1) continue;
 
       if (p.numberOfDaughters() != 0) continue;
 
@@ -452,8 +455,9 @@ HiGenAnalyzer::beginJob()
       hydjetTree_->Branch("phi",hev_.phi,"phi[mult]/F");
       hydjetTree_->Branch("pdg",hev_.pdg,"pdg[mult]/I");
       hydjetTree_->Branch("chg",hev_.chg,"chg[mult]/I");
-      hydjetTree_->Branch("sta",hev_.sta,"sta[mult]/I");
-
+      if(!stableOnly_){
+	hydjetTree_->Branch("sta",hev_.sta,"sta[mult]/I");
+      }
       hydjetTree_->Branch("sube",hev_.sube,"sube[mult]/I");
 
       hydjetTree_->Branch("vx",&hev_.vx,"vx/F");
