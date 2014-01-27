@@ -146,7 +146,7 @@ class HiGenAnalyzer : public edm::EDAnalyzer {
     edm::ESHandle < ParticleDataTable > pdt;
     edm::Service<TFileService> f;
 };
-
+//
 //
 // constants, enums and typedefs
 //
