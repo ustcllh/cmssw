@@ -9,7 +9,7 @@
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 
 struct UECalibration{
-   UECalibration(bool isRealData = true){
+  UECalibration(bool isRealData = true, bool isCalo = false){
       np[0] = 3;
       np[1] = 7;
       np[2] = 3;
@@ -32,8 +32,17 @@ struct UECalibration{
       unsigned int Nni1 = ni1[0]*ni1[1];
       unsigned int Nni2 = ni2[0]*ni2[1];
 
-      std::string calibrationFile = "RecoHI/HiJetAlgos/data/ue_calibrations_data.txt";
-      if(!isRealData) calibrationFile = "RecoHI/HiJetAlgos/data/ue_calibrations_mc.txt";
+
+      std::string calibrationFile;
+
+      if(isCalo){
+        if(isRealData) calibrationFile = "RecoHI/HiJetAlgos/data/ue_calibrations_calo_data.txt";
+	if(!isRealData) calibrationFile = "RecoHI/HiJetAlgos/data/ue_calibrations_calo_mc.txt";
+      }else{
+	if(isRealData) calibrationFile = "RecoHI/HiJetAlgos/data/ue_calibrations_pf_data.txt";
+	if(!isRealData) calibrationFile = "RecoHI/HiJetAlgos/data/ue_calibrations_pf_mc.txt";
+      }
+
       edm::FileInPath ueData(calibrationFile.data());
       std::string qpDataName = ueData.fullPath();
       std::ifstream in( qpDataName.c_str() );

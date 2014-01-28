@@ -13,7 +13,8 @@ PFTowers = cms.EDProducer("ParticleTowerProducer",
 ## background for HF/Voronoi-style subtraction
 voronoiBackgroundPF = cms.EDProducer('VoronoiBackgroundProducer',
                                      src = cms.InputTag('particleFlowTmp'),
-                                     equalizeR = cms.double(0.3)
+                                     equalizeR = cms.double(0.3),
+                                     isCalo = cms.bool(False)
                                      )
 
 

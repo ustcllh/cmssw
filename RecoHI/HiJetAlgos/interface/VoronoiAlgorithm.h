@@ -2114,6 +2114,7 @@ namespace {
 	public:
 		VoronoiAlgorithm(const double dr_max,
 				 bool isRealData = true, 
+				 bool isCalo = false,
 				 const bool remove_nonpositive = true)
 			: _remove_nonpositive(remove_nonpositive),
 			  _radial_distance_square_max(dr_max * dr_max),
@@ -2122,7 +2123,7 @@ namespace {
 		  ue(0)
 		{
 			initialize_geometry();
-			ue = new UECalibration(isRealData);
+			ue = new UECalibration(isRealData,isCalo);
 			static const size_t nedge_pseudorapidity = 7 + 1;
 			static const double edge_pseudorapidity[nedge_pseudorapidity] = {
 				-5.191, -3.0, -1.479, -0.522, 0.522, 1.479, 3.0, 5.191
