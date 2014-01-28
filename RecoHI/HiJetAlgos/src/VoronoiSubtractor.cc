@@ -52,6 +52,9 @@ void VoronoiSubtractor::offsetCorrectJets()
      fastjet::PseudoJet unsubtractedDropped;
      jetOffset_[ijet] = 0;
 
+     // Loop over constituents to determine the momentum
+     // before and after subtraction
+
      std::vector<fastjet::PseudoJet> fjConstituents = fastjet::sorted_by_pt(fjJet.constituents());
      for (unsigned int i=0;i<fjConstituents.size();++i) { 
 	unsigned int index = fjConstituents[i].user_index();
@@ -63,10 +66,12 @@ void VoronoiSubtractor::offsetCorrectJets()
 	double orpt = candidate.perp();
 	unsubtracted += candidate;
 	candidate.reset_PtYPhiM(voronoi.pt(),ref->rapidity(),ref->phi(),ref->mass());
-	//	LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<endl;
+	LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
 	subtracted += candidate;
      }
 
+     // Loop over dropped candidates to see whether there is any of them
+     // that would belong to this jet:
 
      for(unsigned int i=0; i < droppedCandidates_.size(); ++i){
 	reco::CandidateViewRef ref(candidates_,droppedCandidates_[i]);
@@ -116,6 +121,12 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
       
       float mScale = ptnew/ptold; 
       double candidatePtMin_ = 0;
+
+      // If the pt of the candidate is equal to or below 0, 
+      // it is removed from the input collection,
+      // so that the jet clustering algorithm can function properly.
+      // However, we need to keep track of these candidates
+      // in order to determine how much energy has been subtracted in total.
 
       if(ptnew <= 0.){
 	 mScale = 0.;

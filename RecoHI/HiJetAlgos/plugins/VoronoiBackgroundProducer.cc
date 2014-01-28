@@ -90,7 +90,6 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
 
    edm::Handle<reco::CandidateView> inputsHandle;
    iEvent.getByLabel(src_,inputsHandle);
-   //   std::auto_ptr<reco::VoronoiBackgroundMap> mapout(new reco::VoronoiBackgroundMap());
    std::auto_ptr<reco::VoronoiMap> mapout(new reco::VoronoiMap());
 
    reco::VoronoiMap::Filler filler(*mapout);
@@ -107,7 +106,7 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       reco::CandidateViewRef ref(inputsHandle,i);
       double newpt = momentum_perp_subtracted[i];
       reco::VoronoiBackground bkg(0,0,newpt,0,0,0,0);
-      cout<<"SUBTRACTION --- oldpt : "<<ref->pt()<<" --- newpt : "<<newpt<<endl;
+      LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<newpt<<endl;
       vvm.push_back(bkg);
 
    }
