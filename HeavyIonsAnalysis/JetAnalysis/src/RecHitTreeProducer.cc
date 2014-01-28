@@ -732,12 +732,16 @@ RecHitTreeProducer::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
    if(!doEbyEonly_){
      towerTree->Fill();
      
-     eeTree->Fill();
-     ebTree->Fill();
-     
-     hbheTree->Fill();
-     hfTree->Fill();
-      
+     if(doEcal_){
+       eeTree->Fill();
+       ebTree->Fill();
+     }
+
+     if(doHcal_){
+       hbheTree->Fill();
+       hfTree->Fill();
+     }
+
      if (doFastJet_) {
        bkgTree->Fill();
      }
@@ -752,7 +756,8 @@ RecHitTreeProducer::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
 void 
 RecHitTreeProducer::beginJob()
 {
-  
+
+  if(doHcal_){
   hbheTree = fs->make<TTree>("hbhe",versionTag);
   hbheTree->Branch("n",&hbheRecHit.n,"n/I");
   hbheTree->Branch("e",hbheRecHit.e,"e[n]/F");
@@ -773,6 +778,9 @@ RecHitTreeProducer::beginJob()
   hfTree->Branch("perp",hfRecHit.perp,"perp[n]/F");
   hfTree->Branch("depth",hfRecHit.depth,"depth[n]/I");
   hfTree->Branch("isjet",hfRecHit.isjet,"isjet[n]/O");
+  }
+
+  if(doEcal_){
 
   eeTree = fs->make<TTree>("ee",versionTag);
   eeTree->Branch("n",&eeRecHit.n,"n/I");
@@ -793,6 +801,7 @@ RecHitTreeProducer::beginJob()
   ebTree->Branch("perp",ebRecHit.perp,"perp[n]/F");
 
   ebTree->Branch("isjet",ebRecHit.isjet,"isjet[n]/O");
+  }
 
   towerTree = fs->make<TTree>("tower",versionTag);
   towerTree->Branch("n",&myTowers.n,"n/I");
