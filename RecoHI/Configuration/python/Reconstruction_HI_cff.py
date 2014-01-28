@@ -35,7 +35,6 @@ globalRecoPbPb = cms.Sequence(hiTracking
                               * muonRecoPbPb
                               * regionalMuonRecoPbPb
                               * hiElectronSequence
-                              * HiParticleFlowLocalReco
                               * hiEgammaSequence
                               * HiParticleFlowReco
                               * hiCentrality
