@@ -1,5 +1,6 @@
 // system include files
 #include <memory>
+#include <iostream>
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -17,6 +18,7 @@
 
 #include "RecoHI/HiJetAlgos/interface/VoronoiAlgorithm.h"
 
+using namespace std;
 //
 // class declaration
 //
@@ -103,8 +105,9 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
-      reco::VoronoiBackground bkg(0,0,momentum_perp_subtracted[i],0,0,0,0);
-
+      double newpt = momentum_perp_subtracted[i];
+      reco::VoronoiBackground bkg(0,0,newpt,0,0,0,0);
+      cout<<"SUBTRACTION --- oldpt : "<<ref->pt()<<" --- newpt : "<<newpt<<endl;
       vvm.push_back(bkg);
 
    }

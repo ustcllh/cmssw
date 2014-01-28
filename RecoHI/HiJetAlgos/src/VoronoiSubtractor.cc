@@ -38,14 +38,18 @@ void VoronoiSubtractor::setupGeometryMap(edm::Event& iEvent,const edm::EventSetu
 void VoronoiSubtractor::offsetCorrectJets()
 {
 
-  LogDebug("PileUpSubtractor")<<"do nothing...\n";
+  LogDebug("VoronoiSubtractor")<<"finalizing the output...\n";
 
   jetOffset_.reserve(fjJets_->size());
 
   for (unsigned int ijet = 0;ijet <fjJets_->size();++ijet) {
      const fastjet::PseudoJet& fjJet = (*fjJets_)[ijet];
 
+     LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   pt : "<<fjJet.pt()<<" --- eta : "<<fjJet.eta()<<" --- phi : "<<fjJet.phi()<<endl;
+
+     fastjet::PseudoJet subtracted;
      fastjet::PseudoJet unsubtracted;
+     fastjet::PseudoJet unsubtractedDropped;
      jetOffset_[ijet] = 0;
 
      std::vector<fastjet::PseudoJet> fjConstituents = fastjet::sorted_by_pt(fjJet.constituents());
@@ -53,9 +57,14 @@ void VoronoiSubtractor::offsetCorrectJets()
 	unsigned int index = fjConstituents[i].user_index();
 
 	reco::CandidateViewRef ref(candidates_,index);
-	// TODO : create a list of dropped candidates and match them as well.
+	const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
 
-	unsubtracted += fastjet::PseudoJet(ref->px(),ref->py(),ref->pz(),ref->energy());
+	fastjet::PseudoJet candidate(ref->px(),ref->py(),ref->pz(),ref->energy());
+	double orpt = candidate.perp();
+	unsubtracted += candidate;
+	candidate.reset_PtYPhiM(voronoi.pt(),ref->rapidity(),ref->phi(),ref->mass());
+	//	LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<endl;
+	subtracted += candidate;
      }
 
 
@@ -64,13 +73,22 @@ void VoronoiSubtractor::offsetCorrectJets()
 	fastjet::PseudoJet dropcand(ref->px(),ref->py(),ref->pz(),ref->energy());
 
 	if(match(fjJet,dropcand)){
-	   unsubtracted += dropcand;
+	   unsubtractedDropped += dropcand;
 	}
      }
+
+     LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<endl;
+     LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   subtracted : "<<subtracted.pt()<<endl;
+     LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   dropped : "<<unsubtractedDropped.pt()<<endl;
 
      jetOffset_[ijet]  = unsubtracted.pt() - fjJet.pt();
 
   }
+
+
+
+
+
 
 
 
@@ -81,7 +99,7 @@ void VoronoiSubtractor::offsetCorrectJets()
 void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
 { 
 
-   LogDebug("PileUpSubtractor")<<"The subtractor subtracting pedestals...\n";
+   LogDebug("VoronoiSubtractor")<<"The subtractor subtracting pedestals...\n";
    vector<fastjet::PseudoJet> newcoll;
 
    for (vector<fastjet::PseudoJet>::iterator input_object = coll.begin (),
@@ -94,7 +112,7 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
       double ptold = input_object->pt();
       double ptnew = voronoi.pt();
 
-      LogDebug("PileUpSubtractor")<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew<<"  E : "<<input_object->e()<<" rap : "<<input_object->rapidity()<<"  phi : "<<input_object->phi()<<" MASS : "<<input_object->m()<<endl;
+      LogDebug("VoronoiSubtractor")<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew<<"  E : "<<input_object->e()<<" rap : "<<input_object->rapidity()<<"  phi : "<<input_object->phi()<<" MASS : "<<input_object->m()<<endl;
       
       float mScale = ptnew/ptold; 
       double candidatePtMin_ = 0;
@@ -110,6 +128,8 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
 	 mass = 0;
       }
 
+      //      LogDebug("VoronoiSubtractor")<<"candidate "<<int(input_object-coll.begin())<<" mScale : "<<mScale<<endl;
+
       double energy = sqrt(input_object->px()*input_object->px()*mScale*mScale+
 			   input_object->py()*input_object->py()*mScale*mScale+
 			   input_object->pz()*input_object->pz()*mScale*mScale+
@@ -121,7 +141,7 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
 
       ps.set_user_index(index);
 
-      LogDebug("PileUpSubtractor")<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
+      //      LogDebug("VoronoiSubtractor")<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
 
       if(ptnew > candidatePtMin_ || !dropZeroTowers_) newcoll.push_back(ps);
    }
@@ -131,13 +151,13 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
 
 void VoronoiSubtractor::calculatePedestal( vector<fastjet::PseudoJet> const & coll )
 {
-   LogDebug("PileUpSubtractor")<<"do nothing...\n";
+   LogDebug("VoronoiSubtractor")<<"do nothing...\n";
 }
 
 
 void VoronoiSubtractor::calculateOrphanInput(vector<fastjet::PseudoJet> & orphanInput)
 {
-   LogDebug("PileUpSubtractor")<<"do nothing...\n";
+   LogDebug("VoronoiSubtractor")<<"do nothing...\n";
 }
 
 /*
