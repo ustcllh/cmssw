@@ -66,11 +66,14 @@ akPu7PFJets = akPu5PFJets.clone(rParam       = cms.double(0.7), puPtMin = 35)
 
 hiRecoPFJets = cms.Sequence(
     PFTowers
-    *akPu3PFJets*akPu5PFJets
-    *voronoiBackgroundPF*akVs5PFJets
-    *akVs2PFJets*akVs3PFJets*akVs4PFJets*akVs6PFJets*akVs7PFJets
+    *akPu3PFJets*akPu4PFJets*akPu5PFJets
+    *voronoiBackgroundPF
+    *akVs3PFJets*akVs4PFJets*akVs5PFJets
     )
 
-hiRecoAllPFJets = cms.Sequence(hiRecoPFJets * akPu2PFJets*akPu4PFJets*akPu6PFJets*akPu7PFJets)
+hiRecoAllPFJets = cms.Sequence(hiRecoPFJets
+                               *akPu2PFJets*akPu6PFJets*akPu7PFJets
+                               *akVs2PFJets*akVs6PFJets*akVs7PFJets                               
+                               )
 
 

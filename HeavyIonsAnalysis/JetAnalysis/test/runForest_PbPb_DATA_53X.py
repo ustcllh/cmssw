@@ -12,7 +12,7 @@ process.options = cms.untracked.PSet(
 process.load("HeavyIonsAnalysis.JetAnalysis.HiForest_cff")
 process.HiForest.inputLines = cms.vstring("HiForest V3",
 )
-process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
+process.HiForest.HiForestVersion = cms.untracked.string("Track7_Jet3")
 
 #####################################################################################
 # Input source
@@ -20,8 +20,8 @@ process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-#                            fileNames = cms.untracked.vstring("/store/user/yilmaz/HIMinBiasUPC/HIMinBias2011_FT_R_53_LV5_test04/a8911ef3cf889025c21f68cf3fe817c8/step3_RAW2DIGI_RECO_1_1_0yo.root")
-                            fileNames = cms.untracked.vstring("file:step3_RAW2DIGI_RECO.root")
+                            fileNames = cms.untracked.vstring("/store/user/yilmaz/HIMinBiasUPC/HIMinBias2011_FT_R_53_LV5_test04/a8911ef3cf889025c21f68cf3fe817c8/step3_RAW2DIGI_RECO_1_1_0yo.root")
+#                            fileNames = cms.untracked.vstring("file:step3_RAW2DIGI_RECO.root")
                             )
 
 # Number of events we want to process, -1 = all events
@@ -75,17 +75,46 @@ process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_PbPb_data_cff')
-
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_data_cff')
 
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_PbPb_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_PbPb_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_PbPb_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_PbPb_data_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_data_cff')
+
+process.jetSequences = cms.Sequence(process.akPu4CaloJets +
+                                    process.akPu4PFJets +
+                                    process.akPu5CaloJets +
+                                    
+                                    process.akVs3CaloJetSequence +
+                                    process.akPu3CaloJetSequence +
+                                    process.akVs3PFJetSequence +
+                                    process.akPu3PFJetSequence +
+                                    
+                                    process.akVs4CaloJetSequence +
+                                    process.akPu4CaloJetSequence +
+                                    process.akVs4PFJetSequence +
+                                    process.akPu4PFJetSequence +
+                                    
+                                    process.akVs5CaloJetSequence +
+                                    process.akPu5CaloJetSequence +
+                                    process.akVs5PFJetSequence +
+                                    process.akPu5PFJetSequence
+                                    )
+                                    
 
 #####################################################################################
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_cfi')
@@ -162,10 +191,7 @@ process.ana_step = cms.Path(process.filterSequence *
                             process.hltanalysis *
                             process.hiEvtAnalyzer *
                             process.PFTowers * # temp
-                            process.akVs3CaloJetSequence *
-                            process.akPu3CaloJetSequence *
-                            process.akVs3PFJetSequence *
-                            process.akPu3PFJetSequence +
+                            process.jetSequences +
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
