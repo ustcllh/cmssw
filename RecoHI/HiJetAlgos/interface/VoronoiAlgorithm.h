@@ -1234,7 +1234,7 @@ namespace {
 		polygon_t;
 	public:
 		static const size_t nreduced_particle_flow_id = 3;
-		static const size_t nfourier = 3;
+		static const size_t nfourier = 5;
 	protected:
 		std::vector<double> _edge_pseudorapidity;
 		std::vector<double> _cms_hcal_edge_pseudorapidity;
@@ -1346,23 +1346,32 @@ namespace {
 
 			_feature.resize(nfeature);
 
-			static const double scale[3] = {
-				1.0 / 4950, 1.0 / 140, 1.0 / 320
+			static const double scale[9] = {
+				1, 1, 1, 1, 1, 1, 1, 1, 1
 			};
 
 			const size_t index_edge_end =
 				_edge_pseudorapidity.size() - 2;
 
-			_feature[0] = scale[0] *
-				((*_perp_fourier)[0             ][2][0][0] +
-				 (*_perp_fourier)[index_edge_end][2][0][0]);
+			_feature[0] = 0;
+			for (size_t j = 0; j < nreduced_particle_flow_id; j++) {
+			_feature[0] += scale[0] *
+				((*_perp_fourier)[0             ][j][0][0] +
+				 (*_perp_fourier)[index_edge_end][j][0][0]);
+			}
 			for (size_t k = 1; k < nfourier; k++) {
-				_feature[2 * k - 1] = scale[k] *
-					((*_perp_fourier)[0             ][2][k][0] +
-					 (*_perp_fourier)[index_edge_end][2][k][0]);
-				_feature[2 * k] = scale[k] *
-					((*_perp_fourier)[0             ][2][k][1] +
-					 (*_perp_fourier)[index_edge_end][2][k][1]);
+				_feature[2 * k - 1] = 0;
+				for (size_t j = 0; j < nreduced_particle_flow_id; j++) {
+				_feature[2 * k - 1] += scale[k] *
+					((*_perp_fourier)[0             ][j][k][0] +
+					 (*_perp_fourier)[index_edge_end][j][k][0]);
+				}
+				_feature[2 * k] = 0;
+				for (size_t j = 0; j < nreduced_particle_flow_id; j++) {
+				_feature[2 * k] += scale[k] *
+					((*_perp_fourier)[0             ][j][k][1] +
+					 (*_perp_fourier)[index_edge_end][j][k][1]);
+				}
 			}
 
 #if 0
@@ -1482,7 +1491,7 @@ namespace {
 					}
 				}
 
-				for (size_t j = 0; j < 3; j++) {
+				for (size_t j = 0; j < nreduced_particle_flow_id; j++) {
 				if (j == 2) {
 					// HCAL
 					for (size_t l = 1;
@@ -1513,7 +1522,7 @@ namespace {
 					// interpolation for the pseudorapidity segment
 
 					const double azimuth = iterator->momentum.azimuth();
-					const float (*p)[2][46] =
+					const float (*p)[2][82] =
 #ifdef STANDALONE
 						ue_predictor_pf[j][predictor_index]
 #else // STANDALONE
@@ -1522,7 +1531,7 @@ namespace {
 						;
 					double pred = 0;
 
-					for (size_t l = 0; l < 3; l++) {
+					for (size_t l = 0; l < nfourier; l++) {
 						for (size_t m = 0; m < 2; m++) {
 							float u = p[l][m][0];
 
@@ -1604,6 +1613,8 @@ namespace {
 						interp;
 				}
 				}
+
+fprintf(stderr, "%s:%d: %f %f %f %f %f %f %f\n", __FILE__, __LINE__, _feature[0], iterator->momentum.perp(), iterator->momentum.pseudorapidity(), iterator->momentum.azimuth(), density * iterator->area, density, iterator->area);
 
 					if (std::isfinite(iterator->area)) {
 						// Subtract the PF candidate by density times
@@ -2114,7 +2125,6 @@ namespace {
 	public:
 		VoronoiAlgorithm(const double dr_max,
 				 bool isRealData = true, 
-				 bool isCalo = false,
 				 const bool remove_nonpositive = true)
 			: _remove_nonpositive(remove_nonpositive),
 			  _radial_distance_square_max(dr_max * dr_max),
@@ -2123,7 +2133,7 @@ namespace {
 		  ue(0)
 		{
 			initialize_geometry();
-			ue = new UECalibration(isRealData,isCalo);
+			ue = new UECalibration(isRealData);
 			static const size_t nedge_pseudorapidity = 7 + 1;
 			static const double edge_pseudorapidity[nedge_pseudorapidity] = {
 				-5.191, -3.0, -1.479, -0.522, 0.522, 1.479, 3.0, 5.191
