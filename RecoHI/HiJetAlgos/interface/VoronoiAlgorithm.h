@@ -1614,8 +1614,6 @@ namespace {
 				}
 				}
 
-fprintf(stderr, "%s:%d: %f %f %f %f %f %f %f\n", __FILE__, __LINE__, _feature[0], iterator->momentum.perp(), iterator->momentum.pseudorapidity(), iterator->momentum.azimuth(), density * iterator->area, density, iterator->area);
-
 					if (std::isfinite(iterator->area)) {
 						// Subtract the PF candidate by density times
 						// Voronoi cell area
@@ -2125,6 +2123,7 @@ fprintf(stderr, "%s:%d: %f %f %f %f %f %f %f\n", __FILE__, __LINE__, _feature[0]
 	public:
 		VoronoiAlgorithm(const double dr_max,
 				 bool isRealData = true, 
+				 bool isCalo = false, 
 				 const bool remove_nonpositive = true)
 			: _remove_nonpositive(remove_nonpositive),
 			  _radial_distance_square_max(dr_max * dr_max),
@@ -2133,7 +2132,7 @@ fprintf(stderr, "%s:%d: %f %f %f %f %f %f %f\n", __FILE__, __LINE__, _feature[0]
 		  ue(0)
 		{
 			initialize_geometry();
-			ue = new UECalibration(isRealData);
+			ue = new UECalibration(isRealData, isCalo);
 			static const size_t nedge_pseudorapidity = 7 + 1;
 			static const double edge_pseudorapidity[nedge_pseudorapidity] = {
 				-5.191, -3.0, -1.479, -0.522, 0.522, 1.479, 3.0, 5.191
