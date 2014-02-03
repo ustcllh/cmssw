@@ -37,15 +37,7 @@ import RecoTracker.TkSeedGenerator.GlobalSeedsFromTriplets_cff
 from RecoTracker.TkTrackingRegions.GlobalTrackingRegionFromBeamSpot_cfi import RegionPsetFomBeamSpotBlock
 hiSecondPixelTripletSeeds = RecoTracker.TkSeedGenerator.GlobalSeedsFromTriplets_cff.globalSeedsFromTriplets.clone(
     RegionFactoryPSet = RegionPsetFomBeamSpotBlock.clone(
-    # ComponentName = cms.string('GlobalRegionProducerFromBeamSpot'),
     ComponentName = cms.string('GlobalTrackingRegionWithVerticesProducer'),
-    # RegionPSet = RegionPsetFomBeamSpotBlock.RegionPSet.clone(
-    # **ptMin = 4.0,
-    # ptMin = 0.4,
-    #** originRadius = 0.005,
-    # originRadius = 0.001,
-    # nSigmaZ = 4.0
-    # )
 	RegionPSet = cms.PSet(
             precise = cms.bool(True),
             beamSpot = cms.InputTag("offlineBeamSpot"),
@@ -55,9 +47,8 @@ hiSecondPixelTripletSeeds = RecoTracker.TkSeedGenerator.GlobalSeedsFromTriplets_
             fixedError = cms.double(0.2),
             VertexCollection = cms.InputTag("hiSelectedVertex"),
             ptMin = cms.double(0.4),
-            # ptMin = cms.double(4.0),
             useFoundVertices = cms.bool(True),
-            originRadius = cms.double(0.005)
+            originRadius = cms.double(0.02)
         )
     )
 )

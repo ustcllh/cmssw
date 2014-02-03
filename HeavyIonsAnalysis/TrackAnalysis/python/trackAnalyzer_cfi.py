@@ -14,5 +14,5 @@ anaTrack = cms.EDAnalyzer('TrackAnalyzer',
                           qualityString = cms.untracked.string('highPurity'),
                           tpFakeSrc = cms.untracked.InputTag('mergedtruth','MergedTrackTruth'),
                           tpEffSrc = cms.untracked.InputTag('mergedtruth','MergedTrackTruth'),
-                          associateChi2 = cms.bool(True)
+                          associateChi2 = cms.bool(False)
                           )
