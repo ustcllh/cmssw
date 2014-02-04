@@ -37,6 +37,7 @@ class VoronoiBackgroundProducer : public edm::EDProducer {
 
    edm::InputTag src_;
    VoronoiAlgorithm* voronoi_;
+   bool doEqualize_;
    double equalizeR_;
    bool isCalo_;
    std::vector<reco::VoronoiBackground> vvm;
@@ -57,6 +58,7 @@ class VoronoiBackgroundProducer : public edm::EDProducer {
 //
 VoronoiBackgroundProducer::VoronoiBackgroundProducer(const edm::ParameterSet& iConfig):
    voronoi_(0),
+   doEqualize_(iConfig.getParameter<bool>("doEqualize")),
    equalizeR_(iConfig.getParameter<double>("equalizeR")),
    isCalo_(iConfig.getParameter<bool>("isCalo"))
 {
@@ -85,7 +87,7 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    using namespace edm;
    if(voronoi_ == 0){
      bool data = iEvent.isRealData();
-     voronoi_ = new VoronoiAlgorithm(equalizeR_,data,isCalo_);
+     voronoi_ = new VoronoiAlgorithm(equalizeR_,data,isCalo_,doEqualize_);
    }
 
    voronoi_->clear();

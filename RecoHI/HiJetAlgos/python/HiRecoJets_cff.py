@@ -24,6 +24,7 @@ caloTowers = cms.EDProducer("CaloTowerCandidateCreator",
 ## background for HF/Voronoi-style subtraction
 voronoiBackgroundCalo = cms.EDProducer('VoronoiBackgroundProducer',
                                        src = cms.InputTag('towerMaker'),
+                                       doEqualize = cms.bool(False),
                                        equalizeR = cms.double(0.3),
                                        isCalo = cms.bool(True)
                                        )
