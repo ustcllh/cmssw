@@ -46,7 +46,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'FT_R_53_LV5::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV2B::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
