@@ -223,6 +223,7 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
      float matchedPt[MAXJETS];
      float matchedRawPt[MAXJETS];
      float matchedR[MAXJETS];
+     float matchedPu[MAXJETS];
 
     float discr_csvMva[MAXJETS];
     float discr_csvSimple[MAXJETS];
