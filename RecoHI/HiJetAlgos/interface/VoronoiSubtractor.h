@@ -25,8 +25,6 @@ class VoronoiSubtractor : public PileUpSubtractor {
     edm::InputTag srcVor_;
     std::vector<int> droppedCandidates_;
     bool dropZeroTowers_;
-    bool addNegativesFromCone_;
-    double infinitesimalPt_; 
     double rParam_;
 
 };

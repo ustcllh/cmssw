@@ -15,8 +15,6 @@ VoronoiSubtractor::VoronoiSubtractor(const edm::ParameterSet& iConfig) :
    srcCand_(iConfig.getParameter<edm::InputTag>("src")),
    srcVor_(iConfig.getParameter<edm::InputTag>("bkg")),
    dropZeroTowers_(iConfig.getUntrackedParameter<bool>("dropZeros")),
-   addNegativesFromCone_(iConfig.getUntrackedParameter<bool>("addNegativesFromCone")),
-   infinitesimalPt_(iConfig.getUntrackedParameter<double>("infinitesimalPt")),
    rParam_(iConfig.getParameter<double>("rParam"))
 {
 

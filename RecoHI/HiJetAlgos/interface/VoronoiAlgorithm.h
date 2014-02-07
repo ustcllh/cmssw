@@ -64,6 +64,7 @@ protected:
 	std::vector<double> _cms_hcal_edge_pseudorapidity;
 	std::vector<double> _cms_ecal_edge_pseudorapidity;
 	bool _remove_nonpositive;
+	std::pair<double, double> _equalization_threshold;
 	double _radial_distance_square_max;
 	double _positive_bound_scale;
 	bool _subtracted;
@@ -95,14 +96,14 @@ private:
 	void remove_nonpositive(void);
 	void subtract_if_necessary(void);
 public:
-	VoronoiAlgorithm(const double dr_max,
-			 bool isRealData = true,
-			 bool isCalo = false,
-			 const bool remove_nonpositive = true);
-
-	~VoronoiAlgorithm(void)
-	{
-	}
+	VoronoiAlgorithm(
+		const double dr_max,
+		const bool isRealData = true,
+		const bool isCalo = false,
+		const std::pair<double, double> equalization_threshold =
+		std::pair<double, double>(5.0, 35.0),
+		const bool remove_nonpositive = true);
+	~VoronoiAlgorithm(void);
 	/**
 	 * Add a new unsubtracted particle to the current event
 	 *
