@@ -981,9 +981,23 @@ namespace {
 
 			_feature.resize(nfeature);
 
-			static const double scale[9] = {
-			  1, 1, 1, 1, 1, 1, 1, 1, 1
-			};
+			// Scale factor to get 95% of the coefficient below 1.0
+			// (where however one order of magnitude tolerance is
+			// acceptable). This is valid for nfourier < 18 (where
+			// interference behavior with the HF geometry starts to
+			// appear)
+
+			std::vector<double> scale(nfourier, 1.0 / 200.0);
+
+			if (nfourier >= 1) {
+				scale[0] = 1.0 / 5400.0;
+			}
+			if (nfourier >= 2) {
+				scale[1] = 1.0 / 130.0;
+			}
+			if (nfourier >= 3) {
+				scale[2] = 1.0 / 220.0;
+			}
 
 			const size_t index_edge_end =
 				_edge_pseudorapidity.size() - 2;
