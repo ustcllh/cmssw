@@ -9,7 +9,7 @@
 #include "FWCore/ParameterSet/interface/FileInPath.h"
 
 struct UECalibration{
-  UECalibration(bool isRealData = true, bool isCalo = false){
+  explicit UECalibration(bool isRealData = true, bool isCalo = false){
 	   np[0] = 3;	// Number of reduced PF ID (track, ECAL, HCAL)
 	   np[1] = 7;	// Number of pseudorapidity block
 	   np[2] = 5;	// Fourier series order

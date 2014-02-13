@@ -1163,7 +1163,7 @@ namespace {
 #ifdef STANDALONE
 						ue_predictor_pf[j][predictor_index]
 #else // STANDALONE
-						ue.ue_predictor_pf[j][predictor_index]
+						ue->ue_predictor_pf[j][predictor_index]
 #endif // STANDALONE
 						;
 					double pred = 0;
@@ -1226,17 +1226,17 @@ namespace {
 #else // STANDALONE
 					if (j == 0) {
 						interp =
-							ue.ue_interpolation_pf0[predictor_index][
+							ue->ue_interpolation_pf0[predictor_index][
 								interpolation_index];
 					}
 					else if (j == 1) {
 						interp =
-							ue.ue_interpolation_pf1[predictor_index][
+							ue->ue_interpolation_pf1[predictor_index][
 								interpolation_index];
 					}
 					else if (j == 2) {
 						interp =
-							ue.ue_interpolation_pf2[predictor_index][
+							ue->ue_interpolation_pf2[predictor_index][
 								interpolation_index];
 					}
 #endif // STANDALONE
@@ -1251,7 +1251,7 @@ namespace {
 				}
 				}
 
-					if (std::isfinite(iterator->area)) {
+					if (std::isfinite(iterator->area) && density >= 0) {
 						// Subtract the PF candidate by density times
 						// Voronoi cell area
 						iterator->momentum_perp_subtracted =
@@ -1823,7 +1823,7 @@ namespace {
 			  _radial_distance_square_max(dr_max * dr_max),
 			  _positive_bound_scale(0.2),
 			  _subtracted(false),
-			  ue(0)
+			  ue(NULL)
 		{
 			initialize_geometry();
 			ue = new UECalibration(isRealData, isCalo);

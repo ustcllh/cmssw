@@ -81,7 +81,7 @@ protected:
 	void *_lp_environment;
 	void *_lp_problem;
 	// calibrations
-	UECalibration ue;
+	UECalibration *ue;
 private:
 	void initialize_geometry(void);
 	void allocate(void);
