@@ -10,7 +10,7 @@ pfcandAnalyzer = cms.EDAnalyzer('HiPFCandAnalyzer',
                                 jetPtMin = cms.double(20.0),                                
                                 verbosity = cms.untracked.int32(0),
                                 skipCharged = cms.untracked.bool(False),
-                                doJets_ = cms.bool(False),
+                                doJets_ = cms.untracked.bool(False),
                                 doVS = cms.untracked.bool(True),
                                 bkg = cms.InputTag("voronoiBackgroundPF"),
                                 )
