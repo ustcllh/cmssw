@@ -3,6 +3,7 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "DataFormats/HeavyIonEvent/interface/VoronoiBackground.h"
 
 #include "TTree.h"
 #include "TH1D.h"
@@ -39,7 +40,7 @@ class TreePFCandEventData
   Float_t                 pfPt_[MAXPARTICLE], genPt_[MAXPARTICLE],  jetPt_[MAXPARTICLE];
   Float_t                 pfEta_[MAXPARTICLE], genEta_[MAXPARTICLE],  jetEta_[MAXPARTICLE];
   Float_t                 pfPhi_[MAXPARTICLE], genPhi_[MAXPARTICLE],  jetPhi_[MAXPARTICLE];
-
+  Float_t                 pfVsPt_[MAXPARTICLE];
  private:
   TTree*                 tree_;
 };
@@ -59,6 +60,8 @@ class HiPFCandAnalyzer : public edm::EDAnalyzer {
 
     // ----------member data ---------------------------
     edm::Service<TFileService> fs;
+    edm::Handle<reco::VoronoiMap> backgrounds_;
+    edm::Handle<reco::CandidateView> candidates_;
 
     // === Ana setup ===
 
@@ -66,6 +69,8 @@ class HiPFCandAnalyzer : public edm::EDAnalyzer {
     edm::InputTag pfCandidateLabel_;
     edm::InputTag genLabel_;
     edm::InputTag jetLabel_;
+    edm::InputTag srcVor_;
+
 
     TTree	  *pfTree_;
     TreePFCandEventData pfEvt_;
@@ -80,6 +85,7 @@ class HiPFCandAnalyzer : public edm::EDAnalyzer {
 
     bool   doJets_;
     bool   doMC_;
+    bool   doVS_;
     bool   skipCharged_;
 };
 
