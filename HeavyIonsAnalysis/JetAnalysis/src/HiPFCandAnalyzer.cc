@@ -105,10 +105,14 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);      
       reco::CandidateViewRef ref(candidates_,icand);
 
+      double vsPtInitial=-1000;
+      double vsPtEqualized=-1000;
       double vsPt=-1000;
       if (doVS_) {
          const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
          vsPt = voronoi.pt();
+         vsPtInitial = voronoi.pt_initial();
+         vsPtEqualized = voronoi.pt_equalized();
       }
 
       double pt =  pfCandidate.pt();
@@ -120,6 +124,8 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       pfEvt_.pfId_[pfEvt_.nPFpart_] = id;      
       pfEvt_.pfPt_[pfEvt_.nPFpart_] = pt;      
       pfEvt_.pfVsPt_[pfEvt_.nPFpart_] = vsPt;      
+      pfEvt_.pfVsPtInitial_[pfEvt_.nPFpart_] = vsPtInitial;      
+      pfEvt_.pfVsPtEqualized_[pfEvt_.nPFpart_] = vsPtEqualized;      
       pfEvt_.pfEta_[pfEvt_.nPFpart_] = pfCandidate.eta();      
       pfEvt_.pfPhi_[pfEvt_.nPFpart_] = pfCandidate.phi();      
       pfEvt_.nPFpart_++;
@@ -245,6 +251,8 @@ void TreePFCandEventData::SetBranches()
   tree_->Branch("pfId",this->pfId_,"pfId[nPFpart]/I");
   tree_->Branch("pfPt",this->pfPt_,"pfPt[nPFpart]/F");
   tree_->Branch("pfVsPt",this->pfVsPt_,"pfVsPt[nPFpart]/F");
+  tree_->Branch("pfVsPtEqualized",this->pfVsPtEqualized_,"pfVsPtEqualized[nPFpart]/F");
+  tree_->Branch("pfVsPtInitial",this->pfVsPtInitial_,"pfVsPtInitial[nPFpart]/F");
   tree_->Branch("pfEta",this->pfEta_,"pfEta[nPFpart]/F");
   tree_->Branch("pfPhi",this->pfPhi_,"pfPhi[nPFpart]/F");
 

@@ -41,6 +41,8 @@ class TreePFCandEventData
   Float_t                 pfEta_[MAXPARTICLE], genEta_[MAXPARTICLE],  jetEta_[MAXPARTICLE];
   Float_t                 pfPhi_[MAXPARTICLE], genPhi_[MAXPARTICLE],  jetPhi_[MAXPARTICLE];
   Float_t                 pfVsPt_[MAXPARTICLE];
+  Float_t                 pfVsPtInitial_[MAXPARTICLE];
+  Float_t                 pfVsPtEqualized_[MAXPARTICLE];
  private:
   TTree*                 tree_;
 };
