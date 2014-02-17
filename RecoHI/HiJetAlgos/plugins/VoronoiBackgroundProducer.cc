@@ -108,7 +108,7 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       voronoi_->push_back_particle(ref->pt(),ref->eta(),ref->phi(),0);
    }
 
-   std::vector<double> momentum_perp_subtracted = (*voronoi_);
+   std::vector<double> momentum_perp_subtracted = voronoi_->subtracted_equalized_perp();
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);

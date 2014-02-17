@@ -126,7 +126,8 @@ public:
 	 *
 	 * @return	vector of transverse momenta
 	 */
-	operator std::vector<double>(void);
+	std::vector<double> subtracted_perp(void);
+	std::vector<double> subtracted_equalized_perp(void);
 	/**
 	 * Returns the area in the Voronoi diagram diagram occupied by
 	 * a given particle
