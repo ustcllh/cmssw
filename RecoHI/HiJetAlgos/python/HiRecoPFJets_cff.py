@@ -16,7 +16,7 @@ voronoiBackgroundPF = cms.EDProducer('VoronoiBackgroundProducer',
                                      doEqualize = cms.bool(True),
                                      equalizeThreshold0 = cms.double(5.0),
                                      equalizeThreshold1 = cms.double(35.0),
-                                     equalizeR = cms.double(0.4),
+                                     equalizeR = cms.double(0.3),
                                      isCalo = cms.bool(False)
                                      )
 
