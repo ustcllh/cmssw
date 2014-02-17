@@ -109,13 +109,17 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       voronoi_->push_back_particle(ref->pt(),ref->eta(),ref->phi(),0);
    }
 
-   std::vector<double> momentum_perp_subtracted = voronoi_->subtracted_equalized_perp();
+   //   std::vector<double> subtracted_momenta = voronoi_->subtracted_perp();
+   std::vector<double> subtracted_momenta(0);
+   std::vector<double> equalized_momenta = voronoi_->subtracted_equalized_perp();
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
-      double newpt = momentum_perp_subtracted[i];
-      reco::VoronoiBackground bkg(0,0,newpt,0,0,0,0);
-      LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<newpt<<endl;
+      double pre_eq_pt = subtracted_momenta[i];
+      double post_eq_pt = equalized_momenta[i];
+
+      reco::VoronoiBackground bkg(pre_eq_pt,post_eq_pt,0.,0.,0.);
+      LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<post_eq_pt<<endl;
       vvm.push_back(bkg);
    }
 
