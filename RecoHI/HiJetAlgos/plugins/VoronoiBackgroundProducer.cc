@@ -71,7 +71,7 @@ VoronoiBackgroundProducer::VoronoiBackgroundProducer(const edm::ParameterSet& iC
    //register your products
 
    produces<reco::VoronoiMap>();
-
+   produces<std::vector<float> >();
 }
 
 
@@ -99,6 +99,7 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    edm::Handle<reco::CandidateView> inputsHandle;
    iEvent.getByLabel(src_,inputsHandle);
    std::auto_ptr<reco::VoronoiMap> mapout(new reco::VoronoiMap());
+   std::auto_ptr<std::vector<float> > vnout(new std::vector<float>(0));
 
    reco::VoronoiMap::Filler filler(*mapout);
    vvm.clear();
@@ -116,11 +117,11 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       reco::VoronoiBackground bkg(0,0,newpt,0,0,0,0);
       LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<newpt<<endl;
       vvm.push_back(bkg);
-
    }
 
    filler.insert(inputsHandle,vvm.begin(),vvm.end());
    filler.fill();
+   iEvent.put(vnout);
    iEvent.put(mapout);
  
 }
