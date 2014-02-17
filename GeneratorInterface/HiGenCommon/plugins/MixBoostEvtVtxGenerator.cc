@@ -97,8 +97,8 @@ MixBoostEvtVtxGenerator::MixBoostEvtVtxGenerator(const edm::ParameterSet & pset 
   fVertex(0), boost_(0), fTimeOffset(0),
   signalLabel(pset.getParameter<edm::InputTag>("signalLabel")),
   hiLabel(pset.getParameter<edm::InputTag>("heavyIonLabel")),
-  verbosity_(pset.getUntrackedParameter<bool>("verbosity",false)),
-  useRecVertex(pset.exists("useRecVertex")?pset.getParameter<bool>("useRecVertex"):false)
+  useRecVertex(pset.exists("useRecVertex")?pset.getParameter<bool>("useRecVertex"):false),
+  verbosity_(pset.getUntrackedParameter<bool>("verbosity",false))
 { 
 
   vtxOffset.resize(3);
