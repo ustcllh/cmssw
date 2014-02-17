@@ -35,6 +35,7 @@
 #include "DataFormats/HeavyIonEvent/interface/Centrality.h"
 #include "SimDataFormats/HiGenData/interface/GenHIEvent.h"
 
+
 using namespace std;
 using namespace edm;
 using namespace reco;
@@ -54,12 +55,20 @@ HiPFCandAnalyzer::HiPFCandAnalyzer(const edm::ParameterSet& iConfig)
   genPtMin_ = iConfig.getParameter<double>("genPtMin");
   jetPtMin_ = iConfig.getParameter<double>("jetPtMin");
 
+  srcVor_ = iConfig.getParameter<edm::InputTag>("bkg");
+
+
   // debug
   verbosity_ = iConfig.getUntrackedParameter<int>("verbosity", 0);
 
   doJets_ = iConfig.getUntrackedParameter<bool>("doJets",0);
+  doVS_ = iConfig.getUntrackedParameter<bool>("doVS",0);
   doMC_ = iConfig.getUntrackedParameter<bool>("doMC",0);
   skipCharged_ = iConfig.getUntrackedParameter<bool>("skipCharged",0);
+
+
+
+
 }
 
 
@@ -87,11 +96,24 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   edm::Handle<reco::PFCandidateCollection> pfCandidates;
   iEvent.getByLabel(pfCandidateLabel_,pfCandidates);  
+  iEvent.getByLabel(pfCandidateLabel_,candidates_);  
   const reco::PFCandidateCollection *pfCandidateColl = &(*pfCandidates);
 
+  iEvent.getByLabel(srcVor_,backgrounds_);
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
       const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);      
+      reco::CandidateViewRef ref(candidates_,icand);
+
+      double vsPtInitial=-1000;
+      double vsPtEqualized=-1000;
+      double vsPt=-1000;
+      if (doVS_) {
+         const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
+         vsPt = voronoi.pt();
+         vsPtInitial = voronoi.pt_initial();
+         vsPtEqualized = voronoi.pt_equalized();
+      }
 
       double pt =  pfCandidate.pt();
       if(pt<pfPtMin_) continue;
@@ -101,6 +123,9 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
       pfEvt_.pfId_[pfEvt_.nPFpart_] = id;      
       pfEvt_.pfPt_[pfEvt_.nPFpart_] = pt;      
+      pfEvt_.pfVsPt_[pfEvt_.nPFpart_] = vsPt;      
+      pfEvt_.pfVsPtInitial_[pfEvt_.nPFpart_] = vsPtInitial;      
+      pfEvt_.pfVsPtEqualized_[pfEvt_.nPFpart_] = vsPtEqualized;      
       pfEvt_.pfEta_[pfEvt_.nPFpart_] = pfCandidate.eta();      
       pfEvt_.pfPhi_[pfEvt_.nPFpart_] = pfCandidate.phi();      
       pfEvt_.nPFpart_++;
@@ -225,6 +250,9 @@ void TreePFCandEventData::SetBranches()
   tree_->Branch("nPFpart",&(this->nPFpart_),"nPFpart/I");
   tree_->Branch("pfId",this->pfId_,"pfId[nPFpart]/I");
   tree_->Branch("pfPt",this->pfPt_,"pfPt[nPFpart]/F");
+  tree_->Branch("pfVsPt",this->pfVsPt_,"pfVsPt[nPFpart]/F");
+  tree_->Branch("pfVsPtEqualized",this->pfVsPtEqualized_,"pfVsPtEqualized[nPFpart]/F");
+  tree_->Branch("pfVsPtInitial",this->pfVsPtInitial_,"pfVsPtInitial[nPFpart]/F");
   tree_->Branch("pfEta",this->pfEta_,"pfEta[nPFpart]/F");
   tree_->Branch("pfPhi",this->pfPhi_,"pfPhi[nPFpart]/F");
 

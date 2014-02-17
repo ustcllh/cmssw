@@ -27,7 +27,7 @@ voronoiBackgroundCalo = cms.EDProducer('VoronoiBackgroundProducer',
                                        doEqualize = cms.bool(True),
                                        equalizeThreshold0 = cms.double(5.0),
                                        equalizeThreshold1 = cms.double(35.0),
-                                       equalizeR = cms.double(0.3),
+                                       equalizeR = cms.double(0.4),
                                        isCalo = cms.bool(True)
                                        )
 
@@ -93,7 +93,7 @@ akPu7CaloJets.radiusPU = 0.7
 akVs5CaloJets = akPu5CaloJets.clone(
     subtractorName = cms.string("VoronoiSubtractor"),
     bkg = cms.InputTag("voronoiBackgroundCalo"),
-    dropZeros = cms.untracked.bool(True),
+    dropZeros = cms.bool(True),
     doAreaFastjet = False
     )
 

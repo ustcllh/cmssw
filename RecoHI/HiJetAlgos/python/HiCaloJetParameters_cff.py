@@ -21,6 +21,7 @@ HiCaloJetParameters = cms.PSet(
     puWidth = cms.double(0.8),
     nExclude = cms.uint32(2),
     dropZeros = cms.bool(True),
+    addNegativesFromCone = cms.bool(True),
     infinitesimalPt = cms.double(0)
 )
 

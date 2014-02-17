@@ -1,5 +1,3 @@
-
-// $Id: MixBoostEvtVtxGenerator.cc,v 1.1 2012/06/08 22:19:37 yilmaz Exp $
 /*
 ________________________________________________________________________
 
@@ -17,10 +15,6 @@ ________________________________________________________________________
 ________________________________________________________________________
 */
 
-//lingshan: add beta for z-axis boost
-
-//#include "IOMC/EventVertexGenerators/interface/BetafuncEvtVtxGenerator.h"
-
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -28,15 +22,12 @@ ________________________________________________________________________
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
-#include "FWCore/Utilities/interface/RandomNumberGenerator.h"
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 
-#include "CLHEP/Random/RandGaussQ.h"
 #include "CLHEP/Units/GlobalSystemOfUnits.h"
 #include "CLHEP/Units/GlobalPhysicalConstants.h"
-//#include "CLHEP/Vector/ThreeVector.h"
 #include "HepMC/SimpleVector.h"
 #include "TMatrixD.h"
 
@@ -54,8 +45,6 @@ public:
   MixBoostEvtVtxGenerator(const edm::ParameterSet & p);
   virtual ~MixBoostEvtVtxGenerator();
 
-  /// return a new event vertex
-  //virtual CLHEP::Hep3Vector * newVertex();
   virtual HepMC::FourVector* newVertex() ;
   virtual void produce( edm::Event&, const edm::EventSetup& );
   virtual TMatrixD* GetInvLorentzBoost();
@@ -85,7 +74,6 @@ public:
 
   /// beta function
   double BetaFunction(double z, double z0);
-  CLHEP::HepRandomEngine& getEngine();
 
 private:
   /** Copy constructor */
@@ -94,11 +82,9 @@ private:
   MixBoostEvtVtxGenerator&  operator = (const MixBoostEvtVtxGenerator & rhs );
 
   double alpha_, phi_;
-  //TMatrixD boost_;
   double beta_;
   double fX0, fY0, fZ0;
   double fSigmaZ;
-  //double fdxdz, fdydz;
   double fbetastar, femittance;
   double falpha;
 
@@ -106,40 +92,35 @@ private:
   TMatrixD *boost_;
   double fTimeOffset;
   
-  CLHEP::HepRandomEngine*  fEngine;
   edm::InputTag            sourceLabel;
-
-  CLHEP::RandGaussQ*  fRandom ;
-
   edm::InputTag            signalLabel;
   edm::InputTag            hiLabel;
   bool                     useRecVertex;
   std::vector<double>      vtxOffset;
+  bool verbosity_;
 
 };
 
 
 MixBoostEvtVtxGenerator::MixBoostEvtVtxGenerator(const edm::ParameterSet & pset ):
-  fVertex(0), boost_(0), fTimeOffset(0), fEngine(0),
+  fVertex(0), boost_(0), fTimeOffset(0),
   signalLabel(pset.getParameter<edm::InputTag>("signalLabel")),
   hiLabel(pset.getParameter<edm::InputTag>("heavyIonLabel")),
-  useRecVertex(pset.exists("useRecVertex")?pset.getParameter<bool>("useRecVertex"):false)
+  useRecVertex(pset.exists("useRecVertex")?pset.getParameter<bool>("useRecVertex"):false),
+  verbosity_(pset.getUntrackedParameter<bool>("verbosity",false))
 { 
 
   vtxOffset.resize(3);
   if(pset.exists("vtxOffset")) vtxOffset=pset.getParameter< std::vector<double> >("vtxOffset"); 
-  edm::Service<edm::RandomNumberGenerator> rng;
 
-  if ( ! rng.isAvailable()) {
-    
-    throw cms::Exception("Configuration")
-      << "The BaseEvtVtxGenerator requires the RandomNumberGeneratorService\n"
-      "which is not present in the configuration file.  You must add the service\n"
-      "in the configuration file or remove the modules that require it.";
+  beta_  =  pset.getParameter<double>("Beta");
+
+  alpha_ = 0;
+  phi_ = 0;
+  if(pset.exists("Alpha")){
+    alpha_ =  pset.getParameter<double>("Alpha")*radian;
+    phi_   =  pset.getParameter<double>("Phi")*radian;
   }
-
-  CLHEP::HepRandomEngine& engine = rng->getEngine();
-  fEngine = &engine;
 
   produces<bool>("matchedVertex"); 
   
@@ -149,40 +130,12 @@ MixBoostEvtVtxGenerator::~MixBoostEvtVtxGenerator()
 {
   delete fVertex ;
   if (boost_ != 0 ) delete boost_;
-  delete fRandom; 
 }
 
-CLHEP::HepRandomEngine& MixBoostEvtVtxGenerator::getEngine(){
-  return *fEngine;
-}
-
-
-//Hep3Vector* MixBoostEvtVtxGenerator::newVertex() {
 HepMC::FourVector* MixBoostEvtVtxGenerator::newVertex() {
 
-	
-	double X,Y,Z;
-	
-	double tmp_sigz = fRandom->fire(0., fSigmaZ);
-	Z = tmp_sigz + fZ0;
+  return 0;
 
-	double tmp_sigx = BetaFunction(Z,fZ0); 
-	// need sqrt(2) for beamspot width relative to single beam width
-	tmp_sigx /= sqrt(2.0);
-	X = fRandom->fire(0.,tmp_sigx) + fX0; // + Z*fdxdz ;
-
-	double tmp_sigy = BetaFunction(Z,fZ0);
-	// need sqrt(2) for beamspot width relative to single beam width
-	tmp_sigy /= sqrt(2.0);
-	Y = fRandom->fire(0.,tmp_sigy) + fY0; // + Z*fdydz;
-
-	double tmp_sigt = fRandom->fire(0., fSigmaZ);
-	double T = tmp_sigt + fTimeOffset; 
-
-	if ( fVertex == 0 ) fVertex = new HepMC::FourVector();
-	fVertex->set(X,Y,Z,T);
-		
-	return fVertex;
 }
 
 double MixBoostEvtVtxGenerator::BetaFunction(double z, double z0)
@@ -206,17 +159,9 @@ void MixBoostEvtVtxGenerator::sigmaZ(double s)
 
 TMatrixD* MixBoostEvtVtxGenerator::GetInvLorentzBoost() {
 
-	//alpha_ = 0;
-	//phi_ = 142.e-6;
-//	if (boost_ != 0 ) return boost_;
-	
-	//boost_.ResizeTo(4,4);
-	//boost_ = new TMatrixD(4,4);
 	TMatrixD tmpboost(4,4);
         TMatrixD tmpboostZ(4,4);
         TMatrixD tmpboostXYZ(4,4);
-
-	//if ( (alpha_ == 0) && (phi_==0) ) { boost_->Zero(); return boost_; }
 	
 	// Lorentz boost to frame where the collision is head-on
 	// phi is the half crossing angle in the plane ZS
@@ -238,7 +183,7 @@ TMatrixD* MixBoostEvtVtxGenerator::GetInvLorentzBoost() {
 	tmpboost(3,1) = 0.;
 	tmpboost(3,2) = sin(alpha_)*tan(phi_);
 	tmpboost(3,3) = 1.;
-       //cout<<"beta "<<beta_;
+
        double gama=1.0/sqrt(1-beta_*beta_);
        tmpboostZ(0,0)=gama;
        tmpboostZ(0,1)=0.;
@@ -258,12 +203,10 @@ TMatrixD* MixBoostEvtVtxGenerator::GetInvLorentzBoost() {
        tmpboostZ(3,3) = 1.;
 
        tmpboostXYZ=tmpboost*tmpboostZ;
-       tmpboost.Invert();
-
-
+       tmpboostXYZ.Invert();
 
        boost_ = new TMatrixD(tmpboostXYZ);
-       boost_->Print();
+       if ( verbosity_ )boost_->Print();
 	
 	return boost_;
 }
@@ -333,10 +276,10 @@ void MixBoostEvtVtxGenerator::produce( Event& evt, const EventSetup& )
  
   HepMCEvt->applyVtxGen( useRecVertex ? getRecVertex(evt) : getVertex(evt) ) ;
  
-  //   HepMCEvt->boostToLab( GetInvLorentzBoost(), "vertex" );
-  //   HepMCEvt->boostToLab( GetInvLorentzBoost(), "momentum" );
+  HepMCEvt->boostToLab( GetInvLorentzBoost(), "vertex" );
+  HepMCEvt->boostToLab( GetInvLorentzBoost(), "momentum" );
   
-  // OK, create a (pseudo)product and put in into edm::Event
+  // create a (pseudo)product and put in into edm::Event
   //
   auto_ptr<bool> NewProduct(new bool(true)) ;      
   evt.put( NewProduct ,"matchedVertex") ;
