@@ -93,7 +93,7 @@ akPu7CaloJets.radiusPU = 0.7
 akVs5CaloJets = akPu5CaloJets.clone(
     subtractorName = cms.string("VoronoiSubtractor"),
     bkg = cms.InputTag("voronoiBackgroundCalo"),
-    dropZeros = cms.untracked.bool(True),
+    dropZeros = cms.bool(True),
     doAreaFastjet = False
     )
 
