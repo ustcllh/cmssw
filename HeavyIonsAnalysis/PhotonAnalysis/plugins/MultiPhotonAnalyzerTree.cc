@@ -195,7 +195,7 @@ int MultiPhotonAnalyzerTree::selectStorePhotons(const edm::Event& e,const edm::E
   
   bool isEleRecoed = false;
   if (EleHandle.isValid()) {
-    cout << " electron was reconstructed! " << endl;
+    //    cout << " electron was reconstructed! " << endl;
     isEleRecoed = true;
   }
   
@@ -390,32 +390,21 @@ int MultiPhotonAnalyzerTree::selectStorePhotons(const edm::Event& e,const edm::E
     //    cout << "photon et = " << photon.et() << "  eta =" << photon.eta() << endl;
     
     if ( isEleRecoed ) {
-      //   cout << " start electron search " << endl;
       // We will find the smallest e/p electron canddiates.
       for ( reco::GsfElectronCollection::const_iterator eleItr = myEle.begin(); eleItr != myEle.end(); ++eleItr) {
 	//	if ( eleItr->superCluster()->energy() < 10 ) continue;
-	cout << " line 1 " << endl;
 	if ( eleItr->energy() < 10 ) continue;
-	//	cout << "electron et = " << eleItr->et() << "    eta = " << eleItr->eta() << endl ;
-	cout << " line 2 " << endl;
 	if ( abs( eleItr->eta() - photon.eta() ) > 0.03 ) continue;
-	cout << " line 3 " << endl;
 
 	//	float dphi = eleItr->superCluster()->phi() - photon.superCluster()->phi();
 	float dphi = eleItr->phi() - photon.phi();
 	if ( dphi >  3.141592 ) dphi = dphi - 2* 3.141592;
 	if ( dphi < -3.141592 ) dphi = dphi + 2* 3.141592;
 	if ( abs(dphi) > 0.03 )  continue;
-	cout << " line 4 " << endl;
 	
 	float iEp = eleItr->eSuperClusterOverP() ;   
 	
-	  // We should match with higher momentum electron candidates. 
-	  //	  cout << " current iEp = " << iEp << endl;
-	  //	  cout << " eleEpTemp = " << eleEpTemp << endl;
-
 	if ( eleEpTemp < iEp )  continue;
-	//  cout << " so.. it was replaced " << endl;
 	eleEpTemp = iEp;
 	eleChargeTemp =  eleItr->charge();
 	deltaPhiEleCTTemp =  eleItr->deltaPhiEleClusterTrackAtCalo() ; 
@@ -424,12 +413,10 @@ int MultiPhotonAnalyzerTree::selectStorePhotons(const edm::Event& e,const edm::E
 	detaTemp = eleItr->eta() - photon.eta() ;
 	//	detaTemp = eleItr->superCluster()->eta() - photon.superCluster()->eta() ;
 	  
-	  //  cout << " this is electron " << endl;
 	  isEleTemp = true;
       }
       
       //   if ( isEleTemp == false)  
-      //	  cout << " this is not an electron" << endl;
     }
     
     isEle         [nphotonscounter]    =  isEleTemp;
