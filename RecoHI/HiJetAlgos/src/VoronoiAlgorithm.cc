@@ -1969,3 +1969,13 @@ namespace {
 
 			return ret;
 		}
+		std::vector<double> VoronoiAlgorithm::perp_fourier(void)
+		{
+			subtract_if_necessary();
+
+			return std::vector<double>(_perp_fourier->origin(), _perp_fourier->origin() + _perp_fourier->num_elements());
+		}
+		size_t VoronoiAlgorithm::nedge_pseudorapidity(void) const
+		{
+			return _edge_pseudorapidity.size();
+		}

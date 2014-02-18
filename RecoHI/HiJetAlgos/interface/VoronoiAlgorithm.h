@@ -146,6 +146,8 @@ public:
 	 * indices, using the original indexing
 	 */
 	std::vector<std::set<size_t> > particle_incident(void);
+	std::vector<double> perp_fourier(void);
+	size_t nedge_pseudorapidity(void) const;
 };
 
 #endif

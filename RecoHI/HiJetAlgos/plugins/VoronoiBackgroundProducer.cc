@@ -99,7 +99,10 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    edm::Handle<reco::CandidateView> inputsHandle;
    iEvent.getByLabel(src_,inputsHandle);
    std::auto_ptr<reco::VoronoiMap> mapout(new reco::VoronoiMap());
-   std::auto_ptr<std::vector<float> > vnout(new std::vector<float>(0));
+
+   std::vector<double> voronoi_vn = voronoi_->perp_fourier();
+
+   std::auto_ptr<std::vector<float> > vnout(new std::vector<float>(voronoi_vn.begin(), voronoi_vn.end()));
 
    reco::VoronoiMap::Filler filler(*mapout);
    vvm.clear();
