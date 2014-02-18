@@ -1,27 +1,72 @@
 #ifndef __HiJetAlgos_UEParameters_h__
 #define __HiJetAlgos_UEParameters_h__
 
+#include <boost/multi_array.hpp>
 
 class UEParameters {
- public:
-  UEParameters(std::vector<float> *v = 0, int nn = 1, int neta = 1){
-    rawParameters_ = v;
-    nn_ = nn;
+private:
+	static const size_t nreduced_particle_flow_id = 3;
+	boost::const_multi_array_ref<float, 4> *parameters_;
+	int nn_;
+	int neta_;
+	void get_fourier(double &re, double &im, size_t n, size_t eta) const
+	{
+		re = 0;
+		im = 0;
+		for (size_t i = 0; i < nreduced_particle_flow_id; i++) {
+			re += (*parameters_)[eta][i][n][0];
+			im += (*parameters_)[eta][i][n][1];
+		}
+	}
+public:
+	UEParameters(std::vector<float> *v = 0, int nn = 1, int neta = 1)
+		: nn_(nn), neta_(neta)
+	{
+		parameters_ = new boost::const_multi_array_ref<float, 4>(&(*v)[0], boost::extents[neta][nreduced_particle_flow_id][nn][2]);
+	}
+	~UEParameters(void)
+	{
+		delete parameters_;
+	}
+	double get_sum_pt(int eta) const
+	{
+		double re;
+		double im;
 
-  }
+		get_fourier(re, im, 0, eta);
 
-  get_vn(int n, int eta){
-    int offset = 0;
-    int index = 0;
-    return rawParameters_[index];
-  }
+		// There is no imaginary part
+		return re;
+	}
+	double get_vn(int n, int eta) const
+	{
+		if (n < 0) {
+			return NAN;
+		}
+		else if (n == 0) {
+			return 1;
+		}
 
- private:
-  std::vector<float> *rawParameters_;
-  int nn_;
-  int neta_;
+		double re;
+		double im;
 
+		get_fourier(re, im, n, eta);
+
+		return sqrt(re * re + im * im) / get_sum_pt(eta);
+	}
+	double get_psin(int n, int eta) const
+	{
+		if (n <= 0) {
+			return 0;
+		}
+
+		double re;
+		double im;
+
+		get_fourier(re, im, n, eta);
+
+		return atan2(im, re) / n;
+	}
 };
-
 
 #endif
