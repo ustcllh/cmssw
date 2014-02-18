@@ -1,19 +1,3 @@
-/*
-________________________________________________________________________
-
- MixBoostEvtVtxGenerator
-
- Smear vertex according to the Beta function on the transverse plane
- and a Gaussian on the z axis. It allows the beam to have a crossing
- angle (slopes dxdz and dydz).
-
- Based on GaussEvtVtxGenerator
- implemented by Francisco Yumiceva (yumiceva@fnal.gov)
-
- FERMILAB
- 2006
-________________________________________________________________________
-*/
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Utilities/interface/Exception.h"
@@ -74,6 +58,7 @@ public:
 
   /// beta function
   double BetaFunction(double z, double z0);
+  //  CLHEP::HepRandomEngine& getEngine();
 
 private:
   /** Copy constructor */
@@ -82,9 +67,11 @@ private:
   MixBoostEvtVtxGenerator&  operator = (const MixBoostEvtVtxGenerator & rhs );
 
   double alpha_, phi_;
+  //TMatrixD boost_;
   double beta_;
   double fX0, fY0, fZ0;
   double fSigmaZ;
+  //double fdxdz, fdydz;
   double fbetastar, femittance;
   double falpha;
 
@@ -92,7 +79,11 @@ private:
   TMatrixD *boost_;
   double fTimeOffset;
   
+  //  CLHEP::HepRandomEngine*  fEngine;
   edm::InputTag            sourceLabel;
+
+  //  CLHEP::RandGaussQ*  fRandom ;
+
   edm::InputTag            signalLabel;
   edm::InputTag            hiLabel;
   bool                     useRecVertex;
@@ -112,7 +103,6 @@ MixBoostEvtVtxGenerator::MixBoostEvtVtxGenerator(const edm::ParameterSet & pset 
 
   vtxOffset.resize(3);
   if(pset.exists("vtxOffset")) vtxOffset=pset.getParameter< std::vector<double> >("vtxOffset"); 
-
   beta_  =  pset.getParameter<double>("Beta");
 
   alpha_ = 0;
@@ -132,10 +122,9 @@ MixBoostEvtVtxGenerator::~MixBoostEvtVtxGenerator()
   if (boost_ != 0 ) delete boost_;
 }
 
+
 HepMC::FourVector* MixBoostEvtVtxGenerator::newVertex() {
-
   return 0;
-
 }
 
 double MixBoostEvtVtxGenerator::BetaFunction(double z, double z0)
@@ -162,7 +151,7 @@ TMatrixD* MixBoostEvtVtxGenerator::GetInvLorentzBoost() {
 	TMatrixD tmpboost(4,4);
         TMatrixD tmpboostZ(4,4);
         TMatrixD tmpboostXYZ(4,4);
-	
+
 	// Lorentz boost to frame where the collision is head-on
 	// phi is the half crossing angle in the plane ZS
 	// alpha is the angle to the S axis from the X axis in the XY plane
@@ -183,7 +172,6 @@ TMatrixD* MixBoostEvtVtxGenerator::GetInvLorentzBoost() {
 	tmpboost(3,1) = 0.;
 	tmpboost(3,2) = sin(alpha_)*tan(phi_);
 	tmpboost(3,3) = 1.;
-
        double gama=1.0/sqrt(1-beta_*beta_);
        tmpboostZ(0,0)=gama;
        tmpboostZ(0,1)=0.;
@@ -229,6 +217,7 @@ HepMC::FourVector* MixBoostEvtVtxGenerator::getVertex( Event& evt){
       ++pt;
     }
   }
+
   double aX,aY,aZ,aT;
   
   aX = genvtx->position().x();
@@ -274,12 +263,12 @@ void MixBoostEvtVtxGenerator::produce( Event& evt, const EventSetup& )
   // generate new vertex & apply the shift 
   //
  
-  HepMCEvt->applyVtxGen( useRecVertex ? getRecVertex(evt) : getVertex(evt) ) ;
- 
   HepMCEvt->boostToLab( GetInvLorentzBoost(), "vertex" );
   HepMCEvt->boostToLab( GetInvLorentzBoost(), "momentum" );
+
+  HepMCEvt->applyVtxGen( useRecVertex ? getRecVertex(evt) : getVertex(evt) ) ;
   
-  // create a (pseudo)product and put in into edm::Event
+  // OK, create a (pseudo)product and put in into edm::Event
   //
   auto_ptr<bool> NewProduct(new bool(true)) ;      
   evt.put( NewProduct ,"matchedVertex") ;

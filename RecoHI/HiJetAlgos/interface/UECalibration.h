@@ -11,18 +11,18 @@
 struct UECalibration{
   explicit UECalibration(bool isRealData = true, bool isCalo = false){
 	   np[0] = 3;	// Number of reduced PF ID (track, ECAL, HCAL)
-	   np[1] = 7;	// Number of pseudorapidity block
+	   np[1] = 15;	// Number of pseudorapidity block
 	   np[2] = 5;	// Fourier series order
 	   np[3] = 2;	// Re or Im
 	   np[4] = 82;	// Number of feature parameter
 
-      ni0[0] = 7;
+      ni0[0] = np[1];
       ni0[1] = 344;
 
-      ni1[0] = 7;
+      ni1[0] = np[1];
       ni1[1] = 344;
 
-      ni2[0] = 7;
+      ni2[0] = np[1];
       ni2[1] = 82;
 
       index = 0;
@@ -88,10 +88,10 @@ struct UECalibration{
       ni1[2], 
       ni2[2];
 
-   float ue_predictor_pf[3][7][5][2][82], 
-      ue_interpolation_pf0[7][344], 
-      ue_interpolation_pf1[7][344], 
-      ue_interpolation_pf2[7][82];
+   float ue_predictor_pf[3][15][5][2][82], 
+      ue_interpolation_pf0[15][344], 
+      ue_interpolation_pf1[15][344], 
+      ue_interpolation_pf2[15][82];
    
 };
 

@@ -71,7 +71,7 @@ VoronoiBackgroundProducer::VoronoiBackgroundProducer(const edm::ParameterSet& iC
    //register your products
 
    produces<reco::VoronoiMap>();
-
+   produces<std::vector<float> >();
 }
 
 
@@ -99,6 +99,7 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    edm::Handle<reco::CandidateView> inputsHandle;
    iEvent.getByLabel(src_,inputsHandle);
    std::auto_ptr<reco::VoronoiMap> mapout(new reco::VoronoiMap());
+   std::auto_ptr<std::vector<float> > vnout(new std::vector<float>(0));
 
    reco::VoronoiMap::Filler filler(*mapout);
    vvm.clear();
@@ -108,19 +109,28 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       voronoi_->push_back_particle(ref->pt(),ref->eta(),ref->phi(),0);
    }
 
-   std::vector<double> momentum_perp_subtracted = (*voronoi_);
+   //   std::vector<double> subtracted_momenta = voronoi_->subtracted_perp();
+   std::vector<double> subtracted_momenta = voronoi_->subtracted_unequalized_perp();
+   std::vector<double> equalized_momenta = voronoi_->subtracted_equalized_perp();
+   std::vector<double> particle_area = voronoi_->particle_area();
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
-      double newpt = momentum_perp_subtracted[i];
-      reco::VoronoiBackground bkg(0,0,newpt,0,0,0,0);
-      LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<newpt<<endl;
-      vvm.push_back(bkg);
+      const double pre_eq_pt = subtracted_momenta[i];
+      const double post_eq_pt = equalized_momenta[i];
+      const double area = particle_area[i];
+      const double mass_square = ref->massSqr();
+      const double pre_eq_mt = sqrt(mass_square + pre_eq_pt * pre_eq_pt);
+      const double post_eq_mt = sqrt(mass_square + post_eq_pt * post_eq_pt);
 
+      reco::VoronoiBackground bkg(pre_eq_pt,post_eq_pt,pre_eq_mt,post_eq_mt,area);
+      LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<post_eq_pt<<endl;
+      vvm.push_back(bkg);
    }
 
    filler.insert(inputsHandle,vvm.begin(),vvm.end());
    filler.fill();
+   iEvent.put(vnout);
    iEvent.put(mapout);
  
 }

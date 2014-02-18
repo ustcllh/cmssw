@@ -111,8 +111,7 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       if (doVS_) {
          const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
          vsPt = voronoi.pt();
-         vsPtInitial = voronoi.pt_initial();
-         vsPtEqualized = voronoi.pt_equalized();
+         vsPtEqualized = voronoi.pt_subtracted();
       }
 
       double pt =  pfCandidate.pt();

@@ -1276,6 +1276,7 @@ namespace {
 						iterator->momentum_perp_subtracted =
 							iterator->momentum.Pt();
 					}
+					iterator->momentum_perp_subtracted_unequalized = iterator->momentum_perp_subtracted_unequalized;
 			}
 		}
 		void VoronoiAlgorithm::recombine_link(void)
@@ -1681,7 +1682,7 @@ namespace {
 							(sum_unequalized >= sum_unequalized_0 &&
 							 (iterator_particle - _event.begin()) % 8 == 0)) {
 
-						const double weight = sum_unequalized;
+						const double weight = sum_unequalized * iterator_particle->area * iterator_particle->area;
 
 						if (weight > 0) {
 							p->push_back_row(
@@ -1841,9 +1842,9 @@ namespace {
 		{
 			initialize_geometry();
 			ue = new UECalibration(isRealData, isCalo);
-			static const size_t nedge_pseudorapidity = 7 + 1;
+			static const size_t nedge_pseudorapidity = 15 + 1;
 			static const double edge_pseudorapidity[nedge_pseudorapidity] = {
-				-5.191, -2.650, -1.479, -0.522, 0.522, 1.479, 2.650, 5.191
+				-5.191, -2.650, -2.043, -1.740, -1.479, -1.131, -0.783, -0.522, 0.522, 0.783, 1.131, 1.479, 1.740, 2.043, 2.650, 5.191
 			};
 
 			_edge_pseudorapidity = std::vector<double>(
@@ -1889,7 +1890,7 @@ namespace {
 		 *
 		 * @return	vector of transverse momenta
 		 */
-		VoronoiAlgorithm::operator std::vector<double>(void)
+		std::vector<double> VoronoiAlgorithm::subtracted_equalized_perp(void)
 		{
 			subtract_if_necessary();
 
@@ -1899,6 +1900,20 @@ namespace {
 					 _event.begin();
 				 iterator != _event.end(); iterator++) {
 				ret.push_back(iterator->momentum_perp_subtracted);
+			}
+
+			return ret;
+		}
+		std::vector<double> VoronoiAlgorithm::subtracted_unequalized_perp(void)
+		{
+			subtract_if_necessary();
+
+			std::vector<double> ret;
+
+			for (std::vector<particle_t>::const_iterator iterator =
+					_event.begin();
+				iterator != _event.end(); iterator++) {
+				ret.push_back(iterator->momentum_perp_subtracted_unequalized);
 			}
 
 			return ret;

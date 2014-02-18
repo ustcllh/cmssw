@@ -29,12 +29,14 @@ private:
 		unsigned int reduced_particle_flow_id;
 		double area;
 		double momentum_perp_subtracted;
+		double momentum_perp_subtracted_unequalized;
 		std::set<std::vector<particle_t>::iterator> incident;
 		particle_t(math::PtEtaPhiELorentzVector p,
 				   unsigned int i, double a = NAN,
 				   double ps = NAN)
 			: momentum(p), reduced_particle_flow_id(i), area(a),
 			  momentum_perp_subtracted(ps),
+			  momentum_perp_subtracted_unequalized(ps),
 			  incident(std::set<std::vector<particle_t>::
 					   iterator>())
 		{
@@ -126,7 +128,8 @@ public:
 	 *
 	 * @return	vector of transverse momenta
 	 */
-	operator std::vector<double>(void);
+	std::vector<double> subtracted_equalized_perp(void);
+	std::vector<double> subtracted_unequalized_perp(void);
 	/**
 	 * Returns the area in the Voronoi diagram diagram occupied by
 	 * a given particle
