@@ -1265,18 +1265,19 @@ namespace {
 				}
 				}
 
-					if (std::isfinite(iterator->area) && density >= 0) {
-						// Subtract the PF candidate by density times
-						// Voronoi cell area
-						iterator->momentum_perp_subtracted =
-							iterator->momentum.Pt() -
-							density * iterator->area;
-					}
-					else {
-						iterator->momentum_perp_subtracted =
-							iterator->momentum.Pt();
-					}
-					iterator->momentum_perp_subtracted_unequalized = iterator->momentum_perp_subtracted_unequalized;
+				if (std::isfinite(iterator->area) && density >= 0) {
+					// Subtract the PF candidate by density times
+					// Voronoi cell area
+					iterator->momentum_perp_subtracted =
+						iterator->momentum.Pt() -
+						density * iterator->area;
+				}
+				else {
+					iterator->momentum_perp_subtracted =
+						iterator->momentum.Pt();
+				}
+				iterator->momentum_perp_subtracted_unequalized =
+					iterator->momentum_perp_subtracted;
 			}
 		}
 		void VoronoiAlgorithm::recombine_link(void)
@@ -1973,7 +1974,10 @@ namespace {
 		{
 			subtract_if_necessary();
 
-			return std::vector<double>(_perp_fourier->origin(), _perp_fourier->origin() + _perp_fourier->num_elements());
+			return std::vector<double>(
+				_perp_fourier->data(),
+				_perp_fourier->data() +
+				_perp_fourier->num_elements());
 		}
 		size_t VoronoiAlgorithm::nedge_pseudorapidity(void) const
 		{
