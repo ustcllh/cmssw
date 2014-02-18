@@ -28,7 +28,7 @@ class TreePFCandEventData
   void SetDefaults();
   TreePFCandEventData();
   void SetTree(TTree * t) { tree_=t; }
-  void SetBranches();
+  void SetBranches(int etaBins, int fourierOrder);
   void Clear();
   bool doJets;
   bool doMC;
@@ -43,6 +43,10 @@ class TreePFCandEventData
   Float_t                 pfVsPt_[MAXPARTICLE];
   Float_t                 pfVsPtInitial_[MAXPARTICLE];
   Float_t                 pfVsPtEqualized_[MAXPARTICLE];
+  Float_t                 sumpt[20];
+  Float_t                 vn[20][10];
+  Float_t                 psin[20][10];
+
  private:
   TTree*                 tree_;
 };
@@ -63,6 +67,7 @@ class HiPFCandAnalyzer : public edm::EDAnalyzer {
     // ----------member data ---------------------------
     edm::Service<TFileService> fs;
     edm::Handle<reco::VoronoiMap> backgrounds_;
+    edm::Handle<std::vector<float> > vn_;
     edm::Handle<reco::CandidateView> candidates_;
 
     // === Ana setup ===
@@ -81,6 +86,9 @@ class HiPFCandAnalyzer : public edm::EDAnalyzer {
     Double_t        pfPtMin_;
     Double_t        jetPtMin_;
     Double_t        genPtMin_;
+
+    int           fourierOrder_;
+    int           etaBins_;
 
    // debug
     Int_t	  verbosity_;

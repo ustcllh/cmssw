@@ -13,5 +13,7 @@ pfcandAnalyzer = cms.EDAnalyzer('HiPFCandAnalyzer',
                                 doJets_ = cms.untracked.bool(False),
                                 doVS = cms.untracked.bool(True),
                                 bkg = cms.InputTag("voronoiBackgroundPF"),
+                                etaBins = cms.int32(15),
+                                fourierOrder = cms.int32(5),
                                 )
 

@@ -20,6 +20,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "RecoJets/JetAlgorithms/interface/JetAlgoHelper.h"
+#include "RecoHI/HiJetAlgos/interface/UEParameters.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/TrackReco/interface/Track.h"
@@ -54,6 +55,9 @@ HiPFCandAnalyzer::HiPFCandAnalyzer(const edm::ParameterSet& iConfig)
   pfPtMin_ = iConfig.getParameter<double>("pfPtMin");
   genPtMin_ = iConfig.getParameter<double>("genPtMin");
   jetPtMin_ = iConfig.getParameter<double>("jetPtMin");
+
+  etaBins_ = iConfig.getParameter<int>("etaBins");
+  fourierOrder_ = iConfig.getParameter<int>("fourierOrder");
 
   srcVor_ = iConfig.getParameter<edm::InputTag>("bkg");
 
@@ -100,18 +104,28 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   const reco::PFCandidateCollection *pfCandidateColl = &(*pfCandidates);
 
   iEvent.getByLabel(srcVor_,backgrounds_);
+  iEvent.getByLabel(srcVor_,vn_);
+
+  UEParameters vnUE(&(*vn_),fourierOrder_,etaBins_);
+
+  for(int ieta = 0; ieta < etaBins_; ++ieta){
+    pfEvt_.sumpt[ieta] = vnUE.get_sum_pt(ieta);
+    for(int ifour = 0; ifour < fourierOrder_; ++ifour){
+      pfEvt_.vn[ieta][ifour] = vnUE.get_vn(ifour,ieta);
+      pfEvt_.psin[ieta][ifour] = vnUE.get_psin(ifour,ieta);
+    }
+  }
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
       const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);      
       reco::CandidateViewRef ref(candidates_,icand);
 
       double vsPtInitial=-1000;
-      double vsPtEqualized=-1000;
       double vsPt=-1000;
       if (doVS_) {
          const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
          vsPt = voronoi.pt();
-         vsPtEqualized = voronoi.pt_subtracted();
+         vsPtInitial = voronoi.pt_subtracted();
       }
 
       double pt =  pfCandidate.pt();
@@ -124,7 +138,6 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       pfEvt_.pfPt_[pfEvt_.nPFpart_] = pt;      
       pfEvt_.pfVsPt_[pfEvt_.nPFpart_] = vsPt;      
       pfEvt_.pfVsPtInitial_[pfEvt_.nPFpart_] = vsPtInitial;      
-      pfEvt_.pfVsPtEqualized_[pfEvt_.nPFpart_] = vsPtEqualized;      
       pfEvt_.pfEta_[pfEvt_.nPFpart_] = pfCandidate.eta();      
       pfEvt_.pfPhi_[pfEvt_.nPFpart_] = pfCandidate.phi();      
       pfEvt_.nPFpart_++;
@@ -215,7 +228,7 @@ void HiPFCandAnalyzer::beginJob()
     pfEvt_.doMC = doMC_;
     pfEvt_.doJets = doJets_;
 
-    pfEvt_.SetBranches();
+    pfEvt_.SetBranches(etaBins_, fourierOrder_);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------                                                                                                                                              
@@ -241,7 +254,7 @@ TreePFCandEventData::TreePFCandEventData(){
 
 
 // set branches
-void TreePFCandEventData::SetBranches()
+void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder)
 {
   // --event level--
 
@@ -250,7 +263,6 @@ void TreePFCandEventData::SetBranches()
   tree_->Branch("pfId",this->pfId_,"pfId[nPFpart]/I");
   tree_->Branch("pfPt",this->pfPt_,"pfPt[nPFpart]/F");
   tree_->Branch("pfVsPt",this->pfVsPt_,"pfVsPt[nPFpart]/F");
-  tree_->Branch("pfVsPtEqualized",this->pfVsPtEqualized_,"pfVsPtEqualized[nPFpart]/F");
   tree_->Branch("pfVsPtInitial",this->pfVsPtInitial_,"pfVsPtInitial[nPFpart]/F");
   tree_->Branch("pfEta",this->pfEta_,"pfEta[nPFpart]/F");
   tree_->Branch("pfPhi",this->pfPhi_,"pfPhi[nPFpart]/F");
@@ -262,6 +274,10 @@ void TreePFCandEventData::SetBranches()
   tree_->Branch("jetEta",this->jetEta_,"jetEta[njets]/F");
   tree_->Branch("jetPhi",this->jetPhi_,"jetPhi[njets]/F");
   }
+
+  tree_->Branch("vn",this->vn,Form("vn[%d][%d]/F",etaBins,fourierOrder));
+  tree_->Branch("psin",this->psin,Form("vpsi[%d][%d]/F",etaBins,fourierOrder));
+  tree_->Branch("sumpt",this->sumpt,Form("sumpt[%d]/F",etaBins));
 
   // -- gen info --
   if(doMC){

@@ -19,7 +19,7 @@ private:
 		}
 	}
 public:
-	UEParameters(std::vector<float> *v = 0, int nn = 1, int neta = 1)
+	UEParameters(const std::vector<float> *v = 0, int nn = 1, int neta = 1)
 		: nn_(nn), neta_(neta)
 	{
 		parameters_ = new boost::const_multi_array_ref<float, 4>(&(*v)[0], boost::extents[neta][nreduced_particle_flow_id][nn][2]);
