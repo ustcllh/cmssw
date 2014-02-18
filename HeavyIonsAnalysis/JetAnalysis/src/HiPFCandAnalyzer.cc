@@ -111,8 +111,8 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   for(int ieta = 0; ieta < etaBins_; ++ieta){
     pfEvt_.sumpt[ieta] = vnUE.get_sum_pt(ieta);
     for(int ifour = 0; ifour < fourierOrder_; ++ifour){
-      pfEvt_.vn[ieta][ifour] = vnUE.get_vn(ifour,ieta);
-      pfEvt_.psin[ieta][ifour] = vnUE.get_psin(ifour,ieta);
+      pfEvt_.vn[ifour][ieta] = vnUE.get_vn(ifour,ieta);
+      pfEvt_.psin[ifour][ieta] = vnUE.get_psin(ifour,ieta);
     }
   }
 
@@ -275,8 +275,8 @@ void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder)
   tree_->Branch("jetPhi",this->jetPhi_,"jetPhi[njets]/F");
   }
 
-  tree_->Branch("vn",this->vn,Form("vn[%d][%d]/F",etaBins,fourierOrder));
-  tree_->Branch("psin",this->psin,Form("vpsi[%d][%d]/F",etaBins,fourierOrder));
+  tree_->Branch("vn",this->vn,Form("vn[%d][%d]/F",fourierOrder,etaBins));
+  tree_->Branch("psin",this->psin,Form("vpsi[%d][%d]/F",fourierOrder,etaBins));
   tree_->Branch("sumpt",this->sumpt,Form("sumpt[%d]/F",etaBins));
 
   // -- gen info --

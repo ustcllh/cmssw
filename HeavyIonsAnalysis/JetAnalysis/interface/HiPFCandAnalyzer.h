@@ -44,8 +44,8 @@ class TreePFCandEventData
   Float_t                 pfVsPtInitial_[MAXPARTICLE];
   Float_t                 pfVsPtEqualized_[MAXPARTICLE];
   Float_t                 sumpt[20];
-  Float_t                 vn[20][10];
-  Float_t                 psin[20][10];
+  Float_t                 vn[10][20];
+  Float_t                 psin[10][20];
 
  private:
   TTree*                 tree_;
