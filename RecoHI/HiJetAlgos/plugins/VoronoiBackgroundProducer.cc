@@ -99,17 +99,10 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    }
 
    voronoi_->clear();
+   vvm.clear();
 
    edm::Handle<reco::CandidateView> inputsHandle;
    iEvent.getByLabel(src_,inputsHandle);
-   std::auto_ptr<reco::VoronoiMap> mapout(new reco::VoronoiMap());
-
-   std::vector<double> voronoi_vn = voronoi_->perp_fourier();
-
-   std::auto_ptr<std::vector<float> > vnout(new std::vector<float>(voronoi_vn.begin(), voronoi_vn.end()));
-
-   reco::VoronoiMap::Filler filler(*mapout);
-   vvm.clear();
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
@@ -119,6 +112,10 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    std::vector<double> subtracted_momenta = voronoi_->subtracted_unequalized_perp();
    std::vector<double> equalized_momenta = voronoi_->subtracted_equalized_perp();
    std::vector<double> particle_area = voronoi_->particle_area();
+   std::vector<double> voronoi_vn = voronoi_->perp_fourier();
+   std::auto_ptr<std::vector<float> > vnout(new std::vector<float>(voronoi_vn.begin(), voronoi_vn.end()));
+   std::auto_ptr<reco::VoronoiMap> mapout(new reco::VoronoiMap());
+   reco::VoronoiMap::Filler filler(*mapout);
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
