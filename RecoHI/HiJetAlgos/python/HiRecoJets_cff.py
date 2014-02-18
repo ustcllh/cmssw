@@ -28,7 +28,9 @@ voronoiBackgroundCalo = cms.EDProducer('VoronoiBackgroundProducer',
                                        equalizeThreshold0 = cms.double(5.0),
                                        equalizeThreshold1 = cms.double(35.0),
                                        equalizeR = cms.double(0.4),
-                                       isCalo = cms.bool(True)
+                                       isCalo = cms.bool(True),
+                                       etaBins = cms.int32(15),
+                                       fourierOrder = cms.int32(5)
                                        )
 
 

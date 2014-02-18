@@ -42,6 +42,8 @@ class VoronoiBackgroundProducer : public edm::EDProducer {
    double equalizeThreshold1_;
    double equalizeR_;
    bool isCalo_;
+   int etaBins_;
+   int fourierOrder_;
    std::vector<reco::VoronoiBackground> vvm;
 
 };
@@ -64,7 +66,9 @@ VoronoiBackgroundProducer::VoronoiBackgroundProducer(const edm::ParameterSet& iC
    equalizeThreshold0_(iConfig.getParameter<double>("equalizeThreshold0")),
    equalizeThreshold1_(iConfig.getParameter<double>("equalizeThreshold1")),
    equalizeR_(iConfig.getParameter<double>("equalizeR")),
-   isCalo_(iConfig.getParameter<bool>("isCalo"))
+   isCalo_(iConfig.getParameter<bool>("isCalo")),
+   etaBins_(iConfig.getParameter<int>("etaBins")),
+   fourierOrder_(iConfig.getParameter<int>("fourierOrder"))
 {
 
    src_ = iConfig.getParameter<edm::InputTag>("src");
@@ -112,7 +116,6 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       voronoi_->push_back_particle(ref->pt(),ref->eta(),ref->phi(),0);
    }
 
-   //   std::vector<double> subtracted_momenta = voronoi_->subtracted_perp();
    std::vector<double> subtracted_momenta = voronoi_->subtracted_unequalized_perp();
    std::vector<double> equalized_momenta = voronoi_->subtracted_equalized_perp();
    std::vector<double> particle_area = voronoi_->particle_area();

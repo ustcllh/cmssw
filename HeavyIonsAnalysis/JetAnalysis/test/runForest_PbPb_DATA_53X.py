@@ -20,7 +20,7 @@ process.HiForest.HiForestVersion = cms.untracked.string("Track7_Jet3")
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:temp.root")
+                            fileNames = cms.untracked.vstring("file:DATA_MinBias_RECO.root")
                             )
 
 # Number of events we want to process, -1 = all events
