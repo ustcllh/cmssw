@@ -1276,6 +1276,7 @@ namespace {
 						iterator->momentum_perp_subtracted =
 							iterator->momentum.Pt();
 					}
+					iterator->momentum_perp_subtracted_unequalized = iterator->momentum_perp_subtracted_unequalized;
 			}
 		}
 		void VoronoiAlgorithm::recombine_link(void)
@@ -1899,6 +1900,20 @@ namespace {
 					 _event.begin();
 				 iterator != _event.end(); iterator++) {
 				ret.push_back(iterator->momentum_perp_subtracted);
+			}
+
+			return ret;
+		}
+		std::vector<double> VoronoiAlgorithm::subtracted_unequalized_perp(void)
+		{
+			subtract_if_necessary();
+
+			std::vector<double> ret;
+
+			for (std::vector<particle_t>::const_iterator iterator =
+					_event.begin();
+				iterator != _event.end(); iterator++) {
+				ret.push_back(iterator->momentum_perp_subtracted_unequalized);
 			}
 
 			return ret;

@@ -110,15 +110,20 @@ VoronoiBackgroundProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
    }
 
    //   std::vector<double> subtracted_momenta = voronoi_->subtracted_perp();
-   std::vector<double> subtracted_momenta(0);
+   std::vector<double> subtracted_momenta = voronoi_->subtracted_unequalized_perp();
    std::vector<double> equalized_momenta = voronoi_->subtracted_equalized_perp();
+   std::vector<double> particle_area = voronoi_->particle_area();
 
    for(unsigned int i = 0; i < inputsHandle->size(); ++i){
       reco::CandidateViewRef ref(inputsHandle,i);
-      double pre_eq_pt = subtracted_momenta[i];
-      double post_eq_pt = equalized_momenta[i];
+      const double pre_eq_pt = subtracted_momenta[i];
+      const double post_eq_pt = equalized_momenta[i];
+      const double area = particle_area[i];
+      const double mass_square = ref->massSqr();
+      const double pre_eq_mt = sqrt(mass_square + pre_eq_pt * pre_eq_pt);
+      const double post_eq_mt = sqrt(mass_square + post_eq_pt * post_eq_pt);
 
-      reco::VoronoiBackground bkg(pre_eq_pt,post_eq_pt,0.,0.,0.);
+      reco::VoronoiBackground bkg(pre_eq_pt,post_eq_pt,pre_eq_mt,post_eq_mt,area);
       LogDebug("VoronoiBackgroundProducer")<<"Subtraction --- oldpt : "<<ref->pt()<<" --- newpt : "<<post_eq_pt<<endl;
       vvm.push_back(bkg);
    }
