@@ -111,17 +111,17 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   UEParameters vnUE(vn_.product(),fourierOrder_,etaBins_);
   const std::vector<float>& vue = vnUE.get_raw();
 
-  int iue = 0;
   for(int ieta = 0; ieta < etaBins_; ++ieta){
     pfEvt_.sumpt[ieta] = vnUE.get_sum_pt(ieta);
     for(int ifour = 0; ifour < fourierOrder_; ++ifour){
       pfEvt_.vn[ifour][ieta] = vnUE.get_vn(ifour,ieta);
       pfEvt_.psin[ifour][ieta] = vnUE.get_psin(ifour,ieta);
-      pfEvt_.ueraw[iue] = vue[iue];
     }
   }
 
-
+  for(int iue = 0; iue < etaBins_*fourierOrder_*2*3; ++iue){
+    pfEvt_.ueraw[iue] = vue[iue];
+  }
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
       const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);      
@@ -286,7 +286,7 @@ void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder, bool doUEra
   tree_->Branch("psin",this->psin,Form("vpsi[%d][%d]/F",fourierOrder,etaBins));
   tree_->Branch("sumpt",this->sumpt,Form("sumpt[%d]/F",etaBins));
   if(doUEraw){
-    tree_->Branch("ueraw",this->ueraw,Form("ueraw[%d]/F",(fourierOrder*etaBins*2)));
+    tree_->Branch("ueraw",this->ueraw,Form("ueraw[%d]/F",(fourierOrder*etaBins*2*3)));
   }
 
   // -- gen info --

@@ -46,7 +46,7 @@ class TreePFCandEventData
   Float_t                 sumpt[20];
   Float_t                 vn[10][20];
   Float_t                 psin[10][20];
-  Float_t                 ueraw[400];
+  Float_t                 ueraw[1200];
 
  private:
   TTree*                 tree_;
