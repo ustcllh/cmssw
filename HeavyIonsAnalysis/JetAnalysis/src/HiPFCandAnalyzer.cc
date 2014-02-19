@@ -101,12 +101,12 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   edm::Handle<reco::PFCandidateCollection> pfCandidates;
   iEvent.getByLabel(pfCandidateLabel_,pfCandidates);  
   iEvent.getByLabel(pfCandidateLabel_,candidates_);  
-  const reco::PFCandidateCollection *pfCandidateColl = &(*pfCandidates);
+  const reco::PFCandidateCollection *pfCandidateColl = pfCandidates.product();
 
   iEvent.getByLabel(srcVor_,backgrounds_);
   iEvent.getByLabel(srcVor_,vn_);
 
-  UEParameters vnUE(&(*vn_),fourierOrder_,etaBins_);
+  UEParameters vnUE(vn_.product(),fourierOrder_,etaBins_);
 
   for(int ieta = 0; ieta < etaBins_; ++ieta){
     pfEvt_.sumpt[ieta] = vnUE.get_sum_pt(ieta);
