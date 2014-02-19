@@ -26,6 +26,7 @@
 <use name="DataFormats/METReco"/>
 <use name="DataFormats/PatCandidates"/>
 <use name="RecoJets/JetProducers"/>
+<use name="RecoHI/HiJetAlgos"/>
 <use name="DataFormats/HeavyIonEvent"/>
 <use name="CondFormats/JetMETObjects"/>
 <use name="CalibFormats/HcalObjects"/>
