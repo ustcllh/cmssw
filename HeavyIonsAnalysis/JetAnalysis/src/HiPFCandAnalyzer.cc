@@ -67,6 +67,8 @@ HiPFCandAnalyzer::HiPFCandAnalyzer(const edm::ParameterSet& iConfig)
 
   doJets_ = iConfig.getUntrackedParameter<bool>("doJets",0);
   doVS_ = iConfig.getUntrackedParameter<bool>("doVS",0);
+  doUEraw_ = iConfig.getUntrackedParameter<bool>("doUEraw",0);
+
   doMC_ = iConfig.getUntrackedParameter<bool>("doMC",0);
   skipCharged_ = iConfig.getUntrackedParameter<bool>("skipCharged",0);
 
@@ -107,14 +109,19 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   iEvent.getByLabel(srcVor_,vn_);
 
   UEParameters vnUE(vn_.product(),fourierOrder_,etaBins_);
+  const std::vector<float>& vue = vnUE.get_raw();
 
+  int iue = 0;
   for(int ieta = 0; ieta < etaBins_; ++ieta){
     pfEvt_.sumpt[ieta] = vnUE.get_sum_pt(ieta);
     for(int ifour = 0; ifour < fourierOrder_; ++ifour){
       pfEvt_.vn[ifour][ieta] = vnUE.get_vn(ifour,ieta);
       pfEvt_.psin[ifour][ieta] = vnUE.get_psin(ifour,ieta);
+      pfEvt_.ueraw[iue] = vue[iue];
     }
   }
+
+
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
       const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);      
@@ -228,7 +235,7 @@ void HiPFCandAnalyzer::beginJob()
     pfEvt_.doMC = doMC_;
     pfEvt_.doJets = doJets_;
 
-    pfEvt_.SetBranches(etaBins_, fourierOrder_);
+    pfEvt_.SetBranches(etaBins_, fourierOrder_, doUEraw_);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------                                                                                                                                              
@@ -254,7 +261,7 @@ TreePFCandEventData::TreePFCandEventData(){
 
 
 // set branches
-void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder)
+void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder, bool doUEraw)
 {
   // --event level--
 
@@ -278,6 +285,9 @@ void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder)
   tree_->Branch("vn",this->vn,Form("vn[%d][%d]/F",fourierOrder,etaBins));
   tree_->Branch("psin",this->psin,Form("vpsi[%d][%d]/F",fourierOrder,etaBins));
   tree_->Branch("sumpt",this->sumpt,Form("sumpt[%d]/F",etaBins));
+  if(doUEraw){
+    tree_->Branch("ueraw",this->ueraw,Form("ueraw[%d]/F",(fourierOrder*etaBins*2)));
+  }
 
   // -- gen info --
   if(doMC){
