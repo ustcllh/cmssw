@@ -43,6 +43,7 @@ class TreePFCandEventData
   Float_t                 pfVsPt_[MAXPARTICLE];
   Float_t                 pfVsPtInitial_[MAXPARTICLE];
   Float_t                 pfVsPtEqualized_[MAXPARTICLE];
+  Float_t                 pfArea_[MAXPARTICLE];
   Float_t                 sumpt[20];
   Float_t                 vn[10][20];
   Float_t                 psin[10][20];
