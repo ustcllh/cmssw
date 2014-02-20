@@ -12,7 +12,7 @@ process.options = cms.untracked.PSet(
 process.load("CmsHi.JetAnalysis.HiForest_cff")
 process.HiForest.inputLines = cms.vstring("HiForest V3",
 )
-process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
+process.HiForest.HiForestVersion = cms.untracked.string("Track8_Jet15")
 
 #####################################################################################
 # Input source

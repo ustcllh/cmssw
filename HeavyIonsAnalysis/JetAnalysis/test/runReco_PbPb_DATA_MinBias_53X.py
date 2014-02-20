@@ -60,7 +60,7 @@ process.RECODEBUGoutput = cms.OutputModule("PoolOutputModule",
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV2B::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV6::All', '')
 
 #Filtering
 # Minimum bias trigger selection (later runs)

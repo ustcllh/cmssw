@@ -12,7 +12,7 @@ process.options = cms.untracked.PSet(
 process.load("HeavyIonsAnalysis.JetAnalysis.HiForest_cff")
 process.HiForest.inputLines = cms.vstring("HiForest V3",
 )
-process.HiForest.HiForestVersion = cms.untracked.string("Track7_Jet3")
+process.HiForest.HiForestVersion = cms.untracked.string("Track8_Jet15")
 
 #####################################################################################
 # Input source
@@ -46,7 +46,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV2B::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV6::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)

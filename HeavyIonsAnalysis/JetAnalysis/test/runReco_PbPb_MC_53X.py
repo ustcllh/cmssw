@@ -73,26 +73,6 @@ process.RECODEBUGoutput_step = cms.EndPath(process.RECODEBUGoutput)
 # Schedule definition
 process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.endjob_step,process.RECODEBUGoutput_step)
 
-from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.connect = 'sqlite_file:STARTHI53_LV1.db'
-process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
-process.GlobalTag.toGet.extend([
-    cms.PSet(record = cms.string("JetCorrectionsRecord"),
-             tag = cms.string("JetCorrectorParametersCollection_Jec11_V12_AK5CaloHLT"),
-             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
-             label = cms.untracked.string("AK5CaloHLT")
-             ),
-    cms.PSet(record = cms.string("JetCorrectionsRecord"),
-             tag = cms.string("JetCorrectorParametersCollection_AK5PF_2012_V8_hlt_mc"),
-             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
-             label = cms.untracked.string("AK5PFHLT")
-             ),
-    cms.PSet(record = cms.string("JetCorrectionsRecord"),
-             tag = cms.string("JetCorrectorParametersCollection_AK5PFchs_2012_V8_hlt_mc"),
-             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
-             label = cms.untracked.string("AK5PFchsHLT")
-             ),
-    ])
 
 
 process.SimpleMemoryCheck=cms.Service("SimpleMemoryCheck",
