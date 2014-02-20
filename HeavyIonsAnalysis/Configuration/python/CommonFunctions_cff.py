@@ -115,7 +115,7 @@ def overrideCentrality(process):
                                           ),
 
                 cms.PSet(record = cms.string("HeavyIonRcd"),
-                                          tag = cms.string("CentralityTable_HFtowers40_HydjetDrum_vv44x05_mc"),
+                                          tag = cms.string("CentralityTable_HFtowers200_HydjetDrum_v5315x01_mc"),
                                           connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                                           label = cms.untracked.string("HFtowersHydjet_Drum")
                                           ),
@@ -133,7 +133,7 @@ def overrideCentrality(process):
                  ),
         
         cms.PSet(record = cms.string("HeavyIonRcd"),
-                 tag = cms.string("CentralityTable_HFtowers40_Glauber2010A_v3_effB_offline"),
+                 tag = cms.string("CentralityTable_HFtowers200_Glauber2010A_v5315x01_offline"),
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                  label = cms.untracked.string("HFtowers")
                  ),
