@@ -45,8 +45,8 @@ class TreePFCandEventData
   Float_t                 pfVsPtEqualized_[MAXPARTICLE];
   Float_t                 pfArea_[MAXPARTICLE];
   Float_t                 sumpt[20];
-  Float_t                 vn[10][20];
-  Float_t                 psin[10][20];
+  Float_t                 vn[200];
+  Float_t                 psin[200];
   Float_t                 ueraw[1200];
 
  private:

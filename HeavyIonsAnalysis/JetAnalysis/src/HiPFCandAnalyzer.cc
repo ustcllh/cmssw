@@ -114,8 +114,8 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   for(int ieta = 0; ieta < etaBins_; ++ieta){
     pfEvt_.sumpt[ieta] = vnUE.get_sum_pt(ieta);
     for(int ifour = 0; ifour < fourierOrder_; ++ifour){
-      pfEvt_.vn[ifour][ieta] = vnUE.get_vn(ifour,ieta);
-      pfEvt_.psin[ifour][ieta] = vnUE.get_psin(ifour,ieta);
+      pfEvt_.vn[ifour * etaBins_ + ieta] = vnUE.get_vn(ifour,ieta);
+      pfEvt_.psin[ifour * etaBins_ + ieta] = vnUE.get_psin(ifour,ieta);
     }
   }
 
