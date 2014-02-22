@@ -45,7 +45,7 @@ void VoronoiSubtractor::offsetCorrectJets()
   jetOffset_.reserve(fjJets_->size());
 
   for (unsigned int ijet = 0;ijet <fjJets_->size();++ijet) {
-     const fastjet::PseudoJet& fjJet = (*fjJets_)[ijet];
+     fastjet::PseudoJet& fjJet = (*fjJets_)[ijet];
 
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   pt : "<<fjJet.pt()<<" --- eta : "<<fjJet.eta()<<" --- phi : "<<fjJet.phi()<<endl;
 
@@ -71,7 +71,7 @@ void VoronoiSubtractor::offsetCorrectJets()
 	LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
 	subtracted += candidate;
      }
-
+  
      // Loop over dropped candidates to see whether there is any of them
      // that would belong to this jet:
      if(addNegativesFromCone_){
@@ -81,9 +81,12 @@ void VoronoiSubtractor::offsetCorrectJets()
 	 
 	 if(match(fjJet,dropcand)){
 	   unsubtractedDropped += dropcand;
+	   unsubtracted += dropcand;
 	 }
        }
      }
+
+     fjJet.reset_momentum(subtracted);
 
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<endl;
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   subtracted : "<<subtracted.pt()<<endl;
