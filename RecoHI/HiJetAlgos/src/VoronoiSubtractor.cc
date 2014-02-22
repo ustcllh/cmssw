@@ -74,14 +74,15 @@ void VoronoiSubtractor::offsetCorrectJets()
 
      // Loop over dropped candidates to see whether there is any of them
      // that would belong to this jet:
-
-     for(unsigned int i=0; i < droppedCandidates_.size(); ++i){
-	reco::CandidateViewRef ref(candidates_,droppedCandidates_[i]);
-	fastjet::PseudoJet dropcand(ref->px(),ref->py(),ref->pz(),ref->energy());
-
-	if(match(fjJet,dropcand)){
+     if(addNegativesFromCone_){
+       for(unsigned int i=0; i < droppedCandidates_.size(); ++i){
+	 reco::CandidateViewRef ref(candidates_,droppedCandidates_[i]);
+	 fastjet::PseudoJet dropcand(ref->px(),ref->py(),ref->pz(),ref->energy());
+	 
+	 if(match(fjJet,dropcand)){
 	   unsubtractedDropped += dropcand;
-	}
+	 }
+       }
      }
 
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<endl;
@@ -131,7 +132,12 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
       // in order to determine how much energy has been subtracted in total.
 
       if(ptnew <= 0.){
-	 mScale = 0.;
+	if(infinitesimalPt_ > 0) mScale = infinitesimalPt_/ptold;
+	else mScale = 0.;
+
+      }
+
+      if(mScale <= 0.){
 	 droppedCandidates_.push_back(input_object->user_index());
       }
     
