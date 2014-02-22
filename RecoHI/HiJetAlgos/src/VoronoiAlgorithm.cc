@@ -1683,7 +1683,9 @@ namespace {
 							(sum_unequalized >= sum_unequalized_0 &&
 							 (iterator_particle - _event.begin()) % 8 == 0)) {
 
-						const double weight = sum_unequalized * std::max(1e-3, iterator_particle->area);
+						const double weight = sum_unequalized *
+							std::min(1.0, std::max(1e-3,
+								iterator_particle->area));
 
 						if (weight > 0) {
 							p->push_back_row(
