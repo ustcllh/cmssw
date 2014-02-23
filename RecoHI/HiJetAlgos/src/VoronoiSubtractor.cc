@@ -47,7 +47,8 @@ void VoronoiSubtractor::offsetCorrectJets()
   for (unsigned int ijet = 0;ijet <fjJets_->size();++ijet) {
      fastjet::PseudoJet& fjJet = (*fjJets_)[ijet];
 
-     LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   pt : "<<fjJet.pt()<<" --- eta : "<<fjJet.eta()<<" --- phi : "<<fjJet.phi()<<endl;
+     LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   pt : "<<fjJet.pt()
+				  <<" --- eta : "<<fjJet.eta()<<" --- phi : "<<fjJet.phi()<<endl;
 
      fastjet::PseudoJet subtracted;
      fastjet::PseudoJet unsubtracted;
@@ -69,9 +70,15 @@ void VoronoiSubtractor::offsetCorrectJets()
 	unsubtracted += candidate;
 	if(voronoi.pt() > 0){
 	  candidate.reset_PtYPhiM(voronoi.pt(),ref->rapidity(),ref->phi(),ref->mass());
-	  LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
-	  cout<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
-          cout<<"constitute "<<index<<" --- pt : "<<fjConstituents[i].perp()<<" --- eta : "<<fjConstituents[i].pseudorapidity()<<" --- phi : "<<fjConstituents[i].phi()<<" --- mass : "<<fjConstituents[i].m()<<endl;
+	  LogDebug("VoronoiSubtractor")<<"candidate "<<index
+				       <<" --- original pt : "<<orpt
+				       <<" ---  voronoi pt : "<<voronoi.pt()
+				       <<" --- ref pt : "<<ref->pt()
+				       <<" --- constituent "<<index
+				       <<" --- pt : "<<fjConstituents[i].perp()
+				       <<" --- eta : "<<fjConstituents[i].pseudorapidity()
+				       <<" --- phi : "<<fjConstituents[i].phi()
+				       <<" --- mass : "<<fjConstituents[i].m()<<endl;
 	  subtracted += candidate;
 	}
      }
@@ -95,12 +102,6 @@ void VoronoiSubtractor::offsetCorrectJets()
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<endl;
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   subtracted : "<<subtracted.pt()<<endl;
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   dropped : "<<unsubtractedDropped.pt()<<endl;
-
-     cout<<"Jet eta : "<<fjJet.eta()<<endl;
-     cout<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<" --- eta : "<<unsubtracted.eta()<<endl;
-     cout<<"fjJets_ "<<ijet<<"   subtracted : "<<subtracted.pt()<<" --- eta : "<<subtracted.eta()<<endl;
-     cout<<"fjJets_ "<<ijet<<"   dropped : "<<unsubtractedDropped.pt()<<" --- eta : "<<unsubtractedDropped.eta()<<endl;
-
      jetOffset_[ijet]  = unsubtracted.pt() - fjJet.pt();
 
   }
@@ -132,59 +133,44 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
       double ptold = input_object->pt();
       double ptnew = voronoi.pt();
 
-      LogDebug("VoronoiSubtractor")<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew<<"  E : "<<input_object->e()<<" rap : "<<input_object->rapidity()<<"  phi : "<<input_object->phi()<<" MASS : "<<input_object->m()<<endl;
+      LogDebug("VoronoiSubtractor")<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew
+				   <<"  E : "<<input_object->e()
+				   <<" rap : "<<input_object->rapidity()
+				   <<"  phi : "<<input_object->phi()
+				   <<" MASS : "<<input_object->m()<<endl;
 
-      cout<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew<<"  E : "<<input_object->e()<<" rap : "<<input_object->rapidity()<<"  phi : "<<input_object->phi()<<" MASS : "<<input_object->m()<<endl;
-      
-      float mScale = ptnew/ptold; 
-      double candidatePtMin_ = 0;
-
-      // If the pt of the candidate is equal to or below 0, 
-      // it is removed from the input collection,
-      // so that the jet clustering algorithm can function properly.
-      // However, we need to keep track of these candidates
-      // in order to determine how much energy has been subtracted in total.
-
-      if(ptnew <= 0.){
-	if(infinitesimalPt_ > 0) mScale = infinitesimalPt_/ptold;
-	else mScale = 0.;
-
+      // Treatment of candidates with negative pt after subtraction
+      if(ptnew < infinitesimalPt_){
+	if(infinitesimalPt_ > 0){
+	  // Low-pt candidate is assigned a very small finite pt
+	  // so that the jet clustering includes the candidate 
+	  // and can associate it to the jet.
+	  // The original candidate pt is restored
+	  // in the offsetCorrectJets() function.
+	  ptnew = infinitesimalPt_;
+	}else{
+	  // Low-pt candidate is removed from the input collection,
+	  // so that the jet clustering algorithm can function properly.
+	  // However, we need to keep track of these candidates
+	  // in order to determine how much energy has been subtracted in total.
+	  droppedCandidates_.push_back(input_object->user_index());
+	  continue;
+	}
       }
 
-      if(mScale <= 0.){
-	 droppedCandidates_.push_back(input_object->user_index());
-      }
-    
       int index = input_object->user_index();
-      double mass = input_object->m();
-      if(mass < 0){
-	 mass = 0.;
-      }
 
-      LogDebug("VoronoiSubtractor")<<"candidate "<<int(input_object-coll.begin())<<" mScale : "<<mScale<<endl;
-
-      double energy = sqrt(input_object->px()*input_object->px()*mScale*mScale+
-			   input_object->py()*input_object->py()*mScale*mScale+
-			   input_object->pz()*input_object->pz()*mScale*mScale+
-			   mass*mass
-			   );
-
-      fastjet::PseudoJet ps(input_object->px()*mScale, input_object->py()*mScale,
-			    input_object->pz()*mScale, energy);
-
+      fastjet::PseudoJet ps(input_object->four_mom());
+      ps.reset_PtYPhiM(ptnew,input_object->rapidity(),input_object->phi(),input_object->m());
       ps.set_user_index(index);
 
-      LogDebug("VoronoiSubtractor")<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
-      cout<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
+      LogDebug("VoronoiSubtractor")<<"New momentum : "<<ps.pt()
+				   <<"   rap : "<<ps.rap()
+				   <<"   phi : "<<ps.phi()
+				   <<" MASS : "<<ps.m()<<endl;
 
-      if(mScale > candidatePtMin_ || !dropZeroTowers_){
-	cout<<"CANDIDATE PASSED"<<endl;
-	newcoll.push_back(ps);
-      }else{
-	cout<<"DroppeD"<<endl;
-      }
+      newcoll.push_back(ps); 
    }
-
    coll = newcoll;
 }
 

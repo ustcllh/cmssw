@@ -348,10 +348,7 @@ void VirtualJetProducer::produce(edm::Event& iEvent,const edm::EventSetup& iSetu
      subtractor_->reset(inputs_,fjInputs_,fjJets_);
      subtractor_->calculatePedestal(fjInputs_); 
 
-     cout<<"Collection size before : "<<fjInputs_.size()<<endl;
-     subtractor_->subtractPedestal(fjInputs_);    
-     cout<<"AFTER : "<<fjInputs_.size()<<endl;
-     
+     subtractor_->subtractPedestal(fjInputs_);         
      LogDebug("VirtualJetProducer") << "Subtracted pedestal\n";
   }
   // Run algorithm. Will modify fjJets_ and allocate fjClusterSeq_. 
