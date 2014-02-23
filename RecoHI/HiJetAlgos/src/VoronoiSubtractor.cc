@@ -67,9 +67,13 @@ void VoronoiSubtractor::offsetCorrectJets()
 	fastjet::PseudoJet candidate(ref->px(),ref->py(),ref->pz(),ref->energy());
 	double orpt = candidate.perp();
 	unsubtracted += candidate;
-	candidate.reset_PtYPhiM(voronoi.pt(),ref->rapidity(),ref->phi(),ref->mass());
-	LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
-	subtracted += candidate;
+	if(voronoi.pt() > 0){
+	  candidate.reset_PtYPhiM(voronoi.pt(),ref->rapidity(),ref->phi(),ref->mass());
+	  LogDebug("VoronoiSubtractor")<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
+	  cout<<"cadidate "<<index<<" --- original pt : "<<orpt<<"  ---  voronoi pt : "<<voronoi.pt()<<" --- ref pt : "<<ref->pt()<<endl;
+          cout<<"constitute "<<index<<" --- pt : "<<fjConstituents[i].perp()<<" --- eta : "<<fjConstituents[i].pseudorapidity()<<" --- phi : "<<fjConstituents[i].phi()<<" --- mass : "<<fjConstituents[i].m()<<endl;
+	  subtracted += candidate;
+	}
      }
   
      // Loop over dropped candidates to see whether there is any of them
@@ -91,6 +95,11 @@ void VoronoiSubtractor::offsetCorrectJets()
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<endl;
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   subtracted : "<<subtracted.pt()<<endl;
      LogDebug("VoronoiSubtractor")<<"fjJets_ "<<ijet<<"   dropped : "<<unsubtractedDropped.pt()<<endl;
+
+     cout<<"Jet eta : "<<fjJet.eta()<<endl;
+     cout<<"fjJets_ "<<ijet<<"   unsubtracted : "<<unsubtracted.pt()<<" --- eta : "<<unsubtracted.eta()<<endl;
+     cout<<"fjJets_ "<<ijet<<"   subtracted : "<<subtracted.pt()<<" --- eta : "<<subtracted.eta()<<endl;
+     cout<<"fjJets_ "<<ijet<<"   dropped : "<<unsubtractedDropped.pt()<<" --- eta : "<<unsubtractedDropped.eta()<<endl;
 
      jetOffset_[ijet]  = unsubtracted.pt() - fjJet.pt();
 
@@ -124,6 +133,8 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
       double ptnew = voronoi.pt();
 
       LogDebug("VoronoiSubtractor")<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew<<"  E : "<<input_object->e()<<" rap : "<<input_object->rapidity()<<"  phi : "<<input_object->phi()<<" MASS : "<<input_object->m()<<endl;
+
+      cout<<"pt old : "<<ptold<<" ;   pt new : "<<ptnew<<"  E : "<<input_object->e()<<" rap : "<<input_object->rapidity()<<"  phi : "<<input_object->phi()<<" MASS : "<<input_object->m()<<endl;
       
       float mScale = ptnew/ptold; 
       double candidatePtMin_ = 0;
@@ -147,10 +158,10 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
       int index = input_object->user_index();
       double mass = input_object->m();
       if(mass < 0){
-	 mass = 0;
+	 mass = 0.;
       }
 
-      //      LogDebug("VoronoiSubtractor")<<"candidate "<<int(input_object-coll.begin())<<" mScale : "<<mScale<<endl;
+      LogDebug("VoronoiSubtractor")<<"candidate "<<int(input_object-coll.begin())<<" mScale : "<<mScale<<endl;
 
       double energy = sqrt(input_object->px()*input_object->px()*mScale*mScale+
 			   input_object->py()*input_object->py()*mScale*mScale+
@@ -163,9 +174,15 @@ void VoronoiSubtractor::subtractPedestal(vector<fastjet::PseudoJet> & coll)
 
       ps.set_user_index(index);
 
-      //      LogDebug("VoronoiSubtractor")<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
+      LogDebug("VoronoiSubtractor")<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
+      cout<<"New momentum : "<<ps.pt()<<"   rap : "<<ps.rap()<<"   phi : "<<ps.phi()<<" MASS : "<<ps.m()<<endl;
 
-      if(ptnew > candidatePtMin_ || !dropZeroTowers_) newcoll.push_back(ps);
+      if(mScale > candidatePtMin_ || !dropZeroTowers_){
+	cout<<"CANDIDATE PASSED"<<endl;
+	newcoll.push_back(ps);
+      }else{
+	cout<<"DroppeD"<<endl;
+      }
    }
 
    coll = newcoll;
