@@ -186,7 +186,6 @@ process.ana_step = cms.Path(process.filterSequence *
                             process.photonStep *
                             process.hltanalysis *
                             process.hiEvtAnalyzer *
-#                            process.PFTowers * # temp
                             process.jetSequences +
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +

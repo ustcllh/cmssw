@@ -102,11 +102,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff'
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
 
-process.jetSequences = cms.Sequence(process.akPu4CaloJets +
-                                    process.akPu4PFJets +
-                                    process.akPu5CaloJets +
-                                    
-                                    process.akVs3CaloJetSequence +
+process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +

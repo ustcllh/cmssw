@@ -88,9 +88,35 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_PbPb_mc_cff')
-
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mc_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_PbPb_mc_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
+
+process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
+                                    process.akPu3CaloJetSequence +
+                                    process.akVs3PFJetSequence +
+                                    process.akPu3PFJetSequence +
+                                    
+                                    process.akVs4CaloJetSequence +
+                                    process.akPu4CaloJetSequence +
+                                    process.akVs4PFJetSequence +
+                                    process.akPu4PFJetSequence +
+                                    
+                                    process.akVs5CaloJetSequence +
+                                    process.akPu5CaloJetSequence +
+                                    process.akVs5PFJetSequence +
+                                    process.akPu5PFJetSequence
+                                    )
+
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
@@ -154,20 +180,13 @@ process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
-process.temp_step = cms.Path(process.pgen_hi)
+process.temp_step = cms.Path(process.hiGenParticles*process.hiGenJets)
 
 process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleaned
-                            +
-                            process.akVs3CaloJetSequence
-                            +
-                            process.akPu3CaloJetSequence
-                            +
-                            process.akVs3PFJetSequence
-                            +
-                            process.akPu3PFJetSequence +
+                            process.hiGenJetsCleaned+
+                            process.jetSequences +                            
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
