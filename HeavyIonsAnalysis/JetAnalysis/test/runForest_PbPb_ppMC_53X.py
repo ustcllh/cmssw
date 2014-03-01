@@ -201,7 +201,11 @@ process.phltJetHI = cms.Path( process.hltJetHI )
 process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
 process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
-
+process.phfCoincFilter = cms.Path(process.hfCoincFilter )
+process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3 )
+process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
+process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hltPixelClusterShapeFilter )
+ 
 # Customization
 from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
 setPhotonObject(process,"cleanPhotons")

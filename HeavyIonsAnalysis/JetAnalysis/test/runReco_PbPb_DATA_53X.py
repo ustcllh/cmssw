@@ -51,9 +51,6 @@ process.RECODEBUGoutput = cms.OutputModule("PoolOutputModule",
     filterName = cms.untracked.string('MinBiasCollEvtSel'),
     dataTier = cms.untracked.string('GEN-SIM-RECO')
     ),
-                                           SelectEvents = cms.untracked.PSet(
-    SelectEvents = cms.vstring('filter_step')
-    )
                                            )
 
 # Additional output definition
@@ -62,26 +59,15 @@ process.RECODEBUGoutput = cms.OutputModule("PoolOutputModule",
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV6::All', '')
 
-#Filtering
-# Minimum bias trigger selection (later runs)
-process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
-process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
-process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
-process.load("FWCore.Modules.preScaler_cfi")
-process.preScaler.prescaleFactor = 1000
-process.filterSequence = cms.Sequence(process.hltMinBiasHFOrBSC*process.preScaler*process.collisionEventSelection)
-
 # Path and EndPath definitions
-process.raw2digi_step = cms.Path(process.hltMinBiasHFOrBSC*process.preScaler*process.RawToDigi)
-process.reconstruction_step = cms.Path(process.hltMinBiasHFOrBSC*process.preScaler*process.reconstructionHeavyIons)
-process.filter_step = cms.Path(process.filterSequence)
+process.raw2digi_step = cms.Path(process.RawToDigi)
+process.reconstruction_step = cms.Path(process.reconstructionHeavyIons)
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.RECODEBUGoutput_step = cms.EndPath(process.RECODEBUGoutput)
 
 # Schedule definition
-process.schedule = cms.Schedule(process.raw2digi_step,process.reconstruction_step,process.filter_step,process.endjob_step,process.RECODEBUGoutput_step)
+process.schedule = cms.Schedule(process.raw2digi_step,process.reconstruction_step,process.endjob_step,process.RECODEBUGoutput_step)
 
 from Configuration.PyReleaseValidation.ConfigBuilder import MassReplaceInputTag
 MassReplaceInputTag(process)
