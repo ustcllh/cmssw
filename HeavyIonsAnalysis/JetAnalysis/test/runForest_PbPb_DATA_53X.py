@@ -168,6 +168,7 @@ process.hltMuTree.doGen = False
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_data_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
 
 #Filtering
 # Minimum bias trigger selection (later runs)
@@ -181,6 +182,15 @@ process.skimanalysis.superFilters = cms.vstring("ana_step")
 process.photonStep = cms.Sequence(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons * process.selectedPatPhotons)
 process.photonStep.remove(process.interestingTrackEcalDetIds)
 process.photonStep.remove(process.photonMatch)
+
+process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
+process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
+process.phfCoincFilter = cms.Path(process.hfCoincFilter )
+process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3 )
+process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
+process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hltPixelClusterShapeFilter )
+process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
+
 
 process.ana_step = cms.Path(process.filterSequence *
                             process.photonStep *
