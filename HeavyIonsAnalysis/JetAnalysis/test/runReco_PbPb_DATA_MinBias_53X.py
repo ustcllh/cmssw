@@ -69,7 +69,7 @@ process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
 process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
 process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 process.load("FWCore.Modules.preScaler_cfi")
-process.preScaler.prescaleFactor = 1000
+process.preScaler.prescaleFactor = 30
 process.filterSequence = cms.Sequence(process.hltMinBiasHFOrBSC*process.preScaler*process.collisionEventSelection)
 
 # Path and EndPath definitions

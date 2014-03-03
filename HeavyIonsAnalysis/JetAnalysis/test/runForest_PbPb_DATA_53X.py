@@ -12,7 +12,7 @@ process.options = cms.untracked.PSet(
 process.load("HeavyIonsAnalysis.JetAnalysis.HiForest_cff")
 process.HiForest.inputLines = cms.vstring("HiForest V3",
 )
-process.HiForest.HiForestVersion = cms.untracked.string("Track8_Jet15")
+process.HiForest.HiForestVersion = cms.untracked.string("Track8_Jet20")
 
 #####################################################################################
 # Input source
@@ -25,7 +25,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(500))
+    input = cms.untracked.int32(-1))
 
 
 #####################################################################################
@@ -113,7 +113,8 @@ process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_cfi')
-process.rechitAna = cms.Sequence(process.rechitanalyzer+process.pfTowers)
+process.rechitAna = cms.Sequence(process.rechitanalyzer)
+#+process.pfTowers)
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
 
