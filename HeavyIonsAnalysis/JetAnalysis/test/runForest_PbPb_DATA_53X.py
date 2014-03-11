@@ -182,6 +182,17 @@ process.skimanalysis.superFilters = cms.vstring("ana_step")
 process.photonStep = cms.Sequence(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons * process.selectedPatPhotons)
 process.photonStep.remove(process.interestingTrackEcalDetIds)
 process.photonStep.remove(process.photonMatch)
+process.photonStep.remove(process.seldigis)
+process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
+    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
+    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
+    reducedHitsCollection = cms.string('')
+)
+process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
+    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
+    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
+    reducedHitsCollection = cms.string('')
+)
 
 process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
 process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )

@@ -160,6 +160,17 @@ process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
 process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
 process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
 process.photonStep.remove(process.interestingTrackEcalDetIds)
+process.photonStep.remove(process.seldigis)
+process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
+    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
+    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
+    reducedHitsCollection = cms.string('')
+)
+process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
+    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
+    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
+    reducedHitsCollection = cms.string('')
+)
 process.photonMatch.matched = cms.InputTag("hiGenParticles")
 process.patPhotons.addPhotonID = cms.bool(False)
 process.extrapatstep = cms.Path(process.selectedPatPhotons)
