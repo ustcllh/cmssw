@@ -95,6 +95,8 @@ for system in PbPb pp pPb
 
 	    if [ $sample == "jec" ] && [ $system == "PbPb" ] && [ ! $sub == "NONE" ]; then
 		echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
+	    fi
+	    if [ $sample == "jec" ]; then
 		echo "${algo}${subt}${radius}${object}JetAnalyzer.genPtMin = cms.untracked.double(1)" >> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 	    fi
 

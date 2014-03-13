@@ -75,3 +75,4 @@ akPu6PFJetSequence_data = cms.Sequence(akPu6PFcorr
 akPu6PFJetSequence_jec = akPu6PFJetSequence_mc
 
 akPu6PFJetSequence = cms.Sequence(akPu6PFJetSequence_jec)
+akPu6PFJetAnalyzer.genPtMin = cms.untracked.double(1)

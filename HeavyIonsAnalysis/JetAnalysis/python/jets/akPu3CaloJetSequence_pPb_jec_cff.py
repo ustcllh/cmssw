@@ -75,3 +75,4 @@ akPu3CaloJetSequence_data = cms.Sequence(akPu3Calocorr
 akPu3CaloJetSequence_jec = akPu3CaloJetSequence_mc
 
 akPu3CaloJetSequence = cms.Sequence(akPu3CaloJetSequence_jec)
+akPu3CaloJetAnalyzer.genPtMin = cms.untracked.double(1)
