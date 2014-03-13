@@ -72,4 +72,6 @@ akVs3CaloJetSequence_data = cms.Sequence(akVs3Calocorr
                                                     akVs3CaloJetAnalyzer
                                                     )
 
+akVs3CaloJetSequence_jec = akVs3CaloJetSequence_mc
+
 akVs3CaloJetSequence = cms.Sequence(akVs3CaloJetSequence_mc)

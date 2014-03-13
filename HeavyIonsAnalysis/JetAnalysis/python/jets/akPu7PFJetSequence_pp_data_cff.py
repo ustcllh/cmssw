@@ -72,4 +72,6 @@ akPu7PFJetSequence_data = cms.Sequence(akPu7PFcorr
                                                     akPu7PFJetAnalyzer
                                                     )
 
+akPu7PFJetSequence_jec = akPu7PFJetSequence_mc
+
 akPu7PFJetSequence = cms.Sequence(akPu7PFJetSequence_data)
