@@ -83,7 +83,7 @@ process.load('RecoJets.Configuration.GenJetParticles_cff')
 
 #process.hiGenParticles.srcVector = cms.vstring('generator')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_JEC_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_jec_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_PbPb_jec_cff')
@@ -202,7 +202,7 @@ process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJ
 process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleaned*
+                            process.hiGenJetsCleaned_JEC*
                             process.jetSequences +                            
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +

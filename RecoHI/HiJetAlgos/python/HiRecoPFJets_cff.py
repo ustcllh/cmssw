@@ -30,9 +30,9 @@ ak5PFJets = cms.EDProducer(
     AnomalousCellParameters,
     MultipleAlgoIteratorBlock,
     jetAlgorithm = cms.string("AntiKt"),
-    rParam       = cms.double(0.5),
+    rParam       = cms.double(0.5)
     )
-
+ak5PFJets.src = cms.InputTag('PFTowers')
 
 akPu5PFJets = ak5PFJets.clone(
     jetType = cms.string('BasicJet'),
