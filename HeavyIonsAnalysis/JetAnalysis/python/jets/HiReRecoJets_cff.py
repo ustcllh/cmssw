@@ -25,10 +25,34 @@ akPu6PFJets.jetPtMin = 1
 akPu6CaloJets.jetPtMin = 1
 akPu7PFJets.jetPtMin = 1
 akPu7CaloJets.jetPtMin = 1
+ak2PFJets.jetPtMin = 1
+ak2CaloJets.jetPtMin = 1
+ak3PFJets.jetPtMin = 1
+ak3CaloJets.jetPtMin = 1
+ak4PFJets.jetPtMin = 1
+ak4CaloJets.jetPtMin = 1
+ak5PFJets.jetPtMin = 1
+ak5CaloJets.jetPtMin = 1
+ak6PFJets.jetPtMin = 1
+ak6CaloJets.jetPtMin = 1
+ak7PFJets.jetPtMin = 1
+ak7CaloJets.jetPtMin = 1
 
 hiReRecoPFJets = cms.Sequence(
 PFTowers +
 voronoiBackgroundPF +
+ak2PFJets
++
+ak3PFJets
++
+ak4PFJets
++
+ak5PFJets
++
+ak6PFJets
++
+ak7PFJets
++
 akPu2PFJets
 +
 akPu3PFJets
@@ -57,6 +81,18 @@ akVs7PFJets
 hiReRecoCaloJets = cms.Sequence(
 caloTowersRec*caloTowers*iterativeConePu5CaloJets +
 voronoiBackgroundCalo +
+ak2CaloJets
++
+ak3CaloJets
++
+ak4CaloJets
++
+ak5CaloJets
++
+ak6CaloJets
++
+ak7CaloJets
++
 akPu2CaloJets
 +
 akPu3CaloJets

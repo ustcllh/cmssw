@@ -112,6 +112,21 @@ akPu4CaloJets = akPu5CaloJets.clone(rParam       = cms.double(0.4), puPtMin = 8)
 akPu6CaloJets = akPu5CaloJets.clone(rParam       = cms.double(0.6), puPtMin = 12)
 akPu7CaloJets = akPu5CaloJets.clone(rParam       = cms.double(0.7), puPtMin = 14)
 
+ak5CaloJets = cms.EDProducer(
+    "FastjetJetProducer",
+    HiCaloJetParameters,
+    AnomalousCellParameters,
+    MultipleAlgoIteratorBlock,
+    jetAlgorithm = cms.string("AntiKt"),
+    rParam       = cms.double(0.5)
+    )
+ak5CaloJets.doPUOffsetCorr = False
+ak2CaloJets = ak5CaloJets.clone(rParam       = cms.double(0.2))
+ak3CaloJets = ak5CaloJets.clone(rParam       = cms.double(0.3))
+ak4CaloJets = ak5CaloJets.clone(rParam       = cms.double(0.4))
+ak6CaloJets = ak5CaloJets.clone(rParam       = cms.double(0.6))
+ak7CaloJets = ak5CaloJets.clone(rParam       = cms.double(0.7))
+
 
 ## Default Sequence
 hiRecoJets = cms.Sequence(

@@ -93,7 +93,7 @@ for system in PbPb pp pPb
 		| sed "s/DOMATCH/$domatch/g" \
 		>> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 
-	    if [ $sample == "jec" ] && [ $system == "PbPb" ] && [ ! $sub == "NONE" ]; then
+	    if [ $sample == "jec" ] && [ $system == "PbPb" ]; then
 		echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
 	    fi
 	    if [ $sample == "jec" ]; then
@@ -131,7 +131,7 @@ echo "hiReRecoPFJets = cms.Sequence(" >> HiReRecoJets_cff.py
 echo "PFTowers +" >> HiReRecoJets_cff.py
 echo "voronoiBackgroundPF +" >> HiReRecoJets_cff.py
 
-for sub in Pu Vs
+for sub in NONE Pu Vs
 do
     subt=$sub
     if [ $sub == "NONE" ]; then 
@@ -153,7 +153,7 @@ echo "hiReRecoCaloJets = cms.Sequence(" >> HiReRecoJets_cff.py
 echo "caloTowersRec*caloTowers*iterativeConePu5CaloJets +" >> HiReRecoJets_cff.py
 echo "voronoiBackgroundCalo +" >> HiReRecoJets_cff.py
 
-for sub in Pu Vs
+for sub in NONE Pu Vs
 do
     subt=$sub
     if [ $sub == "NONE" ]; then 

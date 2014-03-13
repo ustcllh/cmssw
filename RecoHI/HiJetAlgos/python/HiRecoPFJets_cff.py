@@ -68,6 +68,11 @@ akPu4PFJets = akPu5PFJets.clone(rParam       = cms.double(0.4), puPtMin = 20)
 akPu6PFJets = akPu5PFJets.clone(rParam       = cms.double(0.6), puPtMin = 30)
 akPu7PFJets = akPu5PFJets.clone(rParam       = cms.double(0.7), puPtMin = 35)
 
+ak2PFJets = ak5PFJets.clone(rParam       = cms.double(0.2))
+ak3PFJets = ak5PFJets.clone(rParam       = cms.double(0.3))
+ak4PFJets = ak5PFJets.clone(rParam       = cms.double(0.4))
+ak6PFJets = ak5PFJets.clone(rParam       = cms.double(0.6))
+ak7PFJets = ak5PFJets.clone(rParam       = cms.double(0.7))
 
 hiRecoPFJets = cms.Sequence(
     PFTowers
