@@ -32,7 +32,7 @@ ak5PFJets = cms.EDProducer(
     jetAlgorithm = cms.string("AntiKt"),
     rParam       = cms.double(0.5)
     )
-ak5PFJets.src = cms.InputTag('PFTowers')
+ak5PFJets.src = cms.InputTag('particleFlowTmp')
 
 akPu5PFJets = ak5PFJets.clone(
     jetType = cms.string('BasicJet'),
