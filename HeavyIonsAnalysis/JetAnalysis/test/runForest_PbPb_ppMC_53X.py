@@ -18,9 +18,12 @@ process.options = cms.untracked.PSet(
 #####################################################################################
 
 process.load("HeavyIonsAnalysis.JetAnalysis.HiForest_cff")
-process.HiForest.inputLines = cms.vstring("HiForest V3",
-)
-process.HiForest.HiForestVersion = cms.untracked.string("PbPb_53X_Voronoi")
+process.HiForest.inputLines = cms.vstring("HiForest V3",)
+import subprocess
+version = subprocess.Popen(["(cd $CMSSW_BASE/src && git describe --tags)"], stdout=subprocess.PIPE, shell=True).stdout.read()
+if version == '':
+    version = 'no git info'
+process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 #####################################################################################
 # Input source
