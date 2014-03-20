@@ -55,10 +55,10 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
-overrideGT_PbPb2760(process)
+overrideGT_pp2760(process)
 overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
@@ -80,44 +80,18 @@ process.TFileService = cms.Service("TFileService",
 
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('RecoJets.Configuration.GenJetParticles_cff')
-process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
-process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
-process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
 
-#process.hiGenParticles.srcVector = cms.vstring('generator')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.allJets_pp_mc_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
+process.jetSequences = cms.Sequence(process.allJets)
+process.jetSequences.remove(process.ak7CaloJetSequence)
+process.jetSequences.remove(process.akPu7CaloJetSequence)
+process.jetSequences.remove(process.akVs7CaloJetSequence)
+process.jetSequences.remove(process.ak7PFJetSequence)
+process.jetSequences.remove(process.akPu7PFJetSequence)
+process.jetSequences.remove(process.akVs7PFJetSequence)
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mc_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_PbPb_mc_cff')
-
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
-
-process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
-                                    process.akPu3CaloJetSequence +
-                                    process.akVs3PFJetSequence +
-                                    process.akPu3PFJetSequence +
-                                    
-                                    process.akVs4CaloJetSequence +
-                                    process.akPu4CaloJetSequence +
-                                    process.akVs4PFJetSequence +
-                                    process.akPu4PFJetSequence +
-                                    
-                                    process.akVs5CaloJetSequence +
-                                    process.akPu5CaloJetSequence +
-                                    process.akVs5PFJetSequence +
-                                    process.akPu5PFJetSequence
-                                    )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
@@ -126,7 +100,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
@@ -204,7 +178,7 @@ process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJ
 process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleaned*
+                            #process.hiGenJetsCleaned*
                             process.jetSequences +                            
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
