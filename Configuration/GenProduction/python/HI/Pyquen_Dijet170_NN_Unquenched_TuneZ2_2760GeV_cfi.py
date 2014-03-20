@@ -27,8 +27,6 @@ hiSignal = cms.EDFilter("PyquenGeneratorFilter",
 hiSignal.embeddingMode = True
 
 configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.5 $'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/GenProduction/python/Pyquen_Dijet170_NN_Unquenched_TuneZ2_2760GeV_cfi.py,v $'),
     annotation = cms.untracked.string('PYTHIA (unquenched) dijets in NN (pt-hat > 170 GeV) at sqrt(s) = 2.76TeV')
     )
 
