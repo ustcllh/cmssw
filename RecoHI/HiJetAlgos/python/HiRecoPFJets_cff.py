@@ -81,9 +81,9 @@ hiRecoPFJets = cms.Sequence(
     *akVs3PFJets*akVs4PFJets*akVs5PFJets
     )
 
-hiRecoAllPFJets = cms.Sequence(hiRecoPFJets
-                               *akPu2PFJets*akPu6PFJets*akPu7PFJets
-                               *akVs2PFJets*akVs6PFJets*akVs7PFJets                               
+hiRecoAllPFJets = cms.Sequence(PFTowers
+                               *akPu2PFJets*akPu3PFJets*akPu4PFJets*akPu5PFJets*akPu6PFJets*akPu7PFJets
+                               *voronoiBackgroundPF
+                               *akVs2PFJets*akVs3PFJets*akVs4PFJets*akVs5PFJets*akVs6PFJets*akVs7PFJets
+                               *ak2PFJets*ak3PFJets*ak4PFJets*ak5PFJets*ak6PFJets*ak7PFJets
                                )
-
-

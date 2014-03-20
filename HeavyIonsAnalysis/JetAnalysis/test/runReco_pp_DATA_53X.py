@@ -20,14 +20,14 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(-1)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
                             secondaryFileNames = cms.untracked.vstring(),
                             #fileNames = cms.untracked.vstring('/store/hidata/HIRun2011/HIMinBiasUPC/RAW/v1/000/182/066/14B65DE8-9512-E111-AA9F-BCAEC53296F6.root')
-                            fileNames = cms.untracked.vstring('root://xrootd.unl.edu//store/data/Run2013A/PPMinBias/RAW/v1/000/211/658/00000/220D2A09-B973-E211-AA0F-001D09F290BF.root')
+                            fileNames = cms.untracked.vstring('file:pp_raw.root')
                             )
 
 process.options = cms.untracked.PSet(
@@ -58,10 +58,12 @@ process.RECODEBUGoutput = cms.OutputModule("PoolOutputModule",
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV6::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_P_V43D::All', '')
 
 # Path and EndPath definitions
 process.raw2digi_step = cms.Path(process.RawToDigi)
+process.hiRecoPFJets = process.hiRecoAllPFJets
+process.hiRecoJets = process.hiRecoAllJets
 process.reconstruction_step = cms.Path(process.reconstructionHeavyIons)
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
