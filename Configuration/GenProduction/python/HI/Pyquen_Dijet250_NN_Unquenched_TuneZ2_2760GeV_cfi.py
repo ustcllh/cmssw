@@ -6,7 +6,10 @@ hiSignal = cms.EDFilter("PyquenGeneratorFilter",
                         collisionParameters,
                         qgpParameters,
                         pyquenParameters,
+
                         doQuench = cms.bool(False),
+                        doIsospin = cms.bool(True),
+                        
                         bFixed = cms.double(0.0), ## fixed impact param (fm); valid only if cflag_=0
                         PythiaParameters = cms.PSet(pyquenPythiaDefaultBlock,
                                                     parameterSets = cms.vstring('pythiaUESettings',
@@ -25,8 +28,8 @@ hiSignal.embeddingMode = True
 
 configurationMetadata = cms.untracked.PSet(
     version = cms.untracked.string('$Revision: 1.5 $'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/GenProduction/python/Pyquen_DiJet_Pt250_cfi.py,v $'),
-    annotation = cms.untracked.string('PYQUEN quenched dijets (pt-hat > 250 GeV) at sqrt(s) = 2.76TeV')
+    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/GenProduction/python/Pyquen_Dijet250_NN_Unquenched_TuneZ2_2760GeV_cfi.py,v $'),
+    annotation = cms.untracked.string('PYTHIA (unquenched) dijets in NN (pt-hat > 250 GeV) at sqrt(s) = 2.76TeV')
     )
 
 ProductionFilterSequence = cms.Sequence(hiSignal)
