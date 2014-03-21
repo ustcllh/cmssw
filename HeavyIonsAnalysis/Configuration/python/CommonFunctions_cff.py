@@ -424,21 +424,41 @@ def overrideJEC_pp2760(process):
                                              connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                                              label = cms.untracked.string("AK2Calo_HI")
                                              ),                                    
+
+
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_538_v09_AK3Calo_offline"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v12_AKPu3Calo_offline"),
                                              connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
-                                             label = cms.untracked.string("AK3Calo_HI")
+                                             label = cms.untracked.string("AKPu3Calo_HI")
                                              ),
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_538_v09_AK4Calo_offline"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v12_AKPu4Calo_offline"),
                                              connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
-                                             label = cms.untracked.string("AK4Calo_HI")
+                                             label = cms.untracked.string("AKPu4Calo_HI")
+                                             ),
+                                    cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v12_AKPu5Calo_offline"),
+                                             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                                             label = cms.untracked.string("AKPu5Calo_HI")
                                              ),                                    
+                                    
+                                    
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_538_v09_AK5Calo_offline"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v12_AKVs3Calo_offline"),
                                              connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
-                                             label = cms.untracked.string("AK5Calo_HI")
+                                             label = cms.untracked.string("AKVs3Calo_HI")
                                              ),
+                                    cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v12_AKVs4Calo_offline"),
+                                                                      connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                                             label = cms.untracked.string("AKVs4Calo_HI")
+                                             ),
+                                    cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v12_AKVs5Calo_offline"),
+                                             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                                             label = cms.untracked.string("AKVs5Calo_HI")
+                                             ),
+                                    
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
                                              tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_5TeV_538_v04_AK6Calo_offline"),
                                              connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
