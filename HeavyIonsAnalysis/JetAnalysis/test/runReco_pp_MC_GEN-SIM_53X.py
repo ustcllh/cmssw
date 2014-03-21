@@ -27,7 +27,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(10)
 )
 
 # Input source
@@ -75,6 +75,8 @@ process.digi2raw_step = cms.Path(process.DigiToRaw)
 
 process.raw2digi_step = cms.Path(process.RawToDigi)
 process.L1Reco_step = cms.Path(process.L1Reco)
+process.hiRecoPFJets = process.hiRecoAllPFJets
+process.hiRecoJets = process.hiRecoAllJets
 process.reconstruction_step = cms.Path(process.reconstructionHeavyIons)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.RECODEBUGoutput_step = cms.EndPath(process.RECODEBUGoutput)
@@ -103,11 +105,11 @@ process = customizeHLTforMC(process)
 #                            )
 
 # Load Beamspot
-from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
-process.beamspot = cms.ESSource("PoolDBESSource",CondDBSetup,
-                                toGet = cms.VPSet(cms.PSet( record = cms.string('BeamSpotObjectsRcd'),
-                                                            tag= cms.string('Realistic2p76TeVCollisions2013_START53_V9_v1_mc')
-                                                            )),
-                                connect =cms.string('frontier://FrontierProd/CMS_COND_31X_BEAMSPOT')
-                                )
-process.es_prefer_beamspot = cms.ESPrefer("PoolDBESSource","beamspot")
+# from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
+# process.beamspot = cms.ESSource("PoolDBESSource",CondDBSetup,
+#                                 toGet = cms.VPSet(cms.PSet( record = cms.string('BeamSpotObjectsRcd'),
+#                                                             tag= cms.string('Realistic2p76TeVCollisions2013_START53_V9_v1_mc')
+#                                                             )),
+#                                 connect =cms.string('frontier://FrontierProd/CMS_COND_31X_BEAMSPOT')
+#                                 )
+# process.es_prefer_beamspot = cms.ESPrefer("PoolDBESSource","beamspot")

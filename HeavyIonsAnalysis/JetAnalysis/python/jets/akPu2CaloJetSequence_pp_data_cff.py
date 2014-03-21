@@ -47,7 +47,7 @@ akPu2CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu2Ca
                                                              matchJets = cms.untracked.bool(False),
                                                              matchTag = 'akPu2CalopatJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
-                                                             trackTag = cms.InputTag("generalTracks"),
+                                                             trackTag = cms.InputTag("hiGeneralTracks"),
                                                              fillGenJets = False,
                                                              isMC = False,
                                                              genParticles = cms.untracked.InputTag("genParticles")

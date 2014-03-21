@@ -37,9 +37,19 @@ for system in PbPb pp pPb
             match=${algo}${subt}${radius}${matchobject}
             echo "" > $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 
-            if [ $system != "PbPb" ]; then
+            if [ $system == "pPb" ]; then
 		corrlabel="_generalTracks"
 		tracks="generalTracks"
+		genparticles="genParticles"
+            fi
+
+	    if [ $system == "pp" ] && [ $sample == "jec" ]; then
+		corrlabel="_generalTracks"
+		tracks="generalTracks"
+		genparticles="genParticles"
+           
+	    elif [ $system == "pp" ]; then
+		corrlabel="_generalTracks"
 		genparticles="genParticles"
             fi
 
