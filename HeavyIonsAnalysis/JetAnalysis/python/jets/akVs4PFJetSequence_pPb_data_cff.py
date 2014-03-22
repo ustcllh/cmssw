@@ -74,5 +74,6 @@ akVs4PFJetSequence_data = cms.Sequence(akVs4PFcorr
                                                     )
 
 akVs4PFJetSequence_jec = akVs4PFJetSequence_mc
+akVs4PFJetSequence_mix = akVs4PFJetSequence_mc
 
 akVs4PFJetSequence = cms.Sequence(akVs4PFJetSequence_data)

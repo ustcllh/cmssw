@@ -74,6 +74,7 @@ akVs5CaloJetSequence_data = cms.Sequence(akVs5Calocorr
                                                     )
 
 akVs5CaloJetSequence_jec = akVs5CaloJetSequence_mc
+akVs5CaloJetSequence_mix = akVs5CaloJetSequence_mc
 
 akVs5CaloJetSequence = cms.Sequence(akVs5CaloJetSequence_jec)
 akVs5CaloJetAnalyzer.genPtMin = cms.untracked.double(1)

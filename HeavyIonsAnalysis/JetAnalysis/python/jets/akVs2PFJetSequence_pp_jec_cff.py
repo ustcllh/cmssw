@@ -74,6 +74,7 @@ akVs2PFJetSequence_data = cms.Sequence(akVs2PFcorr
                                                     )
 
 akVs2PFJetSequence_jec = akVs2PFJetSequence_mc
+akVs2PFJetSequence_mix = akVs2PFJetSequence_mc
 
 akVs2PFJetSequence = cms.Sequence(akVs2PFJetSequence_jec)
 akVs2PFJetAnalyzer.genPtMin = cms.untracked.double(1)

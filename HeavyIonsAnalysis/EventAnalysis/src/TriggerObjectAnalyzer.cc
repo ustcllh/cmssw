@@ -172,6 +172,7 @@ TriggerObjectAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const& iSe
 	const unsigned int n(hltConfig_.size());
 	triggerIndex_ = hltConfig_.triggerIndex(triggerNames_[0]);
 	moduleLabels_ = hltConfig_.moduleLabels(triggerIndex_);
+
 	if (triggerIndex_>=n) {
 	  cout << "HLTEventAnalyzerAOD::analyze:"
 	       << " TriggerName " << triggerNames_[0] 

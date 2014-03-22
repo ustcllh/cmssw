@@ -73,5 +73,6 @@ ALGO_SUB_RADIUS_OBJECT_JetSequence_data = cms.Sequence(ALGO_SUB_RADIUS_OBJECT_co
                                                     )
 
 ALGO_SUB_RADIUS_OBJECT_JetSequence_jec = ALGO_SUB_RADIUS_OBJECT_JetSequence_mc
+ALGO_SUB_RADIUS_OBJECT_JetSequence_mix = ALGO_SUB_RADIUS_OBJECT_JetSequence_mc
 
 ALGO_SUB_RADIUS_OBJECT_JetSequence = cms.Sequence(ALGO_SUB_RADIUS_OBJECT_JetSequence_SAMPLE_)

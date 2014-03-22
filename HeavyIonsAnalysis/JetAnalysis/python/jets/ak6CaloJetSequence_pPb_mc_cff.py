@@ -74,5 +74,6 @@ ak6CaloJetSequence_data = cms.Sequence(ak6Calocorr
                                                     )
 
 ak6CaloJetSequence_jec = ak6CaloJetSequence_mc
+ak6CaloJetSequence_mix = ak6CaloJetSequence_mc
 
 ak6CaloJetSequence = cms.Sequence(ak6CaloJetSequence_mc)

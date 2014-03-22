@@ -74,5 +74,6 @@ akPu4CaloJetSequence_data = cms.Sequence(akPu4Calocorr
                                                     )
 
 akPu4CaloJetSequence_jec = akPu4CaloJetSequence_mc
+akPu4CaloJetSequence_mix = akPu4CaloJetSequence_mc
 
 akPu4CaloJetSequence = cms.Sequence(akPu4CaloJetSequence_data)
