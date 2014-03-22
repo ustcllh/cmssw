@@ -180,7 +180,7 @@ process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
 process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
 process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
 process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
-process.filterSequence = cms.Sequence(process.hltMinBiasHFOrBSC*process.collisionEventSelection)
+
 process.skimanalysis.superFilters = cms.vstring("ana_step")
 
 process.photonStep = cms.Sequence(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons * process.selectedPatPhotons)
@@ -207,8 +207,7 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 
-process.ana_step = cms.Path(process.filterSequence *
-                            process.photonStep *
+process.ana_step = cms.Path(process.photonStep *
                             process.hltanalysis *
                             process.hltobject *
                             process.hiEvtAnalyzer *

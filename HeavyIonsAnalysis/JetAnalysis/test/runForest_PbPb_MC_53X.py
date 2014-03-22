@@ -55,7 +55,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
@@ -84,7 +84,7 @@ process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
 process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
 process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
 
-#process.hiGenParticles.srcVector = cms.vstring('generator')
+process.hiGenParticles.srcVector = cms.vstring('generator')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
 
@@ -119,7 +119,9 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu5PFJetSequence
                                     )
 
+
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
+process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 
 #####################################################################################
@@ -149,6 +151,7 @@ process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
 
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
+process.pixelTrack.doPFMatching = False
 
 #####################
 # photons
@@ -192,13 +195,9 @@ process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
-process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
-                             *
-                             process.ak2HiGenJets +
-                             process.ak6HiGenJets +
-                             process.ak7HiGenJets)
-
 process.ana_step = cms.Path(process.heavyIon*
+                            process.hltanalysis *
+                            process.hltobject *                            
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
@@ -210,7 +209,9 @@ process.ana_step = cms.Path(process.heavyIon*
                             process.HiForest +
                             process.cutsTPForFak +
                             process.cutsTPForEff +
-                            process.anaTrack)
+                            process.anaTrack +
+                            process.pixelTrack
+                            )
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
 process.phltJetHI = cms.Path( process.hltJetHI )
@@ -222,11 +223,8 @@ process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
 process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hltPixelClusterShapeFilter )
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
+process.pAna = cms.EndPath(process.skimanalysis)
+
 # Customization
 from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
 setPhotonObject(process,"cleanPhotons")
-
-process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
-
-process.hltAna = cms.Path(process.hltanalysis)
-process.pAna = cms.EndPath(process.skimanalysis)
