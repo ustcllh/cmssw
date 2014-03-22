@@ -105,6 +105,23 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff'
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
 
+process.akPu3PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akPu4PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akPu5PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+
+process.akVs3PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akVs4PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akVs5PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+
+process.akPu3CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akPu4CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akPu5CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+
+process.akVs3CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akVs4CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+process.akVs5CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
+
+
 process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
