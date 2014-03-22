@@ -78,14 +78,6 @@ process.TFileService = cms.Service("TFileService",
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
 
-process.load('Configuration.StandardSequences.Generator_cff')
-process.load('RecoJets.Configuration.GenJetParticles_cff')
-process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
-process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
-process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
-
-process.hiGenParticles.srcVector = cms.vstring('generator')
-
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mc_cff')

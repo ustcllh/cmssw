@@ -37,10 +37,80 @@ ak6PFJets.jetPtMin = 1
 ak6CaloJets.jetPtMin = 1
 ak7PFJets.jetPtMin = 1
 ak7CaloJets.jetPtMin = 1
+akVs2PFJets.jetPtMin = 1
+akVs2CaloJets.jetPtMin = 1
+akVs3PFJets.jetPtMin = 1
+akVs3CaloJets.jetPtMin = 1
+akVs4PFJets.jetPtMin = 1
+akVs4CaloJets.jetPtMin = 1
+akVs5PFJets.jetPtMin = 1
+akVs5CaloJets.jetPtMin = 1
+akVs6PFJets.jetPtMin = 1
+akVs6CaloJets.jetPtMin = 1
+akVs7PFJets.jetPtMin = 1
+akVs7CaloJets.jetPtMin = 1
+akPu2PFJets.jetPtMin = 1
+akPu2CaloJets.jetPtMin = 1
+akPu3PFJets.jetPtMin = 1
+akPu3CaloJets.jetPtMin = 1
+akPu4PFJets.jetPtMin = 1
+akPu4CaloJets.jetPtMin = 1
+akPu5PFJets.jetPtMin = 1
+akPu5CaloJets.jetPtMin = 1
+akPu6PFJets.jetPtMin = 1
+akPu6CaloJets.jetPtMin = 1
+akPu7PFJets.jetPtMin = 1
+akPu7CaloJets.jetPtMin = 1
+ak2PFJets.jetPtMin = 1
+ak2CaloJets.jetPtMin = 1
+ak3PFJets.jetPtMin = 1
+ak3CaloJets.jetPtMin = 1
+ak4PFJets.jetPtMin = 1
+ak4CaloJets.jetPtMin = 1
+ak5PFJets.jetPtMin = 1
+ak5CaloJets.jetPtMin = 1
+ak6PFJets.jetPtMin = 1
+ak6CaloJets.jetPtMin = 1
+ak7PFJets.jetPtMin = 1
+ak7CaloJets.jetPtMin = 1
+akVs2PFJets.jetPtMin = 1
+akVs2CaloJets.jetPtMin = 1
+akVs3PFJets.jetPtMin = 1
+akVs3CaloJets.jetPtMin = 1
+akVs4PFJets.jetPtMin = 1
+akVs4CaloJets.jetPtMin = 1
+akVs5PFJets.jetPtMin = 1
+akVs5CaloJets.jetPtMin = 1
+akVs6PFJets.jetPtMin = 1
+akVs6CaloJets.jetPtMin = 1
+akVs7PFJets.jetPtMin = 1
+akVs7CaloJets.jetPtMin = 1
+akPu2PFJets.jetPtMin = 1
+akPu2CaloJets.jetPtMin = 1
+akPu3PFJets.jetPtMin = 1
+akPu3CaloJets.jetPtMin = 1
+akPu4PFJets.jetPtMin = 1
+akPu4CaloJets.jetPtMin = 1
+akPu5PFJets.jetPtMin = 1
+akPu5CaloJets.jetPtMin = 1
+akPu6PFJets.jetPtMin = 1
+akPu6CaloJets.jetPtMin = 1
+akPu7PFJets.jetPtMin = 1
+akPu7CaloJets.jetPtMin = 1
+ak2PFJets.jetPtMin = 1
+ak2CaloJets.jetPtMin = 1
+ak3PFJets.jetPtMin = 1
+ak3CaloJets.jetPtMin = 1
+ak4PFJets.jetPtMin = 1
+ak4CaloJets.jetPtMin = 1
+ak5PFJets.jetPtMin = 1
+ak5CaloJets.jetPtMin = 1
+ak6PFJets.jetPtMin = 1
+ak6CaloJets.jetPtMin = 1
+ak7PFJets.jetPtMin = 1
+ak7CaloJets.jetPtMin = 1
 
 hiReRecoPFJets = cms.Sequence(
-PFTowers +
-voronoiBackgroundPF +
 ak2PFJets
 +
 ak3PFJets
@@ -79,8 +149,6 @@ akVs7PFJets
 )
 
 hiReRecoCaloJets = cms.Sequence(
-caloTowersRec*caloTowers*iterativeConePu5CaloJets +
-voronoiBackgroundCalo +
 ak2CaloJets
 +
 ak3CaloJets

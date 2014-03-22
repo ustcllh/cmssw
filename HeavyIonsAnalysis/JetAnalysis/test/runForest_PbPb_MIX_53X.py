@@ -80,47 +80,22 @@ process.TFileService = cms.Service("TFileService",
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
 
-process.load('Configuration.StandardSequences.Generator_cff')
-process.load('RecoJets.Configuration.GenJetParticles_cff')
-process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
-process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
-process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
-
-#process.hiGenParticles.srcVector = cms.vstring('hiSignal','generator')
-
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_PbPb_mix_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_PbPb_mix_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
-
-process.akPu3PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akPu4PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akPu5PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-
-process.akVs3PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akVs4PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akVs5PFJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-
-process.akPu3CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akPu4CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akPu5CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-
-process.akVs3CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akVs4CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-process.akVs5CaloJetAnalyzer.eventInfoTag = cms.InputTag('hiSignal')
-
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mix_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mix_cff')
 
 process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +

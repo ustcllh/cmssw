@@ -50,7 +50,8 @@ akVs3CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs3Ca
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
                                                              fillGenJets = False,
                                                              isMC = False,
-                                                             genParticles = cms.untracked.InputTag("genParticles")
+                                                             genParticles = cms.untracked.InputTag("genParticles"),
+							     eventInfoTag = cms.InputTag("generator")
                                                              )
 
 akVs3CaloJetSequence_mc = cms.Sequence(

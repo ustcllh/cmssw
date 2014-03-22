@@ -49,7 +49,8 @@ ALGO_SUB_RADIUS_OBJECT_JetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.Inp
                                                              trackTag = cms.InputTag("TRACKS"),
                                                              fillGenJets = ISMC,
                                                              isMC = ISMC,
-                                                             genParticles = cms.untracked.InputTag("GENPARTICLES")
+                                                             genParticles = cms.untracked.InputTag("GENPARTICLES"),
+							     eventInfoTag = cms.InputTag("EVENTINFOTAG")
                                                              )
 
 ALGO_SUB_RADIUS_OBJECT_JetSequence_mc = cms.Sequence(

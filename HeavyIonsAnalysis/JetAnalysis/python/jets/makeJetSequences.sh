@@ -10,7 +10,7 @@ echo "from RecoHI.HiJetAlgos.HiRecoPFJets_cff import *" >> HiReRecoJets_cff.py
 
 for system in PbPb pp pPb
   do
-  for sample in mc data jec
+  for sample in data mc mix jec
     do
     for algo in ak
       do
@@ -35,6 +35,7 @@ for system in PbPb pp pPb
             tracks="hiGeneralTracks"
             pflow="particleFlowTmp"
             match=${algo}${subt}${radius}${matchobject}
+	    eventinfotag="generator"
             echo "" > $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 
             if [ $system == "pPb" ]; then
@@ -58,13 +59,17 @@ for system in PbPb pp pPb
 		domatch="False"
 	    fi
 
-	    if [ $sample == "mc" ] || [ $sample == "jec" ]; then
+	    if [ $sample == "mc" ] || [ $sample == "jec" ] || [ $sample == "mix" ]; then
 		ismc="True"
 	    fi
 
 	    if [ $system == "pp" ]; then
 		genjets="HiGenJets"
 	    fi
+
+	    if [ $sample == "mix" ]; then
+                eventinfotag="hiSignal"
+            fi
 
             corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${subt}${radius}${object}${corrlabel}
 
@@ -101,12 +106,11 @@ for system in PbPb pp pPb
 		| sed "s/TRACKS/$tracks/g" \
 		| sed "s/PARTICLEFLOW/$pflow/g" \
 		| sed "s/DOMATCH/$domatch/g" \
+		| sed "s/EVENTINFOTAG/$eventinfotag/g" \
 		>> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 
-	    if [ $sample == "jec" ] && [ $system == "PbPb" ]; then
-		echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
-	    fi
 	    if [ $sample == "jec" ]; then
+		echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
 		echo "${algo}${subt}${radius}${object}JetAnalyzer.genPtMin = cms.untracked.double(1)" >> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 	    fi
 
@@ -138,8 +142,8 @@ done
 # ReReco stuff, for jec only
 echo "" >> HiReRecoJets_cff.py
 echo "hiReRecoPFJets = cms.Sequence(" >> HiReRecoJets_cff.py
-echo "PFTowers +" >> HiReRecoJets_cff.py
-echo "voronoiBackgroundPF +" >> HiReRecoJets_cff.py
+#echo "PFTowers +" >> HiReRecoJets_cff.py
+#echo "voronoiBackgroundPF +" >> HiReRecoJets_cff.py
 
 for sub in NONE Pu Vs
 do
@@ -160,8 +164,8 @@ done
 
 echo "" >> HiReRecoJets_cff.py
 echo "hiReRecoCaloJets = cms.Sequence(" >> HiReRecoJets_cff.py
-echo "caloTowersRec*caloTowers*iterativeConePu5CaloJets +" >> HiReRecoJets_cff.py
-echo "voronoiBackgroundCalo +" >> HiReRecoJets_cff.py
+#echo "caloTowersRec*caloTowers*iterativeConePu5CaloJets +" >> HiReRecoJets_cff.py
+#echo "voronoiBackgroundCalo +" >> HiReRecoJets_cff.py
 
 for sub in NONE Pu Vs
 do

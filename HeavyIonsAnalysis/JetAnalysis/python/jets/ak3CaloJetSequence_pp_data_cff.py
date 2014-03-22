@@ -18,7 +18,7 @@ ak3Calocorr = patJetCorrFactors.clone(
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("ak3CaloJets"),
-    payload = "AKNONE3Calo_HI"
+    payload = "AK3Calo_HI"
     )
 
 ak3CalopatJets = patJets.clone(jetSource = cms.InputTag("ak3CaloJets"),
@@ -50,7 +50,8 @@ ak3CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("ak3Calopa
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
                                                              fillGenJets = False,
                                                              isMC = False,
-                                                             genParticles = cms.untracked.InputTag("genParticles")
+                                                             genParticles = cms.untracked.InputTag("genParticles"),
+							     eventInfoTag = cms.InputTag("generator")
                                                              )
 
 ak3CaloJetSequence_mc = cms.Sequence(

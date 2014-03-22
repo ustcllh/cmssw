@@ -78,14 +78,6 @@ process.TFileService = cms.Service("TFileService",
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
 
-process.load('Configuration.StandardSequences.Generator_cff')
-process.load('RecoJets.Configuration.GenJetParticles_cff')
-#process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
-#process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
-#process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
-
-#process.hiGenParticles.srcVector = cms.vstring('generator')
-
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_JEC_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_PbPb_jec_cff')
@@ -209,16 +201,10 @@ process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
-process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
-                             *
-                             process.ak2HiGenJets +
-                             process.ak6HiGenJets +
-                             process.ak7HiGenJets)
-
 process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleanedJEC*
+                            process.hiGenJetsCleaned*
                             process.jetSequences +                            
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +

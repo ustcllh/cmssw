@@ -115,7 +115,6 @@ TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
    iEvent.getByLabel(triggerResultsTag_,triggerResultsHandle_);
 
    moduleIndex_ = triggerResultsHandle_->index(triggerIndex_);
-   cout<<"a"<<endl;
 
    // Results from TriggerEvent product - Attention: must look only for
    // modules actually run in this path for this event!
@@ -169,18 +168,10 @@ TriggerObjectAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const& iSe
   bool changed(true);
   if (hltConfig_.init(iRun,iSetup,processName_,changed)) {
     if (changed) {
-      cout<<"a"<<endl;
       if (triggerNames_[0]!="@") { // "@" means: analyze all triggers in config
 	const unsigned int n(hltConfig_.size());
-	cout<<"a"<<endl;
-
 	triggerIndex_ = hltConfig_.triggerIndex(triggerNames_[0]);
-	cout<<"a"<<endl;
-
 	moduleLabels_ = hltConfig_.moduleLabels(triggerIndex_);
-
-	cout<<"a"<<endl;
-
 	if (triggerIndex_>=n) {
 	  cout << "HLTEventAnalyzerAOD::analyze:"
 	       << " TriggerName " << triggerNames_[0] 
@@ -189,7 +180,6 @@ TriggerObjectAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const& iSe
 	  hltConfig_.dump("Triggers");
 	}
       }
-      cout<<"a"<<endl;
       hltConfig_.dump("ProcessName");
       hltConfig_.dump("GlobalTag");
       hltConfig_.dump("TableName");
@@ -197,14 +187,12 @@ TriggerObjectAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const& iSe
       hltConfig_.dump("Datasets");
       hltConfig_.dump("PrescaleTable");
       hltConfig_.dump("ProcessPSet");
-      cout<<"a"<<endl;
     }
   } else {
     cout << "HLTEventAnalyzerAOD::analyze:"
 	 << " config extraction failure with process name "
 	 << processName_ << endl;
   }
-  cout<<"a"<<endl;
 
 }
 
