@@ -210,6 +210,7 @@ process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 process.ana_step = cms.Path(process.filterSequence *
                             process.photonStep *
                             process.hltanalysis *
+                            process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
                             process.multiPhotonAnalyzer +
