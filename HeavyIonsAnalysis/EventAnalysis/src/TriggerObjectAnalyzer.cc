@@ -108,6 +108,8 @@ TriggerObjectAnalyzer::~TriggerObjectAnalyzer()
 void
 TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
+  if(hltConfig_.size() > 0){
+
   float id = -99,pt=-99,eta=-99,phi=-99,mass=-99;
 
    using namespace edm;
@@ -145,7 +147,7 @@ TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
    }
 
    nt_[0]->Fill(id,pt,eta,phi,mass);
-
+  }
 }
 
 
@@ -170,8 +172,10 @@ TriggerObjectAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const& iSe
     if (changed) {
       if (triggerNames_[0]!="@") { // "@" means: analyze all triggers in config
 	const unsigned int n(hltConfig_.size());
-	triggerIndex_ = hltConfig_.triggerIndex(triggerNames_[0]);
-	moduleLabels_ = hltConfig_.moduleLabels(triggerIndex_);
+	if(n > 0){
+	  triggerIndex_ = hltConfig_.triggerIndex(triggerNames_[0]);
+	  moduleLabels_ = hltConfig_.moduleLabels(triggerIndex_);
+	}
 
 	if (triggerIndex_>=n) {
 	  cout << "HLTEventAnalyzerAOD::analyze:"

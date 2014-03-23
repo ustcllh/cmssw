@@ -37,7 +37,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(10))
 
 
 #####################################################################################
@@ -191,7 +191,7 @@ process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standA
 
 process.ana_step = cms.Path(process.heavyIon*
                             process.hltanalysis *
-                            process.hltobject *                            
+#temp                            process.hltobject *                            
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*

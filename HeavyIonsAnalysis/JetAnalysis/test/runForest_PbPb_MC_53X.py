@@ -189,7 +189,7 @@ process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standA
 
 process.ana_step = cms.Path(process.heavyIon*
                             process.hltanalysis *
-                            process.hltobject *                            
+#temp                            process.hltobject *                            
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
