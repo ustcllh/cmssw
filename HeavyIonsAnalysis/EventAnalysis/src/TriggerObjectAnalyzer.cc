@@ -116,16 +116,25 @@ TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
    iEvent.getByLabel(triggerEventTag_,triggerEventHandle_);
    iEvent.getByLabel(triggerResultsTag_,triggerResultsHandle_);
 
-   moduleIndex_ = triggerResultsHandle_->index(triggerIndex_);
+   //moduleIndex_ = triggerResultsHandle_->index(triggerIndex_);
+   std::string trigName = "HLT_HIJet55_v1";
+   const unsigned int trigIndex(hltConfig_.triggerIndex(trigName));
+   const unsigned int mIndex = triggerResultsHandle_->index(trigIndex);
+   cout << "trigger index: "<< trigIndex << endl;
 
    // Results from TriggerEvent product - Attention: must look only for
    // modules actually run in this path for this event!
-   for (unsigned int j=0; j<=moduleIndex_; ++j) {
+   for (unsigned int j=0; j<=mIndex; ++j) {
      // check whether the module is packed up in TriggerEvent product
-     const string& moduleLabel(moduleLabels_[j]);
-     const string  moduleType(hltConfig_.moduleType(moduleLabel));
-     const unsigned int filterIndex(triggerEventHandle_->filterIndex(InputTag(moduleLabel_,"",processName_)));
+     cout << "at module index: "<< j << endl;
+     const string& moduleLabel_(moduleLabels_[j]);
+     cout << "module called: "<< moduleLabel_ << endl;
+     //const string  moduleType(hltConfig_.moduleType(moduleLabel_));
+     string trigFilterIndex = hltConfig_.moduleLabels(trigName).at(j);
+     const unsigned int filterIndex(triggerEventHandle_->filterIndex(InputTag(trigFilterIndex,"",processName_)));
+     cout << "at filterIndex: " << filterIndex << endl;
      if (filterIndex<triggerEventHandle_->sizeFilters()) {
+       cout << "filterIndex: "<< filterIndex << " < sizeFilters: "<< triggerEventHandle_->sizeFilters() << endl;
        const trigger::Vids& VIDS (triggerEventHandle_->filterIds(filterIndex));
        const trigger::Keys& KEYS(triggerEventHandle_->filterKeys(filterIndex));
        const unsigned int nI(VIDS.size());
@@ -136,12 +145,18 @@ TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
        const trigger::TriggerObjectCollection& TOC(triggerEventHandle_->getObjects());
        for (unsigned int i=0; n != 0 && i < 1; ++i) {
 	 const trigger::TriggerObject& TO(TOC[KEYS[i]]);
-	 
+         if(VIDS[i]>0){
+         cout << "Trigger name: "<< trigName << endl;
+         cout << "module label: " << hltConfig_.moduleLabels(trigName).at(j) << endl;
+         cout << "   " << i << " " << VIDS[i] << "/" << KEYS[i] << ": "
+          << TO.id() << " " << TO.pt() << " " << TO.et() << " " << TO.eta() << " " << TO.phi() << " " << TO.mass()
+          << endl;
 	 id = TO.id();
 	 pt = TO.pt();
 	 eta = TO.eta();
 	 phi = TO.phi();
 	 mass = TO.mass();
+         }
        }
      }
    }
