@@ -117,24 +117,15 @@ TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
    iEvent.getByLabel(triggerResultsTag_,triggerResultsHandle_);
 
    //moduleIndex_ = triggerResultsHandle_->index(triggerIndex_);
-   std::string trigName = "HLT_HIJet55_v1";
-   const unsigned int trigIndex(hltConfig_.triggerIndex(trigName));
-   const unsigned int mIndex = triggerResultsHandle_->index(trigIndex);
-   cout << "trigger index: "<< trigIndex << endl;
+   const unsigned int mIndex = triggerResultsHandle_->index(triggerIndex_);
 
    // Results from TriggerEvent product - Attention: must look only for
    // modules actually run in this path for this event!
    for (unsigned int j=0; j<=mIndex; ++j) {
      // check whether the module is packed up in TriggerEvent product
-     cout << "at module index: "<< j << endl;
-     const string& moduleLabel_(moduleLabels_[j]);
-     cout << "module called: "<< moduleLabel_ << endl;
-     //const string  moduleType(hltConfig_.moduleType(moduleLabel_));
-     string trigFilterIndex = hltConfig_.moduleLabels(trigName).at(j);
+     string trigFilterIndex = hltConfig_.moduleLabels(triggerNames_[0]).at(j); //this is simple to put into a loop to get all triggers...
      const unsigned int filterIndex(triggerEventHandle_->filterIndex(InputTag(trigFilterIndex,"",processName_)));
-     cout << "at filterIndex: " << filterIndex << endl;
      if (filterIndex<triggerEventHandle_->sizeFilters()) {
-       cout << "filterIndex: "<< filterIndex << " < sizeFilters: "<< triggerEventHandle_->sizeFilters() << endl;
        const trigger::Vids& VIDS (triggerEventHandle_->filterIds(filterIndex));
        const trigger::Keys& KEYS(triggerEventHandle_->filterKeys(filterIndex));
        const unsigned int nI(VIDS.size());
@@ -143,20 +134,19 @@ TriggerObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
        const unsigned int n(max(nI,nK));
 
        const trigger::TriggerObjectCollection& TOC(triggerEventHandle_->getObjects());
-       for (unsigned int i=0; n != 0 && i < 1; ++i) {
-	 const trigger::TriggerObject& TO(TOC[KEYS[i]]);
-         if(VIDS[i]>0){
-         cout << "Trigger name: "<< trigName << endl;
-         cout << "module label: " << hltConfig_.moduleLabels(trigName).at(j) << endl;
-         cout << "   " << i << " " << VIDS[i] << "/" << KEYS[i] << ": "
-          << TO.id() << " " << TO.pt() << " " << TO.et() << " " << TO.eta() << " " << TO.phi() << " " << TO.mass()
-          << endl;
-	 id = TO.id();
-	 pt = TO.pt();
-	 eta = TO.eta();
-	 phi = TO.phi();
-	 mass = TO.mass();
-         }
+       for (unsigned int i=0; i!=n; ++i) {
+           const trigger::TriggerObject& TO(TOC[KEYS[i]]);
+           //This check prevents grabbing the L1 trigger object (VIDS < 0), and finds the max trigger pt within all trigger collections
+           if(VIDS[i]>0 && pt<TO.pt()){
+               //cout << "   " << i << " " << VIDS[i] << "/" << KEYS[i] << ": "
+               //              << TO.id() << " " << TO.pt() << " " << TO.et() << " " << TO.eta() << " " << TO.phi() << " " << TO.mass()
+               //                        << endl;
+               id = TO.id();
+               pt = TO.pt();
+               eta = TO.eta();
+               phi = TO.phi();
+               mass = TO.mass();
+           }
        }
      }
    }
