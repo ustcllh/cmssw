@@ -31,11 +31,11 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:/mnt/hadoop/cms/store/user/rkunnawa/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/HIMinBias2011_Hydjet_2760GeV_STARTHI53_LV1_7Mar2014_1040EST_5_3_16_trk8_jet21_RECO/296b762a3f7ae585942f7234457ce1af/step3_RAW2DIGI_L1Reco_RECO_909_1_KYE.root"))
+                            fileNames = cms.untracked.vstring("/store/user/belt/QCD_Pt_80_TuneZ2_2p76TeV_pythia6/QCDpT80_2011RECO_STARTHI53_LV1_5_3_16_Track8_Jet22_1GeVcut/573d209b5e104c1770c264763824b971/QCDpT80_step3_RAW2DIGI_L1Reco_RECO_10_1_j5g.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(-1))
 
 
 #####################################################################################
@@ -72,11 +72,19 @@ process.HeavyIonGlobalParameters = cms.PSet(
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("HiForest.root"))
+                                   fileName=cms.string("hiForest_QCDpT80_STARTHI53_LV1_Track8_Jet22.root"))
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
 #####################################################################################
+
+process.load('Configuration.StandardSequences.Generator_cff')
+process.load('RecoJets.Configuration.GenJetParticles_cff')
+#process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
+#process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
+#process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
+
+#process.hiGenParticles.srcVector = cms.vstring('generator')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_JEC_cff')
 
@@ -172,6 +180,7 @@ process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
 process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
 process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
 process.photonStep.remove(process.interestingTrackEcalDetIds)
+process.photonMatch.matched = cms.InputTag("genParticles")
 process.photonStep.remove(process.seldigis)
 process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
     interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
@@ -183,7 +192,6 @@ process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
     recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
     reducedHitsCollection = cms.string('')
 )
-process.photonMatch.matched = cms.InputTag("hiGenParticles")
 process.patPhotons.addPhotonID = cms.bool(False)
 process.extrapatstep = cms.Path(process.selectedPatPhotons)
 process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
@@ -200,6 +208,15 @@ process.muons.JetExtractorPSet.JetCollectionLabel = cms.InputTag("akVs3PFJets")
 process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
+
+process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
+                             *
+                             process.ak2HiGenJets +
+                             process.ak3HiGenJets +
+                             process.ak4HiGenJets +
+                             process.ak5HiGenJets + 
+                             process.ak6HiGenJets +
+                             process.ak7HiGenJets)
 
 process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
@@ -233,3 +250,13 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)
+
+# Load Beamspot for case of pp MC reco with PbPb settings
+from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
+process.beamspot = cms.ESSource("PoolDBESSource",CondDBSetup,
+                                toGet = cms.VPSet(cms.PSet( record = cms.string('BeamSpotObjectsRcd'),
+                                                            tag= cms.string('Realistic2p76TeVCollisions2013_START53_V9_v1_mc')
+                                                            )),
+                                connect =cms.string('frontier://FrontierProd/CMS_COND_31X_BEAMSPOT')
+                                )
+process.es_prefer_beamspot = cms.ESPrefer("PoolDBESSource","beamspot")

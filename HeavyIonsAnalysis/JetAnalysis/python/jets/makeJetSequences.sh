@@ -44,16 +44,19 @@ for system in PbPb pp pPb
 		genparticles="genParticles"
             fi
 
-	    if [ $system == "pp" ] && [ $sample == "jec" ]; then
+	    if [ $system == "pp" ]; then
 		corrlabel="_generalTracks"
 		tracks="generalTracks"
 		genparticles="genParticles"
-           
-	    elif [ $system == "pp" ]; then
-		corrlabel="_generalTracks"
-		genparticles="genParticles"
-            fi
+	    fi
 
+	    if [ $system == "PbPb" ] && [ $sample == "jec" ]; then
+		if [ $sub == "NONE" ]; then
+		    corrlabel="_generalTracks" #placeholder
+		fi
+		genparticles="genParticles"
+	    fi
+		    
 	    if [ $object == "Calo" ]; then
 		corrlabel="_HI"
 		domatch="False"
