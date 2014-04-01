@@ -402,7 +402,7 @@ RecHitTreeProducer::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
 
   }
 
-  if (doVS_) {
+  if (doTowers_ && doVS_) {
     ev.getByLabel(TowerSrc_,candidates_);
      ev.getByLabel(srcVor_,backgrounds_);
      ev.getByLabel(srcVor_,vn_);
@@ -613,15 +613,19 @@ RecHitTreeProducer::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
       const CaloTower & hit= (*towers)[i];
       if (getEt(hit.id(),hit.energy())<towerPtMin_) continue;
 
-      reco::CandidateViewRef ref(candidates_,i);
-
-      double vsPtInitial=-999, vsPt=-999, vsArea = -999;
-
       if (doVS_) {
+
+	reco::CandidateViewRef ref(candidates_,i);
+	double vsPtInitial=-999, vsPt=-999, vsArea = -999;
+
 	const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
 	vsPt = voronoi.pt();
 	vsPtInitial = voronoi.pt_subtracted();
 	vsArea = voronoi.area();
+	myTowers.vsPt[myTowers.n] = vsPt;
+	myTowers.vsPtInitial[myTowers.n] = vsPtInitial;
+	myTowers.vsArea[myTowers.n] = vsArea;
+
       }
 
       myTowers.et[myTowers.n] = hit.p4(vtx).Et();
@@ -629,10 +633,6 @@ RecHitTreeProducer::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
       myTowers.phi[myTowers.n] = hit.p4(vtx).Phi();
       myTowers.emEt[myTowers.n] = hit.emEt(vtx);
       myTowers.hadEt[myTowers.n] = hit.hadEt(vtx);
-
-      myTowers.vsPt[myTowers.n] = vsPt;
-      myTowers.vsPtInitial[myTowers.n] = vsPtInitial;
-      myTowers.vsArea[myTowers.n] = vsArea;
 
       if (saveBothVtx_) {
 	myTowers.e[myTowers.n] = hit.energy();
