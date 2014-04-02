@@ -21,7 +21,7 @@ for tune in Wide Narrow Coll FullWide FullNarrow
         rad=False
     fi
 
-    cat Pyquen_DijetTemplate_NN_Quenched_TuneD6T_2760GeV_cfi.py | sed "s/123456789/${pthat}/g" | sed "s/RAD/$rad/g" | sed "s/COLL/$coll/g" | sed "s/SPEC/$spec/g" > Pyquen${tune}_Dijet${pthat}_NN_Quenched_TuneD6T_2760GeV_cfi.py
+    cat Pyquen_DijetTemplate_NN_Quenched_TuneD6T_2760GeV_cfi.py.txt | sed "s/123456789/${pthat}/g" | sed "s/RAD/$rad/g" | sed "s/COLL/$coll/g" | sed "s/SPEC/$spec/g" > Pyquen${tune}_Dijet${pthat}_NN_Quenched_TuneD6T_2760GeV_cfi.py
   done
 done
 
