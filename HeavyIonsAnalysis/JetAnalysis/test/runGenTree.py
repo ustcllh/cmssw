@@ -3,7 +3,6 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 ivars = VarParsing.VarParsing('standard')
 ivars.files = ''
 ivars.output = 'HIPAT_output_full13.root'
-ivars.maxEvents = 100
 
 ivars.register ('randomNumber',
                                 mult=ivars.multiplicity.singleton,
@@ -31,14 +30,18 @@ process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic7TeV2011Collision_cf
 
 
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-process.load('Configuration.GenProduction.HI.PyquenWide_Dijet100_NN_Quenched_TuneD6T_2760GeV_cfi')
-process.generator = process.hiSignal.clone(embeddingMode = False)
+process.load('Configuration.GenProduction.HI.PyquenTUNE_Dijet100_NN_Quenched_TuneD6T_2760GeV_cfi')
+process.generator = process.hiSignal.clone(embeddingMode = False,
+                                           cFlag = 1,
+                                           bMin = 0,
+                                           bMax = 15
+                                           )
 
 process.source = cms.Source('EmptySource')
 
 
 process.maxEvents = cms.untracked.PSet(
-        input = cms.untracked.int32(ivars.maxEvents)
+        input = cms.untracked.int32(100)
         )
 
 process.RandomNumberGeneratorService.generator.initialSeed = ivars.randomNumber
@@ -51,6 +54,7 @@ process.TFileService = cms.Service('TFileService',
 #process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetAnalyzers_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.PatAna_cff')
 
 process.p = cms.Path(process.generator
                      *process.VtxSmeared
@@ -62,6 +66,7 @@ process.p = cms.Path(process.generator
                      *process.ak3GenJetAnalyzer
                      *process.ak4GenJetAnalyzer
                      *process.ak5GenJetAnalyzer                     
+                     *process.heavyIon
                      *process.HiGenParticleAna
                      )
 

@@ -165,7 +165,7 @@ GenHIEventProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
             ncoll = ncoll + hi->Ncoll();
             nhard = nhard + hi->Ncoll_hard();
             int np = hi->Npart_proj() + hi->Npart_targ();
-            if(np >= 0){
+            if(npart < 0 || np >= npart){
                 npart = np;
                 b = hi->impact_parameter();
                 phi = hi->event_plane_angle();
