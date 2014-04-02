@@ -49,7 +49,7 @@ hiSignal = cms.EDFilter("PyquenGeneratorFilter",
                                                                                    'MSTP(91)=1      !',
                                                                                    'PARP(91)=2.1   ! kt distribution',
                                                                                    'PARP(93)=15.0  ! '
-                                                                                   )
+                                                                                   ),
                                                     ppJets = cms.vstring('MSEL=1   ! QCD hight pT processes'),
                                                     kinematics = cms.vstring ("CKIN(3)=80",  #min pthat
                                                                               "CKIN(4)=9999" #max pthat
