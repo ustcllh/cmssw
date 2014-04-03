@@ -187,12 +187,25 @@ process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
+# HYDJET RECO file didn't have ak2GenJets and ak6GenJets as input, so removed them
+# and ran our own hiGenJetsCleaned sequence
+from HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff import *
+
+process.hiSelectGenJets = cms.Sequence(
+					ak3HiGenJetsCleaned +
+					ak4HiGenJetsCleaned +
+					ak5HiGenJetsCleaned +
+					ak7HiGenJetsCleaned
+					)
+
+
 process.ana_step = cms.Path(process.heavyIon*
                             process.hltanalysis *
 #temp                            process.hltobject *                            
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleaned*
+#                            process.hiGenJetsCleaned*
+                            process.hiSelectGenJets*
                             process.jetSequences +                            
                             process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
