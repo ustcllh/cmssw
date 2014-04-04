@@ -51,6 +51,10 @@ process.RECODEBUGoutput = cms.OutputModule("PoolOutputModule",
     filterName = cms.untracked.string('MinBiasCollEvtSel'),
     dataTier = cms.untracked.string('GEN-SIM-RECO')
     ),
+                                           SelectEvents = cms.untracked.PSet(
+    SelectEvents = cms.vstring('filter_step')
+    )
+                                           
                                            )
 
 # Additional output definition
