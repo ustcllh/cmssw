@@ -18,7 +18,7 @@ for system in PbPb pp pPb
 	do
 	for radius in 2 3 4 5 6 7
 	  do
-	  matchobject="Calo"
+
 	  for object in PF Calo
 	    do
 
@@ -34,7 +34,8 @@ for system in PbPb pp pPb
 	    genparticles="hiGenParticles"
             tracks="hiGeneralTracks"
             pflow="particleFlowTmp"
-            match=${algo}${subt}${radius}${matchobject}
+            domatch="False"
+            match=""
 	    eventinfotag="generator"
             echo "" > $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
 
@@ -56,11 +57,6 @@ for system in PbPb pp pPb
 		fi
 		genparticles="genParticles"
 	    fi
-		    
-	    if [ $object == "Calo" ]; then
-		corrlabel="_HI"
-		domatch="False"
-	    fi
 
 	    if [ $sample == "mc" ] || [ $sample == "jec" ] || [ $sample == "mix" ]; then
 		ismc="True"
@@ -72,6 +68,35 @@ for system in PbPb pp pPb
 
 	    if [ $sample == "mix" ]; then
                 eventinfotag="hiSignal"
+            fi
+
+	    if [ $sub == "Vs" ] && [ $object == "Calo" ]; then
+		domatch="True"
+		match="${algo}Pu${radius}Calo"
+	    fi
+
+	    if [ $sub == "Vs" ] && [ $object == "PF" ]; then
+                domatch="True"
+                match="${algo}Vs${radius}Calo"
+            fi
+
+	    if [ $sub == "Pu" ] && [ $object == "Calo" ]; then
+                domatch="False" # this will be running first
+                match="${algo}Pu${radius}PF"
+            fi
+
+            if [ $sub == "Pu" ] && [ $object == "PF" ]; then
+                domatch="True"
+                match="${algo}Vs${radius}PF"
+            fi
+
+	    if [ $sub == "NONE" ]; then
+		domatch="True"
+                match="${algo}Vs${radius}${object}"
+	    fi
+
+	    if [ $object == "Calo" ]; then
+                corrlabel="_HI"
             fi
 
             corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${subt}${radius}${object}${corrlabel}
