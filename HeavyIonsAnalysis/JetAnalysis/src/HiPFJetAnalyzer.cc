@@ -588,8 +588,8 @@ HiPFJetAnalyzer::analyze(const Event& iEvent,
 	   reco::CaloJet recoJet1 = ((*recoJetColl1)[iRecoJet]);
 	   
 	   
-	   double recoJet_eta = recoJet1.eta();
-	   double recoJet_phi = recoJet1.phi();
+	   //double recoJet_eta = recoJet1.eta();
+	   //double recoJet_phi = recoJet1.phi();
 	   //cout<<" recoJet_eta "<<recoJet_eta<<" recoJet_phi "<<recoJet_phi<<" recoJet_et "<<recoJet1.et()<<endl;
 	   
 	   
@@ -728,8 +728,8 @@ HiPFJetAnalyzer::analyze(const Event& iEvent,
 	   reco::PFJet recoJet2 = ((*recoJetColl2)[iRecoJet]);
 	   
 	   
-	   double recoJet_eta = recoJet2.eta();
-	   double recoJet_phi = recoJet2.phi();
+	   //double recoJet_eta = recoJet2.eta();
+	   //double recoJet_phi = recoJet2.phi();
 	   //cout<<" recoJet_eta "<<recoJet_eta<<" recoJet_phi "<<recoJet_phi<<" recoJet_et "<<recoJet2.et()<<endl;
 	   
 	   
@@ -872,8 +872,8 @@ HiPFJetAnalyzer::analyze(const Event& iEvent,
 	 reco::PFJet recoJet3 = ((*recoJetColl3)[iRecoJet]);
 	 
 	   
-	 double recoJet_eta = recoJet3.eta();
-	 double recoJet_phi = recoJet3.phi();
+	 //double recoJet_eta = recoJet3.eta();
+	 //double recoJet_phi = recoJet3.phi();
 	 //cout<<" recoJet_eta "<<recoJet_eta<<" recoJet_phi "<<recoJet_phi<<" recoJet_et "<<recoJet3.et()<<endl;
 	 
 	 
@@ -1017,8 +1017,8 @@ HiPFJetAnalyzer::analyze(const Event& iEvent,
 	   reco::PFJet recoJet4 = ((*recoJetColl4)[iRecoJet]);
 	   
 	   
-	   double recoJet_eta = recoJet4.eta();
-	   double recoJet_phi = recoJet4.phi();
+	   //double recoJet_eta = recoJet4.eta();
+	   //double recoJet_phi = recoJet4.phi();
 	   //cout<<" recoJet_eta "<<recoJet_eta<<" recoJet_phi "<<recoJet_phi<<" recoJet_et "<<recoJet4.et()<<endl;
 	   
 	   
@@ -1177,7 +1177,7 @@ HiPFJetAnalyzer::analyze(const Event& iEvent,
      trackingRecHit_iterator edh = track.recHitsEnd();
      for (trackingRecHit_iterator ith = track.recHitsBegin(); ith != edh; ++ith) {
        const TrackingRecHit * hit = ith->get();
-       DetId detid = hit->geographicalId();
+       //DetId detid = hit->geographicalId();
        if (hit->isValid()) {
 	 if (typeid(*hit) == typeid(SiStripRecHit1D)) ++count1dhits;
        }

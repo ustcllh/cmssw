@@ -178,7 +178,7 @@ class HiJetMatchAnalyzer : public edm::EDAnalyzer {
 };
 
 bool HiJetMatchAnalyzer::selectJet(int i){
-   const reco::Jet& jet = (*jets)[i];
+  //const reco::Jet& jet = (*jets)[i];
    if(usePat_){
       const pat::Jet& patjet = (*patjets)[i];
       if(patjet.emEnergyFraction() <= emfMin_) return false;
@@ -313,9 +313,10 @@ HiJetMatchAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
      jv.index = j;
 
      double pt = jet.pt();
-     double ktRho = -1, akRho = -1;
+     // double ktRho = -1, akRho = -1;
+     double akRho = -1;
      if(getFastJets_){
-	ktRho = getRho(jv.jteta,*ktRhos);
+       //ktRho = getRho(jv.jteta,*ktRhos);
 	akRho = getRho(jv.jteta,*akRhos);
      }
 
@@ -388,9 +389,10 @@ HiJetMatchAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
              jraMatch_[im].jtphi[i] = match.phi();
              jraMatch_[im].area[i] = match.jetArea();
 
-	     double ktRhoM = -1, akRhoM = -1;
+	     //double ktRhoM = -1, akRhoM = -1;
+	     double akRhoM = -1;
 	     if(getFastJets_){
-		ktRhoM = getRho(jraMatch_[im].jteta[i],*ktRhos);
+	       //ktRhoM = getRho(jraMatch_[im].jteta[i],*ktRhos);
 		akRhoM = getRho(jraMatch_[im].jteta[i],*akRhos);
 	     }
 

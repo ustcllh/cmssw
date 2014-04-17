@@ -117,8 +117,8 @@ EvtPlaneFlatTag_(iConfig.getParameter<edm::InputTag> ("EvtPlaneFlat")),
 HiMCTag_(iConfig.getParameter<edm::InputTag> ("HiMC")),
 VertexTag_(iConfig.getParameter<edm::InputTag> ("Vertex")),
 doEvtPlane_(iConfig.getParameter<bool> ("doEvtPlane")),
-doCentrality_(iConfig.getParameter<bool> ("doCentrality")),
 doEvtPlaneFlat_(iConfig.getParameter<bool> ("doEvtPlaneFlat")),
+doCentrality_(iConfig.getParameter<bool> ("doCentrality")),
 doMC_(iConfig.getParameter<bool> ("doMC")),
 doVertex_(iConfig.getParameter<bool>("doVertex"))
 {

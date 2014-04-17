@@ -361,7 +361,7 @@ ClusterTreeMaker::~ClusterTreeMaker()
      }
      //Endcap
      for (rh = (*ecalRecHitsEE).begin(); rh!= (*ecalRecHitsEE).end(); rh++){
-       DetId id = rh->id();
+       //DetId id = rh->id();
        const GlobalPoint & position = caloGeom->getPosition(rh->id());
        double tempEt = rh->energy()/cosh(position.eta()) ;
        hRHetEndcap->Fill(tempEt);

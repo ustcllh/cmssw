@@ -191,11 +191,11 @@ MyVirtualJetProducer::MyVirtualJetProducer(const edm::ParameterSet& iConfig)
   // do fasjet area / rho calcluation? => accept corresponding parameters
   if ( doAreaFastjet_ || doRhoFastjet_ ) {
     // default Ghost_EtaMax should be 5
-    double ghostEtaMax = iConfig.getParameter<double>("Ghost_EtaMax");
+    //double ghostEtaMax = iConfig.getParameter<double>("Ghost_EtaMax");
     // default Active_Area_Repeats 1
-    int    activeAreaRepeats = iConfig.getParameter<int> ("Active_Area_Repeats");
+    //int    activeAreaRepeats = iConfig.getParameter<int> ("Active_Area_Repeats");
     // default GhostArea 0.01
-    double ghostArea = iConfig.getParameter<double> ("GhostArea");
+    //double ghostArea = iConfig.getParameter<double> ("GhostArea");
 //    fjActiveArea_ =  ActiveAreaSpecPtr(new fastjet::ActiveAreaSpec(ghostEtaMax,
 //								   activeAreaRepeats,
 //							   ghostArea));

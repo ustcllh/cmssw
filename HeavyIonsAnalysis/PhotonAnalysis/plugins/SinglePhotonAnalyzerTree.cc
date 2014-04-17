@@ -263,7 +263,7 @@ void SinglePhotonAnalyzerTree::beginJob() {
    //   centrality_=0;
    theTree  = fs->make<TTree>("photon","v1");
    int run;
-   int evt;
+   //int evt;
    int bunchCrossing;
    int luminosityBlock;
    theTree->Branch("run",&run,"run/I");
