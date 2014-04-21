@@ -297,9 +297,9 @@ class RecHitTreeProducer : public edm::EDAnalyzer {
 // constructors and destructor
 //
 RecHitTreeProducer::RecHitTreeProducer(const edm::ParameterSet& iConfig) :
-   cbins_(0),
-   geo(0),
-   cone(0.5)
+  cone(0.5),
+  cbins_(0),
+  geo(0)
 {
    //now do what ever initialization is needed
   EBSrc_ = iConfig.getUntrackedParameter<edm::InputTag>("EBRecHitSrc",edm::InputTag("ecalRecHit","EcalRecHitsEB"));

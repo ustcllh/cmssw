@@ -143,9 +143,9 @@ class RecHitComparison : public edm::EDAnalyzer {
 // constructors and destructor
 //
 RecHitComparison::RecHitComparison(const edm::ParameterSet& iConfig) :
+   cone(0.5),
    centrality_(0),
-   geo(0),
-   cone(0.5)
+   geo(0)
 {
    //now do what ever initialization is needed
    jetsOnly_ = iConfig.getUntrackedParameter<bool>("jetsOnly",false);
@@ -261,7 +261,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
       double drjet = -1;
       double jetpt = -1;
       bool isjet = false;
-      int matchedJet = -1;
+      //int matchedJet = -1;
 
       if(doJetCone_){
 	for(unsigned int j = 0 ; j < signalJets->size(); ++j){
@@ -271,7 +271,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
 	    jetpt = jet.pt();
 	    drjet = dr;
 	    isjet = true;
-	    matchedJet = j;
+	    //matchedJet = j;
 	    fFull[j] += et1;
 	    
 	    if(et1 > 0.5){
@@ -323,7 +323,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
      double drjet = -1;
      double jetpt = -1;
      bool isjet = false;
-     int matchedJet = -1;
+     //int matchedJet = -1;
      if(doJetCone_){
        for(unsigned int j = 0 ; j < signalJets->size(); ++j){
 	 const reco::CaloJet & jet = (*signalJets)[j];
@@ -332,7 +332,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
 	   jetpt = jet.pt();
 	   drjet = dr;
 	   isjet = true;
-	   matchedJet = j;
+	   //matchedJet = j;
 	 }
        }
      }
@@ -363,7 +363,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
      double drjet = -1;
      double jetpt = -1;
      bool isjet = false;
-     int matchedJet = -1;
+     //int matchedJet = -1;
      if(doJetCone_){
        for(unsigned int j = 0 ; j < signalJets->size(); ++j){
 	 const reco::CaloJet & jet = (*signalJets)[j];
@@ -372,7 +372,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
 	   jetpt = jet.pt();
 	   drjet = dr;
 	   isjet = true;
-	   matchedJet = j;
+	   //matchedJet = j;
 	 }
        }
      }
@@ -403,7 +403,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
      double drjet = -1;
      double jetpt = -1;
      bool isjet = false;
-     int matchedJet = -1;
+     //int matchedJet = -1;
      if(doJetCone_){
        for(unsigned int j = 0 ; j < signalJets->size(); ++j){
 	 const reco::CaloJet & jet = (*signalJets)[j];
@@ -412,7 +412,7 @@ RecHitComparison::analyze(const edm::Event& ev, const edm::EventSetup& iSetup)
 	   jetpt = jet.pt();
 	   drjet = dr;
 	   isjet = true;
-	   matchedJet = j;
+	   //matchedJet = j;
 	 }
        }
      }

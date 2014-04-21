@@ -213,7 +213,7 @@ RechitCount::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  if( j!=RecHitsBarrel->end()){ // add rechit only if available 
 	     const  GlobalPoint & position = theCaloGeom.product()->getPosition(*i);
 	     double etarh = position.eta();
-	     double phirh = position.phi();
+	     //double phirh = position.phi();
 	     double etaDiff = etarh - eta;
 	     if ( abs(etaDiff) < 0.5 ) {
 		if ( abs(eta)<1.479) valBar++;
@@ -228,7 +228,7 @@ RechitCount::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           if( jE!=RecHitsEndcap->end()){ // add rechit only if available                                                                       
              const  GlobalPoint & position = theCaloGeom.product()->getPosition(*i);
              double etarh = position.eta();
-             double phirh = position.phi();
+             //double phirh = position.phi();
              double etaDiff = etarh - eta;
 	     if ( abs(etaDiff) < 0.5 ) {
                 if ( abs(eta)<1.479) valBar++;

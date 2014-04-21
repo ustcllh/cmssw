@@ -190,9 +190,9 @@ JetAlgorithmAnalyzer::JetAlgorithmAnalyzer(const edm::ParameterSet& iConfig)
      nFill_(5),
      etaMax_(3),
      iev_(0),
+     cone_(1),
      geo(0),
-     centrality_(0),
-     cone_(1)
+     centrality_(0)
 {
 
   doAreaFastjet_ = false;
@@ -310,17 +310,21 @@ void JetAlgorithmAnalyzer::fillNtuple(int output, const  std::vector<fastjet::Ps
      nt = ntJetTowers;
      h = hJetTowers[step];
    }
+   else{
+     nt = 0;
+     h = 0;
+   }
 
-   bool printDebug = 0;
+   //bool printDebug = 0;
 
    double totet = 0;
    int ntow = 0;
-   int nj = jets.size();
+   //int nj = jets.size();
 
-   if(printDebug){
+   //if(printDebug){
      //   cout<<"step : "<<step<<endl;
      //   cout<<"Size of input : "<<nj<<endl;
-   }
+   //}
    for(unsigned int i = 0; i < jets.size(); ++i){
      const fastjet::PseudoJet& jet = jets[i];
 
@@ -353,14 +357,14 @@ void JetAlgorithmAnalyzer::fillNtuple(int output, const  std::vector<fastjet::Ps
      nt->Fill(jet.eta(),phi,pt,step,iev_);
      h->Fill(jet.eta(),phi,pt);
    }
-   if(printDebug && 0){
-   cout<<"-----------------------------"<<endl;
-   cout<<"STEP             = "<<step<<endl;   
-   cout<<"Total ET         = "<<totet<<endl;
-   cout<<"Towers counted   = "<<ntow<<endl;
-   cout<<"Average tower ET = "<<totet/ntow<<endl;
-   cout<<"-----------------------------"<<endl;     
-   }
+   // if(printDebug && 0){
+   // cout<<"-----------------------------"<<endl;
+   // cout<<"STEP             = "<<step<<endl;   
+   // cout<<"Total ET         = "<<totet<<endl;
+   // cout<<"Towers counted   = "<<ntow<<endl;
+   // cout<<"Average tower ET = "<<totet/ntow<<endl;
+   // cout<<"-----------------------------"<<endl;     
+   // }
 }
 
 
@@ -685,7 +689,7 @@ void JetAlgorithmAnalyzer::writeBkgJets( edm::Event & iEvent, edm::EventSetup co
 
 	 if(sumRecHits_){
 	    const GlobalPoint& pos=geo->getPosition(ctc->id());
-	    double energy = ctc->emEnergy() + ctc->hadEnergy();
+	    //double energy = ctc->emEnergy() + ctc->hadEnergy();
 	    double ang = sin(pos.theta());
 	    // towet = energy*ang;
 	    em[ir] += ctc->emEnergy()*ang;

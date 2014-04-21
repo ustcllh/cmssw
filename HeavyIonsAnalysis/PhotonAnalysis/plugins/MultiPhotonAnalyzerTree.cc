@@ -131,7 +131,7 @@ void MultiPhotonAnalyzerTree::analyze(const edm::Event& e, const edm::EventSetup
    //   storeEvtPlane(e);
    
    analyzeMC(e,iSetup);
-   int foundPhotons = selectStorePhotons(e,iSetup,"");
+   //int foundPhotons = selectStorePhotons(e,iSetup,"");
    //cout <<"Found photons? "<<foundPhotons<<endl;
    theTree->Fill();  
 }
@@ -383,7 +383,7 @@ int MultiPhotonAnalyzerTree::selectStorePhotons(const edm::Event& e,const edm::E
     // electron id
     bool isEleTemp = false;
     float dphiTemp(100), detaTemp(100);
-    float deltaPhiEleCTTemp(100), deltaEtaEleCTTemp(100);
+    //float deltaPhiEleCTTemp(100), deltaEtaEleCTTemp(100);
     int eleChargeTemp(100);
     float eleEpTemp(100);
     
@@ -407,8 +407,8 @@ int MultiPhotonAnalyzerTree::selectStorePhotons(const edm::Event& e,const edm::E
 	if ( eleEpTemp < iEp )  continue;
 	eleEpTemp = iEp;
 	eleChargeTemp =  eleItr->charge();
-	deltaPhiEleCTTemp =  eleItr->deltaPhiEleClusterTrackAtCalo() ; 
-	deltaEtaEleCTTemp =  eleItr->deltaEtaEleClusterTrackAtCalo() ;
+	//deltaPhiEleCTTemp =  eleItr->deltaPhiEleClusterTrackAtCalo() ; 
+	//deltaEtaEleCTTemp =  eleItr->deltaEtaEleClusterTrackAtCalo() ;
 	dphiTemp = dphi;  
 	detaTemp = eleItr->eta() - photon.eta() ;
 	//	detaTemp = eleItr->superCluster()->eta() - photon.superCluster()->eta() ;
