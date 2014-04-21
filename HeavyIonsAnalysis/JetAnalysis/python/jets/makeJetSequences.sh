@@ -49,6 +49,7 @@ for system in PbPb pp pPb
 		corrlabel="_generalTracks"
 		tracks="generalTracks"
 		genparticles="genParticles"
+		pflow="particleFlow"
 	    fi
 
 	    if [ $system == "PbPb" ] && [ $sample == "jec" ]; then
@@ -139,10 +140,11 @@ for system in PbPb pp pPb
 
 	    if [ $sample == "jec" ]; then
 		echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
+		if [ $object == "PF" ] && [ $sub != "Pu" ]; then
+		    echo "${algo}${subt}${radius}${object}Jets.src = cms.InputTag(\"particleFlowTmp\")" >> HiReRecoJets_cff.py
+		fi
 		echo "${algo}${subt}${radius}${object}JetAnalyzer.genPtMin = cms.untracked.double(1)" >> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
-	    fi
-
-	    
+	    fi	    
 	  done
 	done
       done
@@ -211,3 +213,7 @@ do
 	fi
     done
 done
+
+cat HiReRecoJets_cff.py | sed "s/particleFlowTmp/particleFlow/g" > HiReRecoJets_pp_cff.py
+mv HiReRecoJets_cff.py HiReRecoJets_HI_cff.py
+

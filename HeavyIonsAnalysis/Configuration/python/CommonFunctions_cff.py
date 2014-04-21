@@ -289,6 +289,44 @@ def overrideJEC_pPb5020(process):
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                  label = cms.untracked.string("AK5PF_generalTracks")
                  ),
+
+###PLACEHOLDERS BEGIN###
+
+      cms.PSet(record = cms.string("JetCorrectionsRecord"),
+               tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK3PF_offline"),
+               connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+               label = cms.untracked.string("AKVs3PF_generalTracks")
+               ),
+      cms.PSet(record = cms.string("JetCorrectionsRecord"),
+               tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK4PF_offline"),
+               connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+               label = cms.untracked.string("AKVs4PF_generalTracks")
+               ),
+      cms.PSet(record = cms.string("JetCorrectionsRecord"),
+               tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK5PF_offline"),
+               connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+               label = cms.untracked.string("AKVs5PF_generalTracks")
+               ),
+      
+      cms.PSet(record = cms.string("JetCorrectionsRecord"),
+               tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK3PF_offline"),
+               connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+               label = cms.untracked.string("AKPu3PF_generalTracks")
+               ),
+      cms.PSet(record = cms.string("JetCorrectionsRecord"),
+               tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK4PF_offline"),
+               connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+               label = cms.untracked.string("AKPu4PF_generalTracks")
+               ),
+      cms.PSet(record = cms.string("JetCorrectionsRecord"),
+               tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK5PF_offline"),
+               connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+               label = cms.untracked.string("AKPu5PF_generalTracks")
+               ),
+      
+###PLACEHOLDERS END###
+      
+
          cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v04_AK6PF_offline"),
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
@@ -584,6 +622,28 @@ def overrideJEC_pp2760(process):
                                              connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                                              label = cms.untracked.string("AKPu7PF_generalTracks")
                                              ),
+
+###PLACEHOLDERS BEGIN###
+                                    
+                                    cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK3PF_offline"),
+                                             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                                             label = cms.untracked.string("AKVs3PF_generalTracks")
+                                             ),
+                                    cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK4PF_offline"),
+                                             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                                             label = cms.untracked.string("AKVs4PF_generalTracks")
+                                             ),
+                                    cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                                             tag = cms.string("JetCorrectorParametersCollection_HI_PFTowers_generalTracks_PythiaZ2_5TeV_538_v05_AK5PF_offline"),
+                                             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                                             label = cms.untracked.string("AKVs5PF_generalTracks")
+                                             ),
+                                    
+                                    ###PLACEHOLDERS END###
+
+
         
         ])
     
