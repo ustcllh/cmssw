@@ -69,7 +69,7 @@ overrideGT_PbPb2760(process)
 overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
-    centralityVariable = cms.string("HFtowers"),
+    centralityVariable = cms.string("HFtowersTrunc"),
     nonDefaultGlauberModel = cms.string(""),
     centralitySrc = cms.InputTag("hiCentrality")
     )
@@ -195,10 +195,10 @@ process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecal
 process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
-process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
+#process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
+#process.photonStep.remove(process.interestingTrackEcalDetIds)
 process.photonMatch.matched = cms.InputTag("genParticles")
-process.photonStep.remove(process.seldigis)
+#process.photonStep.remove(process.seldigis)
 process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
     interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
     recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
@@ -210,7 +210,7 @@ process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
     reducedHitsCollection = cms.string('')
 )
 process.patPhotons.addPhotonID = cms.bool(False)
-process.extrapatstep = cms.Path(process.selectedPatPhotons)
+#process.extrapatstep = cms.Path(process.selectedPatPhotons)
 process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
 process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
@@ -244,7 +244,7 @@ process.ana_step = cms.Path(process.hiCentrality +
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
                             process.jetSequences +                            
-                            process.multiPhotonAnalyzer +
+#                            process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +

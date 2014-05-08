@@ -67,8 +67,8 @@ overrideGT_PbPb2760(process)
 overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
-    centralityVariable = cms.string("HFtowers"),
-    nonDefaultGlauberModel = cms.string("Hydjet_Drum"),
+    centralityVariable = cms.string("HFtowersTrunc"),
+    nonDefaultGlauberModel = cms.string("Hijing"),
     centralitySrc = cms.InputTag("hiCentrality")
     )
 
