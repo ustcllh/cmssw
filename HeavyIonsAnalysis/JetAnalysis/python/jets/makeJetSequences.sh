@@ -43,6 +43,7 @@ for system in PbPb pp pPb
 		corrlabel="_generalTracks"
 		tracks="generalTracks"
 		genparticles="genParticles"
+		pflow="particleFlow"
             fi
 
 	    if [ $system == "pp" ]; then
