@@ -42,7 +42,7 @@ for system in PbPb pp pPb
             if [ $system == "pPb" ]; then
 		corrlabel="_generalTracks"
 		tracks="generalTracks"
-		genparticles="genParticles"
+		genparticles="hiGenParticles"
 		pflow="particleFlow"
             fi
 

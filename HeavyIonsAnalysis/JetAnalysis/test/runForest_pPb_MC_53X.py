@@ -32,13 +32,12 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "/store/user/vzhukova/QCD-pthat50_2p76TeV/QCD-pthat50_2p76TeV_RECO/d0452f12fce525b845e00385074c8a09/QCD-pthat50_2p76TeV_pythia6_RECO_100_1_AWU.root"
-#   "/store/user/belt/QCD_Pt_80_TuneZ2_2p76TeV_pythia6/QCDpT80_2011RECO_STARTHI53_LV1_5_3_16_Track8_Jet22_1GeVcut/573d209b5e104c1770c264763824b971/QCDpT80_step3_RAW2DIGI_L1Reco_RECO_10_1_j5g.root"
+    "file:/mnt/hadoop/cms/store/user/vzhukova/HIJING_GEN-SIM_NEWFIX_batch2/Pyquen_allQCDPhoton30_RECO/b7d33bba7673cdb1ee6f4983c0800c79/Pyquen_allQCDPhoton_RECO_42_1_Itt.root"
     ))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(10))
 
 
 #####################################################################################
@@ -54,6 +53,7 @@ process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
 process.load('Configuration.StandardSequences.RawToDigi_cff')
 process.load('Configuration.StandardSequences.ReconstructionHeavyIons_cff')
+process.load('RecoHI.HiCentralityAlgos.pACentrality_cfi')
 process.load('RecoHI.HiCentralityAlgos.CentralityBin_cfi')
 
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -72,12 +72,14 @@ process.HeavyIonGlobalParameters = cms.PSet(
     pPbRunFlip = cms.untracked.uint32(211313)
     )
 
+process.pACentrality.producePixelhits = cms.bool(False)
+
 #####################################################################################
 # Define tree output
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("hiForest_QCDpT80_STARTHI53_LV1_Track8_Jet22.root"))
+                                   fileName=cms.string("HiForest.root"))
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
@@ -88,10 +90,10 @@ process.load('RecoJets.Configuration.GenJetParticles_cff')
 
 process.hiGenParticles.srcVector = cms.vstring('generator')
 
-process.hiCentrality.producePixelhits = False
-process.hiCentrality.producePixelTracks = False
-process.hiCentrality.srcTracks = cms.InputTag("generalTracks")
-process.hiCentrality.srcVertex = cms.InputTag("offlinePrimaryVerticesWithBS")
+#process.hiCentrality.producePixelhits = False
+#process.hiCentrality.producePixelTracks = False
+#process.hiCentrality.srcTracks = cms.InputTag("generalTracks")
+#process.hiCentrality.srcVertex = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.hiEvtPlane.vtxCollection_ = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.hiEvtPlane.trackCollection_ = cms.InputTag("generalTracks")
 
@@ -155,6 +157,8 @@ process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
                                     )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
+process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVerticesWithBS")
+
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 
 #####################################################################################
@@ -192,10 +196,7 @@ process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecal
 process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
-process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
-process.photonMatch.matched = cms.InputTag("genParticles")
-process.photonStep.remove(process.seldigis)
+process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
 process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
     interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
     recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
@@ -207,10 +208,18 @@ process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
     reducedHitsCollection = cms.string('')
 )
 process.patPhotons.addPhotonID = cms.bool(False)
-process.extrapatstep = cms.Path(process.selectedPatPhotons)
+process.photonMatch.matched = cms.InputTag("hiGenParticles")
 process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
 process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
+
+process.genStep = cms.Path(process.hiGenParticles *
+                           process.hiGenParticlesForJets)
+
+process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
+process.photonStep.remove(process.interestingTrackEcalDetIds)
+process.photonStep.remove(process.seldigis)
+process.extrapatstep = cms.Path(process.selectedPatPhotons)
 
 #####################
 # muons
@@ -223,9 +232,7 @@ process.globalMuons.TrackerCollectionLabel = "generalTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "generalTracks"
 process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
-process.temp_step = cms.Path(process.hiGenParticles *
-                             process.hiGenParticlesForJets
-                             *
+process.temp_step = cms.Path(
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
@@ -233,7 +240,7 @@ process.temp_step = cms.Path(process.hiGenParticles *
                              process.ak6HiGenJets +
                              process.ak7HiGenJets)
 
-process.ana_step = cms.Path(process.hiCentrality +
+process.ana_step = cms.Path(process.pACentrality +
                             process.centralityBin +
                             process.hiEvtPlane +
                             process.heavyIon*
@@ -241,7 +248,7 @@ process.ana_step = cms.Path(process.hiCentrality +
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
                             process.jetSequences +
-                            process.multiPhotonAnalyzer +
+                            #process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
