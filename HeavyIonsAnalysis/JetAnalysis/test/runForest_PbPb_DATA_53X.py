@@ -24,15 +24,14 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
- #                           fileNames = cms.untracked.vstring("/store/user/istaslis/HIHighPt/hiReco_Jet55or65_GR_R_53_LV6_03Mar2014_1600CET_CMSSW_5_3_16/70ebb2338cb5ddcd109662d27c72d4cd/hiReco_RAW2DIGI_L1Reco_RECO_1001_2_8Ow.root")
+                            fileNames = cms.untracked.vstring("/store/user/istaslis/HIHighPt/hiReco_Jet55or65_GR_R_53_LV6_03Mar2014_1600CET_CMSSW_5_3_16/70ebb2338cb5ddcd109662d27c72d4cd/hiReco_RAW2DIGI_L1Reco_RECO_1001_2_8Ow.root")
  #                           fileNames = cms.untracked.vstring("file:hiReco_RAW2DIGI_L1Reco_RECO_1001_2_8Ow.root")
-                             fileNames = cms.untracked.vstring("file:/afs/cern.ch/work/s/stepobr/public/data_rereco.root")
 
                             )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5))
+    input = cms.untracked.int32(-1))
 
 
 #####################################################################################
