@@ -31,11 +31,12 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"))
+                            #fileNames = cms.untracked.vstring("/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"))
+			    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/s/stepobr/public/5_3_16.root'))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(5))
 
 
 #####################################################################################
@@ -95,7 +96,11 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff'
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
 
-process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5JPTJetSequence_PbPb_mc_cff')
+
+process.jetSequences = cms.Sequence(
+				    process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
@@ -108,7 +113,9 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akPu5CaloJetSequence +
                                     process.akVs5PFJetSequence +
-                                    process.akPu5PFJetSequence
+                                    process.akPu5PFJetSequence +
+                                    process.recoJPTJetsHIC +
+                                    process.akPu5JPTJetSequence
                                     )
 
 
