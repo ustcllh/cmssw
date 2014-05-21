@@ -761,7 +761,6 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
 	double dr = deltaR(jet,mjet);
 	if(dr < drMin){
 	   jets_.matchedPt[jets_.nref] = mjet.pt();
-
 	   if(usePat_){
 	     const pat::Jet& mpatjet = (*patmatchedjets)[imatch];
 	     jets_.matchedRawPt[jets_.nref] = mpatjet.correctedJet("Uncorrected").pt();
@@ -855,10 +854,9 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
      const reco::JPTJet *jptjet = dynamic_cast<const reco::JPTJet*>((*patjets)[j].originalObject());
 
      jets_.pion_bgn[jets_.nref]=jets_.ntrack;
-        cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
      const reco::TrackRefVector& pioninin = (*jptjet).getPionsInVertexInCalo();
      for(reco::TrackRefVector::const_iterator it = pioninin.begin(); it != pioninin.end(); it++) {
-	std::cout<<" pion Track in in "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
+//	std::cout<<" pion Track in in "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
         jets_.jpttrackpt[jets_.ntrack] = (*it)->pt();
         jets_.jpttrackphi[jets_.ntrack] = (*it)->phi();
         jets_.jpttracketa[jets_.ntrack] = (*it)->eta();
@@ -867,7 +865,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
 
      const reco::TrackRefVector& pioninout = (*jptjet).getPionsInVertexOutCalo();
      for(reco::TrackRefVector::const_iterator it = pioninout.begin(); it != pioninout.end(); it++) {
-        std::cout<<" pion Track in out "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
+  //      std::cout<<" pion Track in out "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
         jets_.jpttrackpt[jets_.ntrack] = (*it)->pt();
         jets_.jpttrackphi[jets_.ntrack] = (*it)->phi();
         jets_.jpttracketa[jets_.ntrack] = (*it)->eta();
@@ -880,7 +878,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
 
      const reco::TrackRefVector& muoninin = (*jptjet).getMuonsInVertexInCalo();
      for(reco::TrackRefVector::const_iterator it = muoninin.begin(); it != muoninin.end(); it++) {
-        std::cout<<" muon Track in in "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
+//        std::cout<<" muon Track in in "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
         jets_.jpttrackpt[jets_.ntrack] = (*it)->pt();
         jets_.jpttrackphi[jets_.ntrack] = (*it)->phi();
         jets_.jpttracketa[jets_.ntrack] = (*it)->eta();
@@ -889,7 +887,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
 
      const reco::TrackRefVector& muoninout = (*jptjet).getMuonsInVertexOutCalo();
      for(reco::TrackRefVector::const_iterator it = muoninout.begin(); it != muoninout.end(); it++) {
-        std::cout<<" muon Track in out "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
+//        std::cout<<" muon Track in out "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
         jets_.jpttrackpt[jets_.ntrack] = (*it)->pt();
         jets_.jpttrackphi[jets_.ntrack] = (*it)->phi();
         jets_.jpttracketa[jets_.ntrack] = (*it)->eta();
@@ -902,7 +900,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
 
      const reco::TrackRefVector& elecsinin = (*jptjet).getElecsInVertexInCalo();
      for(reco::TrackRefVector::const_iterator it = elecsinin.begin(); it != elecsinin.end(); it++) {
-        std::cout<<" elec Track in in "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
+//        std::cout<<" elec Track in in "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
         jets_.jpttrackpt[jets_.ntrack] = (*it)->pt();
         jets_.jpttrackphi[jets_.ntrack] = (*it)->phi();
         jets_.jpttracketa[jets_.ntrack] = (*it)->eta();
@@ -911,7 +909,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
 
      const reco::TrackRefVector& elecsinout = (*jptjet).getElecsInVertexOutCalo();
      for(reco::TrackRefVector::const_iterator it = elecsinout.begin(); it != elecsinout.end(); it++) {
-        std::cout<<" elec Track in out "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
+//        std::cout<<" elec Track in out "<<(*it)->p()<<" "<<(*it)->pt()<<" "<<(*it)->eta()<<" "<<(*it)->phi()<<std::endl;
         jets_.jpttrackpt[jets_.ntrack] = (*it)->pt();
         jets_.jpttrackphi[jets_.ntrack] = (*it)->phi();
         jets_.jpttracketa[jets_.ntrack] = (*it)->eta();
