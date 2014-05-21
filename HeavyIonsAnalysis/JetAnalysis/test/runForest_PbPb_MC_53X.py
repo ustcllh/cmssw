@@ -31,12 +31,11 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            #fileNames = cms.untracked.vstring("/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"))
-			    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/s/stepobr/public/5_3_16.root'))
+                            fileNames = cms.untracked.vstring("/store/user/yilmaz/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/Pythia120_RECO_test02/fde3bb939bbed947d7dc784164e90471/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_39_1_88v.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5))
+    input = cms.untracked.int32(-1))
 
 
 #####################################################################################
