@@ -26,12 +26,11 @@ process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring("/store/user/istaslis/HIHighPt/hiReco_Jet55or65_GR_R_53_LV6_03Mar2014_1600CET_CMSSW_5_3_16/70ebb2338cb5ddcd109662d27c72d4cd/hiReco_RAW2DIGI_L1Reco_RECO_1001_2_8Ow.root")
  #                           fileNames = cms.untracked.vstring("file:hiReco_RAW2DIGI_L1Reco_RECO_1001_2_8Ow.root")
-
                             )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(10))
 
 
 #####################################################################################
@@ -93,8 +92,6 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_data_cf
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_data_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5JPTJetSequence_PbPb_data_cff')
-
 process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
@@ -108,9 +105,7 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akPu5CaloJetSequence +
                                     process.akVs5PFJetSequence +
-                                    process.akPu5PFJetSequence +
-                                    process.recoJPTJetsHIC +
-                                    process.akPu5JPTJetSequence
+                                    process.akPu5PFJetSequence
                                     )
                                     
 
