@@ -32,7 +32,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "file:/mnt/hadoop/cms/store/user/vzhukova/HIJING_GEN-SIM_NEWFIX_batch2/Pyquen_allQCDPhoton30_RECO/b7d33bba7673cdb1ee6f4983c0800c79/Pyquen_allQCDPhoton_RECO_42_1_Itt.root"
+    "file:/afs/cern.ch/user/r/richard/sl6/CMSSW_5_3_18/src/RECO.root"
     ))
 
 # Number of events we want to process, -1 = all events
@@ -183,6 +183,11 @@ process.hiTracks.cut = cms.string('quality("highPurity")')
 
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
+
+process.ppTrack.pfCandSrc = cms.InputTag("particleFlow")
+
+# Disable this for now, causes problems.
+process.ppTrack.doPFMatching = cms.untracked.bool(False)
 
 #####################
 # photons
