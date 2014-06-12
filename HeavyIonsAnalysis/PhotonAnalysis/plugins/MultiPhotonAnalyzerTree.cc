@@ -132,6 +132,7 @@ void MultiPhotonAnalyzerTree::analyze(const edm::Event& e, const edm::EventSetup
    
    analyzeMC(e,iSetup);
    //int foundPhotons = selectStorePhotons(e,iSetup,"");
+   selectStorePhotons(e,iSetup,"");
    //cout <<"Found photons? "<<foundPhotons<<endl;
    theTree->Fill();  
 }
