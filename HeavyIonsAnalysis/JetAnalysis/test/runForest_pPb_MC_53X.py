@@ -32,8 +32,8 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "file:/afs/cern.ch/user/r/richard/sl6/CMSSW_5_3_18/src/RECO.root"
-    ))
+                                "file:/data/richard/MC_TESTS/pPb_RECO.root"
+                            ))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -191,40 +191,13 @@ process.ppTrack.doPFMatching = cms.untracked.bool(False)
 
 #####################
 # photons
-process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
-process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraEGammaReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
-process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGsfElectrons")
-process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
-process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
-    reducedHitsCollection = cms.string('')
-)
-process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
-    reducedHitsCollection = cms.string('')
-)
-process.patPhotons.addPhotonID = cms.bool(False)
-process.photonMatch.matched = cms.InputTag("hiGenParticles")
-process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
-process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
-
-process.genStep = cms.Path(process.hiGenParticles *
-                           process.hiGenParticlesForJets)
-
-process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
-process.photonStep.remove(process.seldigis)
-process.extrapatstep = cms.Path(process.selectedPatPhotons)
 
 #####################
 # muons
@@ -236,6 +209,9 @@ process.muons.JetExtractorPSet.JetCollectionLabel = cms.InputTag("akVs3PFJets")
 process.globalMuons.TrackerCollectionLabel = "generalTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "generalTracks"
 process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
+
+process.genStep = cms.Path(process.hiGenParticles *
+                           process.hiGenParticlesForJets)
 
 process.temp_step = cms.Path(
                              process.ak2HiGenJets +
@@ -253,7 +229,7 @@ process.ana_step = cms.Path(process.pACentrality +
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
                             process.jetSequences +
-                            #process.multiPhotonAnalyzer +
+                            process.photonStep +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +

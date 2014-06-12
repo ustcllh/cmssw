@@ -72,9 +72,9 @@ process.schedule = cms.Schedule(process.raw2digi_step,process.reconstruction_ste
 from Configuration.PyReleaseValidation.ConfigBuilder import MassReplaceInputTag
 MassReplaceInputTag(process)
 
-process.SimpleMemoryCheck=cms.Service("SimpleMemoryCheck",
-                                      oncePerEventMode=cms.untracked.bool(False))
+# process.SimpleMemoryCheck=cms.Service("SimpleMemoryCheck",
+#                                       oncePerEventMode=cms.untracked.bool(False))
 
-process.Timing=cms.Service("Timing",
-                           useJobReport = cms.untracked.bool(True)
-                           )
+# process.Timing=cms.Service("Timing",
+#                            useJobReport = cms.untracked.bool(True)
+#                            )

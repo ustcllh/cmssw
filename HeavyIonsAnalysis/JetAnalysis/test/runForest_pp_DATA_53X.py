@@ -198,31 +198,11 @@ process.ppTrack.doPFMatching = False
 
 #####################
 # photons
-process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraEGammaReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
-process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGsfElectrons")
-process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
+process.photonStep.remove(process.photonMatch)
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
-process.photonStep = cms.Sequence(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons * process.selectedPatPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
-process.photonStep.remove(process.seldigis)
-process.photonStep.remove(process.photonMatch)
-process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
-    reducedHitsCollection = cms.string('')
-)
-process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
-    reducedHitsCollection = cms.string('')
-)
-process.patPhotons.addPhotonID = cms.bool(False)
-process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
-process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -242,7 +222,6 @@ process.ana_step = cms.Path(process.hiCentrality +
                             process.hiEvtAnalyzer*
                             process.jetSequences +
                             process.photonStep +
-                            process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +

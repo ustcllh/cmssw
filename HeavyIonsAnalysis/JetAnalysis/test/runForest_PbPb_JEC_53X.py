@@ -31,7 +31,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("/store/user/belt/QCD_Pt_80_TuneZ2_2p76TeV_pythia6/QCDpT80_2011RECO_STARTHI53_LV1_5_3_16_Track8_Jet22_1GeVcut/573d209b5e104c1770c264763824b971/QCDpT80_step3_RAW2DIGI_L1Reco_RECO_10_1_j5g.root"))
+                            fileNames = cms.untracked.vstring("file:/data/richard/MC_TESTS/PbPb_RECO.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -72,7 +72,7 @@ process.HeavyIonGlobalParameters = cms.PSet(
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("hiForest_QCDpT80_STARTHI53_LV1_Track8_Jet22.root"))
+                                   fileName=cms.string("HiForest.root"))
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
@@ -170,33 +170,10 @@ process.anaTrack.doPFMatching = False
 
 #####################
 # photons
-process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
-process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraEGammaReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
-process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGsfElectrons")
-process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
-process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
-process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
 process.photonMatch.matched = cms.InputTag("genParticles")
-process.photonStep.remove(process.seldigis)
-process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
-    reducedHitsCollection = cms.string('')
-)
-process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
-    reducedHitsCollection = cms.string('')
-)
-process.patPhotons.addPhotonID = cms.bool(False)
-process.extrapatstep = cms.Path(process.selectedPatPhotons)
-process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
-process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -224,7 +201,7 @@ process.ana_step = cms.Path(process.heavyIon*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
                             process.jetSequences +                            
-                            process.multiPhotonAnalyzer +
+                            process.photonStep +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
