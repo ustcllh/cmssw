@@ -158,7 +158,7 @@ echo "hiGenJetsCleaned = cms.Sequence(" >> HiGenJetsCleaned_cff.py
 
 for algo in ak
   do
-  for radius in 2 3 4 5 6 7
+  for radius in 1 2 3 4 5 6 7
     do
     echo "$algo${radius}HiGenJetsCleaned" >> HiGenJetsCleaned_cff.py
     if [ $radius -ne 7 ]; then
@@ -182,7 +182,7 @@ do
     if [ $sub == "NONE" ]; then 
 	subt=""
     fi
-    for radius in 2 3 4 5 6 7 
+    for radius in 1 2 3 4 5 6 7 
     do
 	echo "${algo}${subt}${radius}PFJets" >> HiReRecoJets_cff.py
 	if [ $radius -eq 7 ] && [ $sub == "Vs" ]; then
@@ -204,7 +204,7 @@ do
     if [ $sub == "NONE" ]; then 
 	subt=""
     fi
-    for radius in 2 3 4 5 6 7 
+    for radius in 1 2 3 4 5 6 7 
     do
 	echo "${algo}${subt}${radius}CaloJets" >> HiReRecoJets_cff.py
 	if [ $radius -eq 7 ] && [ $sub == "Vs" ]; then

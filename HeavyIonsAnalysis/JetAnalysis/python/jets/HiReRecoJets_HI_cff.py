@@ -171,6 +171,8 @@ ak7PFJets.src = cms.InputTag("particleFlowTmp")
 ak7CaloJets.jetPtMin = 1
 
 hiReRecoPFJets = cms.Sequence(
+ak1PFJets
++
 ak2PFJets
 +
 ak3PFJets
@@ -183,6 +185,8 @@ ak6PFJets
 +
 ak7PFJets
 +
+akPu1PFJets
++
 akPu2PFJets
 +
 akPu3PFJets
@@ -194,6 +198,8 @@ akPu5PFJets
 akPu6PFJets
 +
 akPu7PFJets
++
+akVs1PFJets
 +
 akVs2PFJets
 +
@@ -209,6 +215,8 @@ akVs7PFJets
 )
 
 hiReRecoCaloJets = cms.Sequence(
+ak1CaloJets
++
 ak2CaloJets
 +
 ak3CaloJets
@@ -221,6 +229,8 @@ ak6CaloJets
 +
 ak7CaloJets
 +
+akPu1CaloJets
++
 akPu2CaloJets
 +
 akPu3CaloJets
@@ -232,6 +242,8 @@ akPu5CaloJets
 akPu6CaloJets
 +
 akPu7CaloJets
++
+akVs1CaloJets
 +
 akVs2CaloJets
 +
