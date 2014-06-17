@@ -88,6 +88,13 @@ process.load('RecoJets.Configuration.GenJetParticles_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_JEC_cff')
 
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu1CaloJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs1CaloJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs1PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu1PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak1PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak1CaloJetSequence_PbPb_jec_cff')
+
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu2CaloJetSequence_PbPb_jec_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs2CaloJetSequence_PbPb_jec_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs2PFJetSequence_PbPb_jec_cff')
@@ -116,10 +123,31 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_jec_cff
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_PbPb_jec_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5CaloJetSequence_PbPb_jec_cff')
 
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu6CaloJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs6CaloJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs6PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu6PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak6PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak6CaloJetSequence_PbPb_jec_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu7CaloJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs7CaloJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs7PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu7PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak7PFJetSequence_PbPb_jec_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak7CaloJetSequence_PbPb_jec_cff')
+
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiReRecoJets_HI_cff')
 
 process.jetSequences = cms.Sequence(process.hiReRecoCaloJets +
                                     process.hiReRecoPFJets +
+
+                                    process.akPu1CaloJetSequence +
+                                    process.akVs1CaloJetSequence +
+                                    process.akVs1PFJetSequence +
+                                    process.akPu1PFJetSequence +
+                                    process.ak1PFJetSequence +                                    
+                                    process.ak1CaloJetSequence +
 
                                     process.akPu2CaloJetSequence +
                                     process.akVs2CaloJetSequence +
@@ -147,8 +175,21 @@ process.jetSequences = cms.Sequence(process.hiReRecoCaloJets +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence +
                                     process.ak5PFJetSequence +
-                                    process.ak5CaloJetSequence
+                                    process.ak5CaloJetSequence +
+
+                                    process.akPu6CaloJetSequence +
+                                    process.akVs6CaloJetSequence +
+                                    process.akVs6PFJetSequence +
+                                    process.akPu6PFJetSequence +
+                                    process.ak6PFJetSequence +                                    
+                                    process.ak6CaloJetSequence +
                                     
+                                    process.akPu7CaloJetSequence +
+                                    process.akVs7CaloJetSequence +
+                                    process.akVs7PFJetSequence +
+                                    process.akPu7PFJetSequence +
+                                    process.ak7PFJetSequence +                                    
+                                    process.ak7CaloJetSequence                                     
                                     )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
