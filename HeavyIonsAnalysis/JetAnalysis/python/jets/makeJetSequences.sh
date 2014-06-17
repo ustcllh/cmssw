@@ -16,7 +16,7 @@ for system in PbPb pp pPb
       do
       for sub in Vs Pu NONE
 	do
-	for radius in 2 3 4 5 6 7
+	for radius in 1 2 3 4 5 6 7
 	  do
 
 	  for object in PF Calo

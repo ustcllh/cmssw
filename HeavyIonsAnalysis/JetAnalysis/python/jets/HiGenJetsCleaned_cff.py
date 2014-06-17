@@ -1,6 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.PatAlgos.patHeavyIonSequences_cff import *
 
+ak1HiGenJetsCleaned = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak1HiGenJets') )
+
 ak2HiGenJetsCleaned = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak2HiGenJets') )
 
 ak3HiGenJetsCleaned = heavyIonCleanedGenJets.clone( src = cms.InputTag('ak3HiGenJets') )
