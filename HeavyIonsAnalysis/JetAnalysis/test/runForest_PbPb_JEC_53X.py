@@ -244,6 +244,7 @@ process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standA
 
 process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
                              *
+                             process.ak1HiGenJets +
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
