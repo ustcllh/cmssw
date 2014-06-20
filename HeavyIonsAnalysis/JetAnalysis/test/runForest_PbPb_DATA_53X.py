@@ -170,12 +170,18 @@ process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 
 #Filtering
 #############################################################
+# To filter on an HLT trigger path, uncomment the lines below, add the
+# HLT path you would like to filter on to 'HLTPaths' and also
+# uncomment the snippet at the end of the configuration.
+#############################################################
 # Minimum bias trigger selection (later runs)
 #process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-#process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
-#process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
+#process.skimFilter = process.hltHighLevel.clone()
+#process.skimFilter.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
 
-#process.skimanalysis.superFilters = cms.vstring("ana_step")
+#process.superFilterSequence = cms.Sequence(process.skimFilter)
+#process.superFilterPath = cms.Path(process.superFilterSequence)
+#process.skimanalysis.superFilters = cms.vstring("superFilterPath")
 ################################################################
 
 process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
@@ -201,5 +207,8 @@ process.ana_step = cms.Path(process.hltanalysis *
 
 process.pAna = cms.EndPath(process.skimanalysis)
 
+#Filtering
+#for path in process.paths:
+#    getattr(process,path)._seq = process.superFilterSequence*getattr(process,path)._seq
 
 
