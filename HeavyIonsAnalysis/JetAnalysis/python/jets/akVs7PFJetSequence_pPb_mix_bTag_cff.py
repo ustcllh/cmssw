@@ -176,7 +176,12 @@ akVs7PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs7PFpa
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles"),
-							     eventInfoTag = cms.InputTag("hiSignal")
+							     eventInfoTag = cms.InputTag("hiSignal"),
+                                                             doLifeTimeTagging = cms.untracked.bool(True),
+                                                             doLifeTimeTaggingExtras = cms.untracked.bool(True),
+                                                             bTagJetName = cms.untracked.string("akVs7PF"),
+                                                             genPtMin = cms.untracked.double(15),
+                                                             hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL')
                                                              )
 
 akVs7PFJetSequence_mc = cms.Sequence(

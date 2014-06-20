@@ -176,7 +176,12 @@ akVs5CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs5Ca
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles"),
-							     eventInfoTag = cms.InputTag("hiSignal")
+							     eventInfoTag = cms.InputTag("hiSignal"),
+                                                             doLifeTimeTagging = cms.untracked.bool(True),
+                                                             doLifeTimeTaggingExtras = cms.untracked.bool(True),
+                                                             bTagJetName = cms.untracked.string("akVs5Calo"),
+                                                             genPtMin = cms.untracked.double(15),
+                                                             hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL')
                                                              )
 
 akVs5CaloJetSequence_mc = cms.Sequence(

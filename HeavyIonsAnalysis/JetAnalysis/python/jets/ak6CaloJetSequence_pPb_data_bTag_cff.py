@@ -176,7 +176,12 @@ ak6CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("ak6Calopa
                                                              fillGenJets = False,
                                                              isMC = False,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles"),
-							     eventInfoTag = cms.InputTag("generator")
+							     eventInfoTag = cms.InputTag("generator"),
+                                                             doLifeTimeTagging = cms.untracked.bool(True),
+                                                             doLifeTimeTaggingExtras = cms.untracked.bool(True),
+                                                             bTagJetName = cms.untracked.string("ak6Calo"),
+                                                             genPtMin = cms.untracked.double(15),
+                                                             hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL')
                                                              )
 
 ak6CaloJetSequence_mc = cms.Sequence(

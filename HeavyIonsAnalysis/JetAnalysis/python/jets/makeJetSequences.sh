@@ -129,7 +129,7 @@ for system in PbPb pp pPb
                     >> HiGenJetsCleaned_cff.py
                 fi
 
-                if [ $btaggers != "NONE" ]; then
+                if [ $btaggers == "bTag" ]; then
                     cat templateSequence_bTag_cff.py.txt \
                     | sed "s/ALGO_/$algo/g" \
                     | sed "s/SUB_/$subt/g" \

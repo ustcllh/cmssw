@@ -175,7 +175,12 @@ ALGO_SUB_RADIUS_OBJECT_JetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.Inp
                                                              fillGenJets = ISMC,
                                                              isMC = ISMC,
                                                              genParticles = cms.untracked.InputTag("GENPARTICLES"),
-							     eventInfoTag = cms.InputTag("EVENTINFOTAG")
+							     eventInfoTag = cms.InputTag("EVENTINFOTAG"),
+                                                             doLifeTimeTagging = cms.untracked.bool(True),
+                                                             doLifeTimeTaggingExtras = cms.untracked.bool(True),
+                                                             bTagJetName = cms.untracked.string("ALGO_SUB_RADIUS_OBJECT_"),
+                                                             genPtMin = cms.untracked.double(15),
+                                                             hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL')
                                                              )
 
 ALGO_SUB_RADIUS_OBJECT_JetSequence_mc = cms.Sequence(

@@ -70,6 +70,7 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   void saveDaughters( const reco::Candidate & gen);
   double getEt(math::XYZPoint pos, double energy);
   math::XYZPoint getPosition(const DetId &id, reco::Vertex::Point vtx = reco::Vertex::Point(0,0,0));
+  int TaggedJet(reco::Jet calojet, edm::Handle<reco::JetTagCollection > jetTags );
 
   edm::InputTag   jetTag_, vtxTag_, genjetTag_, eventInfoTag_, L1gtReadout_, pfCandidateLabel_, trackTag_, matchTag_; 
   edm::InputTag HcalRecHitHFSrc_;
@@ -122,7 +123,29 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   std::vector<std::string>      hltTrgUsedNames_;    //HLT used trigger name(s)
   std::string                   hltUsedResName_;     //used HLT trigger results name
 
-
+  std::string bTagJetName_;
+  std::string ImpactParameterTagInfos_;
+  std::string TrackCountingHighEffBJetTags_;
+  std::string NegativeTrackCountingHighEffJetTags_;
+  std::string TrackCountingHighPurBJetTags_;
+  std::string NegativeTrackCountingHighPur_;
+  std::string JetProbabilityBJetTags_;
+  std::string PositiveOnlyJetProbabilityJetTags_;
+  std::string NegativeOnlyJetProbabilityJetTags_;
+  std::string JetBProbabilityBJetTags_;
+  std::string NegativeOnlyJetBProbabilityJetTags_;
+  std::string PositiveOnlyJetBProbabilityJetTags_;
+  std::string SecondaryVertexTagInfos_;
+  std::string SecondaryVertexNegativeTagInfos_;
+  std::string SimpleSecondaryVertexHighEffBJetTags_;
+  std::string SimpleSecondaryVertexNegativeHighEffBJetTags_;
+  std::string SimpleSecondaryVertexHighPurBJetTags_;
+  std::string SimpleSecondaryVertexNegativeHighPurBJetTags_;
+  std::string CombinedSecondaryVertexBJetTags_;
+  std::string CombinedSecondaryVertexNegativeBJetTags_;
+  std::string CombinedSecondaryVertexPositiveBJetTags_;
+  std::string NegativeSoftMuonByPtBJetTags_;
+  std::string PositiveSoftMuonByPtBJetTags_;
 
   static const int MAXJETS = 500;
   static const int MAXTRACKS = 5000;
@@ -233,6 +256,21 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
     float discr_probb[MAXJETS];
     float discr_tcHighEff[MAXJETS];    
     float discr_tcHighPur[MAXJETS];
+    float discr_ssvHighEff[MAXJETS];
+    float discr_ssvHighPur[MAXJETS];
+
+    float ndiscr_ssvHighEff[MAXJETS];
+    float ndiscr_ssvHighPur[MAXJETS];
+    float ndiscr_csvSimple[MAXJETS];
+    float ndiscr_muByPt[MAXJETS];
+    float ndiscr_prob[MAXJETS];
+    float ndiscr_probb[MAXJETS];
+    float ndiscr_tcHighEff[MAXJETS];
+    float ndiscr_tcHighPur[MAXJETS];
+
+    float pdiscr_csvSimple[MAXJETS];
+    float pdiscr_prob[MAXJETS];
+    float pdiscr_probb[MAXJETS];
 
     int nsvtx[MAXJETS];    
     int svtxntrk[MAXJETS]; 
@@ -240,13 +278,22 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
     float svtxdls[MAXJETS];  
     float svtxm[MAXJETS];    
     float svtxpt[MAXJETS];   
+    float svtxnormchi2[MAXJETS];
 
     int nIPtrk[MAXJETS];
     int nselIPtrk[MAXJETS];
-    
+
     int nIP;
     int ipJetIndex[MAXTRACKS];
     float ipPt[MAXTRACKS];
+    float ipEta[MAXTRACKS];
+    float ipDxy[MAXTRACKS];
+    float ipDz[MAXTRACKS];
+    float ipChi2[MAXTRACKS];
+    int ipNHit[MAXTRACKS];
+    int ipNHitPixel[MAXTRACKS];
+    int ipNHitStrip[MAXTRACKS];
+    bool ipIsHitL1[MAXTRACKS];
     float ipProb0[MAXTRACKS];
     float ipProb1[MAXTRACKS];
     float ip2d[MAXTRACKS];

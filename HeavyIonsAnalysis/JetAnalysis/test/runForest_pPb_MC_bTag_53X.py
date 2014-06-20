@@ -5,7 +5,7 @@
 
 hiTrackQuality = "highPurity"              # iterative tracks
 #hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-hltProcess="HISIGNAL" #embedding calls this hisignal instead of hlt
+hltProcess="HLT" #some embedding has this as HISIGNAL instead
 
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
