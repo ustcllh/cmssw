@@ -17,9 +17,10 @@ voronoiBackgroundPF = cms.EDProducer('VoronoiBackgroundProducer',
                                      equalizeThreshold0 = cms.double(5.0),
                                      equalizeThreshold1 = cms.double(35.0),
                                      equalizeR = cms.double(0.3),
+                                     # intentionally different than calojets (R=0.4)!
                                      isCalo = cms.bool(False),
                                      etaBins = cms.int32(15),
-                                     fourierOrder = cms.int32(5)                                     
+                                     fourierOrder = cms.int32(5)
                                      )
 
 
@@ -30,15 +31,15 @@ ak5PFJets = cms.EDProducer(
     AnomalousCellParameters,
     MultipleAlgoIteratorBlock,
     jetAlgorithm = cms.string("AntiKt"),
-    rParam       = cms.double(0.5),
+    rParam       = cms.double(0.5)
     )
-
+ak5PFJets.src = cms.InputTag('particleFlowTmp')
 
 akPu5PFJets = ak5PFJets.clone(
     jetType = cms.string('BasicJet'),
     doPVCorrection = False,
     doPUOffsetCorr = True,
-    subtractorName = cms.string("MultipleAlgoIterator"),    
+    subtractorName = cms.string("MultipleAlgoIterator"),
     src = cms.InputTag('PFTowers'),
     doAreaFastjet = False
     )
@@ -55,6 +56,7 @@ akVs5PFJets = ak5PFJets.clone(
     puPtMin = cms.double(0)
     )
 
+akVs1PFJets = akVs5PFJets.clone(rParam       = cms.double(0.1))
 akVs2PFJets = akVs5PFJets.clone(rParam       = cms.double(0.2))
 akVs3PFJets = akVs5PFJets.clone(rParam       = cms.double(0.3))
 akVs4PFJets = akVs5PFJets.clone(rParam       = cms.double(0.4))
@@ -62,12 +64,19 @@ akVs6PFJets = akVs5PFJets.clone(rParam       = cms.double(0.6))
 akVs7PFJets = akVs5PFJets.clone(rParam       = cms.double(0.7))
 
 akPu5PFJets.puPtMin = cms.double(25)
+akPu1PFJets = akPu5PFJets.clone(rParam       = cms.double(0.1), puPtMin = 10)
 akPu2PFJets = akPu5PFJets.clone(rParam       = cms.double(0.2), puPtMin = 10)
 akPu3PFJets = akPu5PFJets.clone(rParam       = cms.double(0.3), puPtMin = 15)
 akPu4PFJets = akPu5PFJets.clone(rParam       = cms.double(0.4), puPtMin = 20)
 akPu6PFJets = akPu5PFJets.clone(rParam       = cms.double(0.6), puPtMin = 30)
 akPu7PFJets = akPu5PFJets.clone(rParam       = cms.double(0.7), puPtMin = 35)
 
+ak1PFJets = ak5PFJets.clone(rParam       = cms.double(0.1))
+ak2PFJets = ak5PFJets.clone(rParam       = cms.double(0.2))
+ak3PFJets = ak5PFJets.clone(rParam       = cms.double(0.3))
+ak4PFJets = ak5PFJets.clone(rParam       = cms.double(0.4))
+ak6PFJets = ak5PFJets.clone(rParam       = cms.double(0.6))
+ak7PFJets = ak5PFJets.clone(rParam       = cms.double(0.7))
 
 hiRecoPFJets = cms.Sequence(
     PFTowers
@@ -76,9 +85,9 @@ hiRecoPFJets = cms.Sequence(
     *akVs3PFJets*akVs4PFJets*akVs5PFJets
     )
 
-hiRecoAllPFJets = cms.Sequence(hiRecoPFJets
-                               *akPu2PFJets*akPu6PFJets*akPu7PFJets
-                               *akVs2PFJets*akVs6PFJets*akVs7PFJets                               
+hiRecoAllPFJets = cms.Sequence(PFTowers
+                               *akPu1PFJets*akPu2PFJets*akPu3PFJets*akPu4PFJets*akPu5PFJets*akPu6PFJets*akPu7PFJets
+                               *voronoiBackgroundPF
+                               *akVs1PFJets*akVs2PFJets*akVs3PFJets*akVs4PFJets*akVs5PFJets*akVs6PFJets*akVs7PFJets
+                               *ak1PFJets*ak2PFJets*ak3PFJets*ak4PFJets*ak5PFJets*ak6PFJets*ak7PFJets
                                )
-
-

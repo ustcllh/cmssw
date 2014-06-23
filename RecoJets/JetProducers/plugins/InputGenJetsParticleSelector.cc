@@ -44,7 +44,8 @@ InputGenJetsParticleSelector::InputGenJetsParticleSelector(const edm::ParameterS
   partonicFinalState(params.getParameter<bool>("partonicFinalState")),
   excludeResonances(params.getParameter<bool>("excludeResonances")),
   tausAsJets(params.getParameter<bool>("tausAsJets")),
-  ptMin(0.0){
+  chargedJets(params.getUntrackedParameter<bool>("chargedJets",0)),
+  ptMin(params.getUntrackedParameter<double>("ptMin",0)){
   if (params.exists("ignoreParticleIDs"))
     setIgnoredParticles(params.getParameter<std::vector<unsigned int> >
 			("ignoreParticleIDs"));
@@ -279,6 +280,9 @@ void InputGenJetsParticleSelector::produce (edm::Event &evt, const edm::EventSet
       continue;
     }
 
+    if (chargedJets && particle->charge() == 0){
+      continue;
+    }
    
     if (particle->pt() >= ptMin){
       edm::Ref<reco::GenParticleCollection> particleRef(genParticles,idx);

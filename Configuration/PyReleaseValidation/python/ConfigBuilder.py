@@ -27,6 +27,7 @@ defaultOptions.scenarioOptions=['pp','cosmics','nocoll','HeavyIons']
 defaultOptions.harvesting= 'AtRunEnd'
 defaultOptions.gflash = False
 defaultOptions.himix = False
+defaultOptions.hisignal = False
 defaultOptions.number = -1
 defaultOptions.arguments = ""
 defaultOptions.name = "NO NAME GIVEN"

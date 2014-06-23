@@ -53,7 +53,7 @@ struct UECalibration{
       std::ifstream in( qpDataName.c_str() );
       std::string line;
 
-      while( std::getline( in, line)){      
+      while( std::getline( in, line)){
 	 if(!line.size() || line[0]=='#') {
 	    continue;
 	 }
@@ -82,20 +82,17 @@ struct UECalibration{
    }
 
    unsigned int index,
-      np[5], 
-      ni0[2], 
-      ni1[2], 
+      np[5],
+      ni0[2],
+      ni1[2],
       ni2[2];
 
-   float ue_predictor_pf[3][15][5][2][82], 
-      ue_interpolation_pf0[15][344], 
-      ue_interpolation_pf1[15][344], 
+   float ue_predictor_pf[3][15][5][2][82],
+      ue_interpolation_pf0[15][344],
+      ue_interpolation_pf1[15][344],
       ue_interpolation_pf2[15][82];
-   
+
 };
 
 
 #endif
-
-
-
