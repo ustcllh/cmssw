@@ -59,7 +59,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
-overrideJEC_pp2760(process)
+overrideJEC_NULL(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowers"),
