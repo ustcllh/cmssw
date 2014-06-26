@@ -9,175 +9,176 @@ echo "from RecoHI.HiJetAlgos.HiRecoJets_cff import *" >> HiReRecoJets_cff.py
 echo "from RecoHI.HiJetAlgos.HiRecoPFJets_cff import *" >> HiReRecoJets_cff.py
 
 for system in PbPb pp pPb
-  do
-  for sample in data mc mix jec
+do
+    for sample in data mc mix jec
     do
-    for algo in ak
-      do
-      for sub in Vs Pu NONE
-	do
-	for radius in 1 2 3 4 5 6 7
-	  do
-	  for object in PF Calo
-	    do
-            for btaggers in bTag NONE
-              do
+        for algo in ak
+        do
+            for sub in Vs Pu NONE
+            do
+                for radius in 1 2 3 4 5 6 7
+                do
+                    for object in PF Calo
+                    do
+                        for btaggers in bTag_ NONE
+                        do
 
-                subt=$sub
-                if [ $sub == "NONE" ]; then
-                    subt=""
-                fi
+                            subt=$sub
+                            if [ $sub == "NONE" ]; then
+                                subt=""
+                            fi
 
-                if [ $btaggers == "NONE" ]; then
-                    btag=""
-                else
-                    btag=$btaggers
-                fi
+                            if [ $btaggers == "NONE" ]; then
+                                btag=""
+                            else
+                                btag=$btaggers
+                            fi
 
-                ismc="False"
-                corrlabel="_hiIterativeTracks"
-                domatch="True"
-                genjets="HiGenJetsCleaned"
-                genparticles="hiGenParticles"
-                tracks="hiGeneralTracks"
-                pflow="particleFlowTmp"
-                domatch="False"
-                match=""
-                eventinfotag="generator"
-                echo "" > $algo$subt$radius${object}JetSequence_${system}_${sample}_${btag}_cff.py
+                            ismc="False"
+                            corrlabel="_hiIterativeTracks"
+                            domatch="True"
+                            genjets="HiGenJetsCleaned"
+                            genparticles="hiGenParticles"
+                            tracks="hiGeneralTracks"
+                            pflow="particleFlowTmp"
+                            domatch="False"
+                            match=""
+                            eventinfotag="generator"
+                            echo "" > $algo$subt$radius${object}JetSequence_${system}_${sample}_${btag}cff.py
 
-                if [ $system == "pPb" ]; then
-                    corrlabel="_generalTracks"
-                    tracks="generalTracks"
-                    genparticles="hiGenParticles"
-                    pflow="particleFlow"
-                fi
+                            if [ $system == "pPb" ]; then
+                                corrlabel="_generalTracks"
+                                tracks="generalTracks"
+                                genparticles="hiGenParticles"
+                                pflow="particleFlow"
+                            fi
 
-                if [ $system == "pp" ]; then
-                    corrlabel="_generalTracks"
-                    tracks="generalTracks"
-                    genparticles="genParticles"
-                    pflow="particleFlow"
-                fi
+                            if [ $system == "pp" ]; then
+                                corrlabel="_generalTracks"
+                                tracks="generalTracks"
+                                genparticles="genParticles"
+                                pflow="particleFlow"
+                            fi
 
-                if [ $system == "PbPb" ] && [ $sample == "jec" ]; then
-                    if [ $sub == "NONE" ]; then
-                        corrlabel="_generalTracks" #placeholder
-                    fi
-                    genparticles="genParticles"
-                fi
+                            if [ $system == "PbPb" ] && [ $sample == "jec" ]; then
+                                if [ $sub == "NONE" ]; then
+                                    corrlabel="_generalTracks" #placeholder
+                                fi
+                                genparticles="genParticles"
+                            fi
 
-                if [ $sample == "mc" ] || [ $sample == "jec" ] || [ $sample == "mix" ]; then
-                    ismc="True"
-                fi
+                            if [ $sample == "mc" ] || [ $sample == "jec" ] || [ $sample == "mix" ]; then
+                                ismc="True"
+                            fi
 
-                if [ $system == "pp" ]; then
-                    genjets="HiGenJets"
-                fi
+                            if [ $system == "pp" ]; then
+                                genjets="HiGenJets"
+                            fi
 
-                if [ $sample == "mix" ]; then
-                    eventinfotag="hiSignal"
-                fi
+                            if [ $sample == "mix" ]; then
+                                eventinfotag="hiSignal"
+                            fi
 
-                if [ $sub == "Vs" ] && [ $object == "Calo" ]; then
-                    domatch="True"
-                    match="${algo}Pu${radius}Calo"
-                fi
+                            if [ $sub == "Vs" ] && [ $object == "Calo" ]; then
+                                domatch="True"
+                                match="${algo}Pu${radius}Calo"
+                            fi
 
-                if [ $sub == "Vs" ] && [ $object == "PF" ]; then
-                    domatch="True"
-                    match="${algo}Vs${radius}Calo"
-                fi
+                            if [ $sub == "Vs" ] && [ $object == "PF" ]; then
+                                domatch="True"
+                                match="${algo}Vs${radius}Calo"
+                            fi
 
-                if [ $sub == "Pu" ] && [ $object == "Calo" ]; then
-                    domatch="False" # this will be running first
-                    match="${algo}Pu${radius}PF"
-                fi
+                            if [ $sub == "Pu" ] && [ $object == "Calo" ]; then
+                                domatch="False" # this will be running first
+                                match="${algo}Pu${radius}PF"
+                            fi
 
-                if [ $sub == "Pu" ] && [ $object == "PF" ]; then
-                    domatch="True"
-                    match="${algo}Vs${radius}PF"
-                fi
+                            if [ $sub == "Pu" ] && [ $object == "PF" ]; then
+                                domatch="True"
+                                match="${algo}Vs${radius}PF"
+                            fi
 
-                if [ $sub == "NONE" ]; then
-                    domatch="True"
-                    match="${algo}Vs${radius}${object}"
-                fi
+                            if [ $sub == "NONE" ]; then
+                                domatch="True"
+                                match="${algo}Vs${radius}${object}"
+                            fi
 
-                if [ $object == "Calo" ]; then
-                    corrlabel="_HI"
-                fi
+                            if [ $object == "Calo" ]; then
+                                corrlabel="_HI"
+                            fi
 
-                corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${subt}${radius}${object}${corrlabel}
+                            corrname=`echo ${algo} | sed 's/\(.*\)/\U\1/'`${subt}${radius}${object}${corrlabel}
 
-                if [ $system == "PbPb" ] && [ $sample == "mc" ] && [ $object == "PF" ] && [ $sub == "Vs" ]; then
+                            if [ $system == "PbPb" ] && [ $sample == "mc" ] && [ $object == "PF" ] && [ $sub == "Vs" ]; then
 
-                    cat templateClean_cff.py.txt \
-                    | sed "s/ALGO_/$algo/g" \
-                    | sed "s/SUB_/$subt/g" \
-                    | sed "s/RADIUS_/$radius/g" \
-                    | sed "s/OBJECT_/$object/g" \
-                    | sed "s/SAMPLE_/$sample/g" \
-                    | sed "s/CORRNAME_/$corrname/g" \
-                    | sed "s/MATCHED_/$match/g" \
-                    | sed "s/ISMC/$ismc/g" \
-                    | sed "s/GENJETS/$genjets/g" \
-                    | sed "s/GENPARTICLES/$genparticles/g" \
-                    | sed "s/TRACKS/$tracks/g" \
-                    | sed "s/PARTICLEFLOW/$pflow/g" \
-                    | sed "s/DOMATCH/$domatch/g" \
-                    >> HiGenJetsCleaned_cff.py
-                fi
+                                cat templateClean_cff.py.txt \
+                                | sed "s/ALGO_/$algo/g" \
+                                | sed "s/SUB_/$subt/g" \
+                                | sed "s/RADIUS_/$radius/g" \
+                                | sed "s/OBJECT_/$object/g" \
+                                | sed "s/SAMPLE_/$sample/g" \
+                                | sed "s/CORRNAME_/$corrname/g" \
+                                | sed "s/MATCHED_/$match/g" \
+                                | sed "s/ISMC/$ismc/g" \
+                                | sed "s/GENJETS/$genjets/g" \
+                                | sed "s/GENPARTICLES/$genparticles/g" \
+                                | sed "s/TRACKS/$tracks/g" \
+                                | sed "s/PARTICLEFLOW/$pflow/g" \
+                                | sed "s/DOMATCH/$domatch/g" \
+                                >> HiGenJetsCleaned_cff.py
+                            fi
 
-                if [ $btaggers == "bTag" ]; then
-                    cat templateSequence_bTag_cff.py.txt \
-                    | sed "s/ALGO_/$algo/g" \
-                    | sed "s/SUB_/$subt/g" \
-                    | sed "s/RADIUS_/$radius/g" \
-                    | sed "s/OBJECT_/$object/g" \
-                    | sed "s/SAMPLE_/$sample/g" \
-                    | sed "s/CORRNAME_/$corrname/g" \
-                    | sed "s/MATCHED_/$match/g" \
-                    | sed "s/ISMC/$ismc/g" \
-                    | sed "s/GENJETS/$genjets/g" \
-                    | sed "s/GENPARTICLES/$genparticles/g" \
-                    | sed "s/TRACKS/$tracks/g" \
-                    | sed "s/PARTICLEFLOW/$pflow/g" \
-                    | sed "s/DOMATCH/$domatch/g" \
-                    | sed "s/EVENTINFOTAG/$eventinfotag/g" \
-                    >> $algo$subt$radius${object}JetSequence_${system}_${sample}_${btag}_cff.py
-                else
-                    cat templateSequence_cff.py.txt \
-                    | sed "s/ALGO_/$algo/g" \
-                    | sed "s/SUB_/$subt/g" \
-                    | sed "s/RADIUS_/$radius/g" \
-                    | sed "s/OBJECT_/$object/g" \
-                    | sed "s/SAMPLE_/$sample/g" \
-                    | sed "s/CORRNAME_/$corrname/g" \
-                    | sed "s/MATCHED_/$match/g" \
-                    | sed "s/ISMC/$ismc/g" \
-                    | sed "s/GENJETS/$genjets/g" \
-                    | sed "s/GENPARTICLES/$genparticles/g" \
-                    | sed "s/TRACKS/$tracks/g" \
-                    | sed "s/PARTICLEFLOW/$pflow/g" \
-                    | sed "s/DOMATCH/$domatch/g" \
-                    | sed "s/EVENTINFOTAG/$eventinfotag/g" \
-                    >> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
-                fi
+                            if [ $btaggers == "bTag_" ]; then
+                                cat templateSequence_bTag_cff.py.txt \
+                                | sed "s/ALGO_/$algo/g" \
+                                | sed "s/SUB_/$subt/g" \
+                                | sed "s/RADIUS_/$radius/g" \
+                                | sed "s/OBJECT_/$object/g" \
+                                | sed "s/SAMPLE_/$sample/g" \
+                                | sed "s/CORRNAME_/$corrname/g" \
+                                | sed "s/MATCHED_/$match/g" \
+                                | sed "s/ISMC/$ismc/g" \
+                                | sed "s/GENJETS/$genjets/g" \
+                                | sed "s/GENPARTICLES/$genparticles/g" \
+                                | sed "s/TRACKS/$tracks/g" \
+                                | sed "s/PARTICLEFLOW/$pflow/g" \
+                                | sed "s/DOMATCH/$domatch/g" \
+                                | sed "s/EVENTINFOTAG/$eventinfotag/g" \
+                                >> $algo$subt$radius${object}JetSequence_${system}_${sample}_${btag}cff.py
+                            fi
+                            if [ $btaggers == "NONE" ]; then
+                                cat templateSequence_cff.py.txt \
+                                | sed "s/ALGO_/$algo/g" \
+                                | sed "s/SUB_/$subt/g" \
+                                | sed "s/RADIUS_/$radius/g" \
+                                | sed "s/OBJECT_/$object/g" \
+                                | sed "s/SAMPLE_/$sample/g" \
+                                | sed "s/CORRNAME_/$corrname/g" \
+                                | sed "s/MATCHED_/$match/g" \
+                                | sed "s/ISMC/$ismc/g" \
+                                | sed "s/GENJETS/$genjets/g" \
+                                | sed "s/GENPARTICLES/$genparticles/g" \
+                                | sed "s/TRACKS/$tracks/g" \
+                                | sed "s/PARTICLEFLOW/$pflow/g" \
+                                | sed "s/DOMATCH/$domatch/g" \
+                                | sed "s/EVENTINFOTAG/$eventinfotag/g" \
+                                >> $algo$subt$radius${object}JetSequence_${system}_${sample}_cff.py
+                            fi
 
-                if [ $sample == "jec" ]; then
-                    echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
-                    if [ $object == "PF" ] && [ $sub != "Pu" ]; then
-                        echo "${algo}${subt}${radius}${object}Jets.src = cms.InputTag(\"particleFlowTmp\")" >> HiReRecoJets_cff.py
-                    fi
-                    echo "${algo}${subt}${radius}${object}JetAnalyzer.genPtMin = cms.untracked.double(1)" >> $algo$subt$radius${object}JetSequence_${system}_${sample}_${btag}_cff.py
-                fi
+                            if [ $sample == "jec" ]; then
+                                echo "${algo}${subt}${radius}${object}Jets.jetPtMin = 1" >> HiReRecoJets_cff.py
+                                if [ $object == "PF" ] && [ $sub != "Pu" ]; then
+                                    echo "${algo}${subt}${radius}${object}Jets.src = cms.InputTag(\"particleFlowTmp\")" >> HiReRecoJets_cff.py
+                                fi
+                                echo "${algo}${subt}${radius}${object}JetAnalyzer.genPtMin = cms.untracked.double(1)" >> $algo$subt$radius${object}JetSequence_${system}_${sample}_${btag}cff.py
+                            fi
+                        done
+                    done
+                done
             done
-	  done
-	done
-      done
+        done
     done
-  done
 done
 
 echo "" >> HiGenJetsCleaned_cff.py
