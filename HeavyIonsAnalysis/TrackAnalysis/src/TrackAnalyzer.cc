@@ -125,16 +125,6 @@ struct TrackEvent{
   int N; // multiplicity variable 
 
   // Vertex information
-  int nv;
-  float vx[MAXVTX];
-  float vy[MAXVTX];
-  float vz[MAXVTX];
-  float vxError[MAXVTX];
-  float vyError[MAXVTX];
-  float vzError[MAXVTX];
-  int nDaugher[MAXVTX];
-
-  // Multiple vtx information
   int nVtx;
 
   int nTrkVtx[MAXVTX];
@@ -142,6 +132,8 @@ struct TrackEvent{
   float sumPtVtx[MAXVTX];
   //int nTrkVtxHard[MAXVTX];
   int maxVtx;
+  int maxPtVtx;
+  int maxMultVtx;
   //int maxVtxHard;
 
   float xVtx[MAXVTX];
@@ -157,7 +149,11 @@ struct TrackEvent{
   float vtxDist3D[MAXVTX];
   float vtxDist3DErr[MAXVTX];
   float vtxDist3DSig[MAXVTX];
-
+  
+  int nVtxSim;
+  float xVtxSim[MAXVTX];
+  float yVtxSim[MAXVTX];
+  float zVtxSim[MAXVTX];
 
   // centrality
   int cbin;
@@ -196,7 +192,10 @@ struct TrackEvent{
   float trkAlgo[MAXTRACKS];
   float dedx[MAXTRACKS];
   int trkCharge[MAXTRACKS];
+  int trkNVtx[MAXTRACKS];
   unsigned int trkVtxIndex[MAXTRACKS];
+  bool trkAssocVtx[MAXTRACKS*MAXVTX];
+  int nTrkTimesnVtx;
 
   float trkExpHit1Eta[MAXTRACKS];
   float trkExpHit2Eta[MAXTRACKS];
@@ -237,7 +236,11 @@ struct TrackEvent{
   float mtrkDz1[MAXTRACKS];
   float mtrkDzError1[MAXTRACKS];
   float mtrkDxy1[MAXTRACKS];
-  float mtrkDxyError1[MAXTRACKS];          
+  float mtrkDxyError1[MAXTRACKS]; 
+  float mtrkDz2[MAXTRACKS];
+  float mtrkDzError2[MAXTRACKS];
+  float mtrkDxy2[MAXTRACKS];
+  float mtrkDxyError2[MAXTRACKS];          
   float mtrkAlgo[MAXTRACKS];
   // calo compatibility
   int mtrkPfType[MAXTRACKS];
@@ -285,13 +288,16 @@ class TrackAnalyzer : public edm::EDAnalyzer {
     bool doPFMatching_;
     bool useCentrality_;  
     bool useQuality_;
-   bool doDeDx_;
+    bool doDeDx_;
     bool doDebug_;
-  bool associateChi2_;
+    bool associateChi2_;
+    bool doHighestPtVertex_;
+    bool doTrackVtxWImpPar_;
 
     double trackPtMin_;
-   std::vector<std::string> qualityStrings_;
-   std::string qualityString_;
+    double trackVtxMaxDistance_;
+    std::vector<std::string> qualityStrings_;
+    std::string qualityString_;
    
     double simTrackPtMin_;
     bool fiducialCut_;
@@ -335,6 +341,7 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
    doSimTrack_             = iConfig.getUntrackedParameter<bool>  ("doSimTrack",false);
    fillSimTrack_             = iConfig.getUntrackedParameter<bool>  ("fillSimTrack",false);
    doSimVertex_             = iConfig.getUntrackedParameter<bool>  ("doSimVertex",false);
+   doHighestPtVertex_             = iConfig.getUntrackedParameter<bool>  ("doHighestPtVertex",true);
 
    if(!doSimTrack_){
      fillSimTrack_ = 0;
@@ -347,10 +354,12 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
    doDebug_             = iConfig.getUntrackedParameter<bool>  ("doDebug",false);
 
    doPFMatching_             = iConfig.getUntrackedParameter<bool>  ("doPFMatching",false);
+   doTrackVtxWImpPar_             = iConfig.getUntrackedParameter<bool>  ("doTrackVtxWImpPar",true);
    useCentrality_ = iConfig.getUntrackedParameter<bool>("useCentrality",false);
    useQuality_ = iConfig.getUntrackedParameter<bool>("useQuality",false);
 
    trackPtMin_             = iConfig.getUntrackedParameter<double>  ("trackPtMin",0.4);
+   trackVtxMaxDistance_             = iConfig.getUntrackedParameter<double>  ("trackVtxMaxDistance",3.0);
    qualityString_ = iConfig.getUntrackedParameter<std::string>("qualityString","highPurity");
 
    qualityStrings_ = iConfig.getUntrackedParameter<std::vector<std::string> >("qualityStrings",std::vector<std::string>(0));
@@ -395,7 +404,7 @@ TrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   pev_.nBX = (int)iEvent.bunchCrossing();
   pev_.N = 0;
 
-  pev_.nv = 0;
+  // pev_.nv = 0;
   pev_.nParticle = 0;
   pev_.nTrk = 0;
 
@@ -413,6 +422,7 @@ TrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //cout <<"Tracks filled!"<<endl;
   if (doSimTrack_) fillSimTracks(iEvent, iSetup);
   //cout <<"SimTracks filled!"<<endl;
+  pev_.nTrkTimesnVtx=pev_.nTrk*pev_.nVtx;
   trackTree_->Fill();
   //cout <<"Tree filled!"<<endl;
   memset(&pev_,0,sizeof pev_);
@@ -425,38 +435,19 @@ TrackAnalyzer::fillVertices(const edm::Event& iEvent){
 
   // Vertex 0 : pev_vz[0] MC information from TrackingVertexCollection
   // Vertex 1 - n : Reconstructed Vertex from various of algorithms
-  pev_.vx[0]=0;
-  pev_.vy[0]=0;
-  pev_.vz[0]=0;
-  pev_.vxError[0]=0;
-  pev_.vyError[0]=0;
-  pev_.vzError[0]=0;
-  pev_.nDaugher[0]=0;
-
-  if(doSimVertex_){
+  
+  
+ if(doSimVertex_){
     Handle<TrackingVertexCollection> vertices;
     iEvent.getByLabel(simVertexSrc_, vertices);
-    int greatestvtx = -1;
+    pev_.nVtxSim=vertices->size();
     for (unsigned int i = 0 ; i< vertices->size(); ++i){
-      unsigned int daughter = (*vertices)[i].nDaughterTracks();
-      if (greatestvtx==-1) {
-         greatestvtx = i;
-      } else {
-         if( daughter >(*vertices)[greatestvtx].nDaughterTracks()&&fabs((*vertices)[i].position().z())<30000) greatestvtx = i;
-      }
+     pev_.zVtxSim[i] = (*vertices)[i].position().z();
+     pev_.xVtxSim[i] = (*vertices)[i].position().z();
+     pev_.yVtxSim[i] = (*vertices)[i].position().z();
     }
-
-    if(greatestvtx != -1){
-      pev_.vz[pev_.nv] = (*vertices)[greatestvtx].position().z();
-    }else{
-      pev_.vz[pev_.nv] =  -99; 
-    }
-  } else {
-    pev_.vz[pev_.nv] = -99;
-  }
-
-  pev_.nv++;
-
+  } 
+  
   // Fill reconstructed vertices.   
   for(unsigned int iv = 0; iv < vertexSrc_.size(); ++iv){
     const reco::VertexCollection * recoVertices;
@@ -464,60 +455,86 @@ TrackAnalyzer::fillVertices(const edm::Event& iEvent){
     //cout <<vertexSrc_[iv]<<endl;
     iEvent.getByLabel(vertexSrc_[iv],vertexCollection);
     recoVertices = vertexCollection.product();
-    unsigned int daughter = 0;
+    // unsigned int daughter = 0;
     int nVertex = 0;
-    unsigned int greatestvtx = 0;
-
+    unsigned int greatestNtrkVtx = 0;
+    unsigned int greatestPtVtx = 0;
 
     nVertex = recoVertices->size();
     pev_.nVtx = nVertex;
-    for (unsigned int i = 0 ; i< recoVertices->size(); ++i){
-      daughter = (*recoVertices)[i].tracksSize();
-      if( daughter > (*recoVertices)[greatestvtx].tracksSize()) greatestvtx = i;
-
+    for (int i = 0 ; i< nVertex; ++i){
       pev_.xVtx[i] = (*recoVertices)[i].position().x();
       pev_.yVtx[i] = (*recoVertices)[i].position().y();
       pev_.zVtx[i] = (*recoVertices)[i].position().z();
       pev_.xVtxErr[i] = (*recoVertices)[i].xError();
       pev_.yVtxErr[i] = (*recoVertices)[i].yError();
       pev_.zVtxErr[i] = (*recoVertices)[i].zError();
-      pev_.nTrkVtx[i] = (*recoVertices)[i].tracksSize();
       pev_.normChi2Vtx[i] = (*recoVertices)[i].normalizedChi2();
+
+      
+      math::XYZPoint vtx_temp(pev_.xVtx[i],pev_.yVtx[i], pev_.zVtx[i]);
 
     
       float vtxSumPt=0.;
-      //  Track-Vtx association is to be revisited, the vtx must be
-      //  associated to the same tracks as the input to the analyzer,
-      //  and be careful of cases where association is not 1-to-1
+      int vtxMult=0;
       
-      // for (reco::Vertex::trackRef_iterator it = (*recoVertices)[i].tracks_begin(); it != (*recoVertices)[i].tracks_end(); it++) {
-      // 	vtxSumPt += (**it).pt();
+     Handle<vector<Track> > etracks;
+     iEvent.getByLabel(trackSrc_, etracks);
+     if(doTrackVtxWImpPar_){
+      for(unsigned it=0; it<etracks->size(); ++it){
+        if(i==0) pev_.trkNVtx[it]=0;
+        pev_.trkAssocVtx[it*pev_.nVtx+i]=false; 
+        const reco::Track & etrk = (*etracks)[it];
+        if (etrk.pt()<trackPtMin_) continue;
+        if(fiducialCut_ && hitDeadPXF(etrk)) continue; // if track hits the dead region, igonore it;
+        if(qualityStrings_.size()>0 && !etrk.quality(reco::TrackBase::qualityByName(qualityStrings_[0].data()))) continue;
+        float Dz=etrk.dz(vtx_temp);
+        float DzError=sqrt(etrk.dzError()*etrk.dzError()+pev_.zVtxErr[i]*pev_.zVtxErr[i]);
+        float Dxy=etrk.dxy(vtx_temp);
+        float DxyError=sqrt(etrk.dxyError()*etrk.dxyError()+pev_.xVtxErr[i]*pev_.yVtxErr[i]);
+        if(fabs(Dz/DzError) < trackVtxMaxDistance_ && fabs(Dxy/DxyError)< trackVtxMaxDistance_ && etrk.ptError()/etrk.pt() < 0.1 && fabs(etrk.eta())<2.4){
+         vtxSumPt+=etrk.pt();
+         vtxMult++;
+         pev_.trkAssocVtx[it*pev_.nVtx+i]=true;
+         pev_.trkNVtx[it]++;
+        }
+	    }
+     }
+     else{
+      for (reco::Vertex::trackRef_iterator it = (*recoVertices)[i].tracks_begin(); it != (*recoVertices)[i].tracks_end(); it++) {
+      	vtxSumPt += (**it).pt();
+      	Handle<vector<Track> > etracks;
+      	iEvent.getByLabel(trackSrc_, etracks);
 
-      // 	Handle<vector<Track> > etracks;
-      // 	iEvent.getByLabel(trackSrc_, etracks);
+      	for(unsigned itrack=0; itrack<etracks->size(); ++itrack){
+      	  reco::TrackRef trackRef=reco::TrackRef(etracks,itrack);
+      	  //cout<<" trackRef.key() "<<trackRef.key()<< " it->key() "<<it->key()<<endl;
+      	  if(trackRef.key()==it->key()){
+      	    pev_.trkVtxIndex[itrack] = i;  // note that index starts from 1 
+      	    //cout<< " matching track "<<itrack<<endl;
+      	  }
+      	}
+      }
+     }
+     
+     pev_.sumPtVtx[i] = vtxSumPt;
+     
+     if(doTrackVtxWImpPar_) pev_.nTrkVtx[i] = vtxMult;
+     else pev_.nTrkVtx[i] = (*recoVertices)[i].tracksSize();
 
-      // 	for(unsigned itrack=0; itrack<etracks->size(); ++itrack){
-      // 	  reco::TrackRef trackRef=reco::TrackRef(etracks,itrack);
-      // 	  //cout<<" trackRef.key() "<<trackRef.key()<< " it->key() "<<it->key()<<endl;
-      // 	  if(trackRef.key()==it->key()){
-      // 	    pev_.trkVtxIndex[itrack] = i+1;  // note that index starts from 1 
-      // 	    //cout<< " matching track "<<itrack<<endl;
-      // 	  }
-      // 	}
-      // }
-
-      pev_.sumPtVtx[i] = vtxSumPt;
-	  
+     if( vtxMult > pev_.nTrkVtx[greatestNtrkVtx]) greatestNtrkVtx = i;
+     if( vtxSumPt > pev_.sumPtVtx[greatestPtVtx]) greatestPtVtx = i;
     }
 
-    pev_.maxVtx = greatestvtx;
+    pev_.maxMultVtx = greatestNtrkVtx;
+    pev_.maxPtVtx = greatestPtVtx;
 
     //loop over vertices again to get the significance wrt the leading vertex -Matt
     for (unsigned int i = 0 ; i< recoVertices->size(); ++i){
-      if(i==greatestvtx) continue;
-      GlobalVector direction = GlobalVector(pev_.xVtx[i]-pev_.xVtx[greatestvtx],pev_.xVtx[i]-pev_.xVtx[greatestvtx],pev_.xVtx[i]-pev_.xVtx[greatestvtx]);
-      Measurement1D vtxDist2D = reco::SecondaryVertex::computeDist2d((*recoVertices)[greatestvtx], (*recoVertices)[i], direction, true);
-      Measurement1D vtxDist3D = reco::SecondaryVertex::computeDist3d((*recoVertices)[greatestvtx], (*recoVertices)[i], direction, true);
+      if(i==greatestPtVtx) continue;
+      GlobalVector direction = GlobalVector(pev_.xVtx[i]-pev_.xVtx[greatestPtVtx],pev_.xVtx[i]-pev_.xVtx[greatestPtVtx],pev_.xVtx[i]-pev_.xVtx[greatestPtVtx]);
+      Measurement1D vtxDist2D = reco::SecondaryVertex::computeDist2d((*recoVertices)[greatestPtVtx], (*recoVertices)[i], direction, true);
+      Measurement1D vtxDist3D = reco::SecondaryVertex::computeDist3d((*recoVertices)[greatestPtVtx], (*recoVertices)[i], direction, true);
       pev_.vtxDist2D[i]=vtxDist2D.value();
       pev_.vtxDist2DErr[i]=vtxDist2D.error();
       pev_.vtxDist2DSig[i]=vtxDist2D.significance();
@@ -525,29 +542,7 @@ TrackAnalyzer::fillVertices(const edm::Event& iEvent){
       pev_.vtxDist3DErr[i]=vtxDist3D.error();
       pev_.vtxDist3DSig[i]=vtxDist3D.significance();
     }
-
-    if(recoVertices->size()>0){
-      pev_.vx[pev_.nv] = (*recoVertices)[greatestvtx].position().x();
-      pev_.vy[pev_.nv] = (*recoVertices)[greatestvtx].position().y();
-      pev_.vz[pev_.nv] = (*recoVertices)[greatestvtx].position().z();
-      pev_.vxError[pev_.nv] = (*recoVertices)[greatestvtx].xError();
-      pev_.vyError[pev_.nv] = (*recoVertices)[greatestvtx].yError();
-      pev_.vzError[pev_.nv] = (*recoVertices)[greatestvtx].zError();
-      pev_.nDaugher[pev_.nv] = (*recoVertices)[greatestvtx].tracksSize();
-    }else{
-      pev_.vx[pev_.nv] =  -99;
-      pev_.vy[pev_.nv] =  -99;
-      pev_.vz[pev_.nv] =  -99;
-      pev_.vxError[pev_.nv] =  -99;
-      pev_.vyError[pev_.nv] =  -99;
-      pev_.vzError[pev_.nv] =  -99;
-      pev_.nDaugher[pev_.nv] = -99;
-      
-    }
-    pev_.nv++;
-    //cout <<pev_.nv<<endl;
   }
-
 }
 
 
@@ -636,17 +631,17 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
     pev_.trkVy[pev_.nTrk]=etrk.vy();
     pev_.trkVz[pev_.nTrk]=etrk.vz();
 
-    math::XYZPoint v1(pev_.vx[1],pev_.vy[1], pev_.vz[1]);
+    math::XYZPoint v1(pev_.xVtx[pev_.maxPtVtx],pev_.yVtx[pev_.maxPtVtx], pev_.zVtx[pev_.maxPtVtx]);
     pev_.trkDz1[pev_.nTrk]=etrk.dz(v1);
-    pev_.trkDzError1[pev_.nTrk]=sqrt(etrk.dzError()*etrk.dzError()+pev_.vzError[1]*pev_.vzError[1]);
+    pev_.trkDzError1[pev_.nTrk]=sqrt(etrk.dzError()*etrk.dzError()+pev_.zVtxErr[pev_.maxPtVtx]*pev_.zVtxErr[pev_.maxPtVtx]);
     pev_.trkDxy1[pev_.nTrk]=etrk.dxy(v1);
-    pev_.trkDxyError1[pev_.nTrk]=sqrt(etrk.dxyError()*etrk.dxyError()+pev_.vxError[1]*pev_.vyError[1]);
+    pev_.trkDxyError1[pev_.nTrk]=sqrt(etrk.dxyError()*etrk.dxyError()+pev_.xVtxErr[pev_.maxPtVtx]*pev_.yVtxErr[pev_.maxPtVtx]);
 
-    math::XYZPoint v2(pev_.vx[2],pev_.vy[2], pev_.vz[2]);
+    math::XYZPoint v2(pev_.xVtx[pev_.maxMultVtx],pev_.yVtx[pev_.maxMultVtx], pev_.zVtx[pev_.maxMultVtx]);
     pev_.trkDz2[pev_.nTrk]=etrk.dz(v2);
-    pev_.trkDzError2[pev_.nTrk]=sqrt(etrk.dzError()*etrk.dzError()+pev_.vzError[2]*pev_.vzError[2]);
+    pev_.trkDzError2[pev_.nTrk]=sqrt(etrk.dzError()*etrk.dzError()+pev_.zVtxErr[pev_.maxMultVtx]*pev_.zVtxErr[pev_.maxMultVtx]);
     pev_.trkDxy2[pev_.nTrk]=etrk.dxy(v2);
-    pev_.trkDxyError2[pev_.nTrk]=sqrt(etrk.dxyError()*etrk.dxyError()+pev_.vxError[2]*pev_.vyError[2]);
+    pev_.trkDxyError2[pev_.nTrk]=sqrt(etrk.dxyError()*etrk.dxyError()+pev_.xVtxErr[pev_.maxMultVtx]*pev_.yVtxErr[pev_.maxMultVtx]);
 
     pev_.trkDxyBS[pev_.nTrk]=etrk.dxy(beamSpot.position());
     pev_.trkDxyErrorBS[pev_.nTrk]=sqrt(etrk.dxyError()*etrk.dxyError()+beamSpot.BeamWidthX()*beamSpot.BeamWidthY());
@@ -658,11 +653,11 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
     // multiplicity variable
     if (pev_.trkQual[0][pev_.nTrk]&&
-        (fabs(pev_.trkDz1[pev_.nTrk]/pev_.trkDzError1[pev_.nTrk]) < 3)&&
-        (fabs(pev_.trkDxy1[pev_.nTrk]/pev_.trkDxyError1[pev_.nTrk]) < 3)&&
+        (fabs(pev_.trkDz1[pev_.nTrk]/pev_.trkDzError1[pev_.nTrk]) < trackVtxMaxDistance_)&&
+        (fabs(pev_.trkDxy1[pev_.nTrk]/pev_.trkDxyError1[pev_.nTrk]) < trackVtxMaxDistance_)&&
         (pev_.trkPtError[pev_.nTrk]/pev_.trkPt[pev_.nTrk]<0.1)&&
         (fabs(pev_.trkEta[pev_.nTrk]) < 2.4)&&
-        (pev_.trkPt[pev_.nTrk] > 0.4)
+        (pev_.trkPt[pev_.nTrk] > trackPtMin_)
        ) pev_.N++;
 
     /*
@@ -674,20 +669,20 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
       recoVertices = vertexCollection.product();
       
       
-      for (unsigned int ivert = 0 ; ivert< recoVertices->size(); ++ivert){
+     for (unsigned int ivert = 0 ; ivert< recoVertices->size(); ++ivert){
 
-	for (reco::Vertex::trackRef_iterator tr_it = (*recoVertices)[ivert].tracks_begin(); tr_it != (*recoVertices)[ivert].tracks_end(); tr_it++) {
+	    for (reco::Vertex::trackRef_iterator tr_it = (*recoVertices)[ivert].tracks_begin(); tr_it != (*recoVertices)[ivert].tracks_end(); tr_it++) {
 	  
-	    cout<<" trackRef.key() "<<trackRef.key()<< " tr_it->key() "<<tr_it->key()<<endl;
-	    if(trackRef.key()==tr_it->key()){
-	      //pev_.trkVtxIndex[itrack] = i+1;  // note that index starts from 1 
-	      pev_.trkVtxIndex[pev_.nTrk] = 1;  // note that index starts from 1 
-	      cout<< " matching track "<<pev_.nTrk<<endl;
+	     cout<<" trackRef.key() "<<trackRef.key()<< " tr_it->key() "<<tr_it->key()<<endl;
+	     if(trackRef.key()==tr_it->key()){
+	       pev_.trkVtxIndex[itrack] = i;  // note that index starts from 1 
+	       // pev_.trkVtxIndex[pev_.nTrk] = 1;  // note that index starts from 1 
+	       cout<< " matching track "<<pev_.nTrk<<endl;
+	     }
 	    }
-	  }
-      }
+     }
     }
-    */
+   */ 
 
     if (doSimTrack_) {
       pev_.trkFake[pev_.nTrk]=0;
@@ -699,23 +694,23 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
       reco::RecoToSimCollection::const_iterator matchedSim = recSimColl.find(edm::RefToBase<reco::Track>(trackRef));
 
       if(matchedSim == recSimColl.end()){
-	 pev_.trkFake[pev_.nTrk]=1;
+	     pev_.trkFake[pev_.nTrk]=1;
       }else{
-         const TrackingParticle* tparticle = matchedSim->val[0].first.get();
-	 pev_.trkStatus[pev_.nTrk]=tparticle->status();
-	 pev_.trkPId[pev_.nTrk]=tparticle->pdgId();
-         if (tparticle->parentVertex().isNonnull() && !tparticle->parentVertex()->sourceTracks().empty()) {
-	    pev_.trkMPId[pev_.nTrk]=tparticle->parentVertex()->sourceTracks()[0]->pdgId();
-	 } else {
-	    pev_.trkMPId[pev_.nTrk]=-999;
-         }
-         if (!tparticle->genParticle().empty()) {
-            const HepMC::GenParticle * genMom = getGpMother(tparticle->genParticle()[0].get());
-	    if (genMom) {
-                       pev_.trkGMPId[pev_.nTrk] = genMom->pdg_id();
-	    }
-	 }   	    
+       const TrackingParticle* tparticle = matchedSim->val[0].first.get();
+	     pev_.trkStatus[pev_.nTrk]=tparticle->status();
+	     pev_.trkPId[pev_.nTrk]=tparticle->pdgId();
+      if (tparticle->parentVertex().isNonnull() && !tparticle->parentVertex()->sourceTracks().empty()) {
+	     pev_.trkMPId[pev_.nTrk]=tparticle->parentVertex()->sourceTracks()[0]->pdgId();
+	    } else {
+	     pev_.trkMPId[pev_.nTrk]=-999;
       }
+       if (!tparticle->genParticle().empty()) {
+       const HepMC::GenParticle * genMom = getGpMother(tparticle->genParticle()[0].get());
+	     if (genMom) {
+        pev_.trkGMPId[pev_.nTrk] = genMom->pdg_id();
+	     }
+	    }   	    
+     }
     }
 
 
@@ -725,7 +720,7 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
       double x = r*cos(etrk.phi())+etrk.vx();
       double y = r*sin(etrk.eta())+etrk.vy();
       double z = r/tan(atan(exp(-etrk.eta()))*2)+etrk.vz();
-      ROOT::Math::XYZVector tmpVector(x-pev_.vx[1],y-pev_.vy[1],z-pev_.vz[1]);
+      ROOT::Math::XYZVector tmpVector(x-pev_.xVtx[1],y-pev_.yVtx[1],z-pev_.zVtx[1]);
       double eta1 = tmpVector.eta();
       //double phi1 = etrk.phi();
 
@@ -733,7 +728,7 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
       x = r2*cos(etrk.phi())+etrk.vx();
       y = r2*sin(etrk.eta())+etrk.vy();
       z = r2/tan(atan(exp(-etrk.eta()))*2)+etrk.vz();
-      ROOT::Math::XYZVector tmpVector2(x-pev_.vx[1],y-pev_.vy[1],z-pev_.vz[1]);
+      ROOT::Math::XYZVector tmpVector2(x-pev_.xVtx[1],y-pev_.yVtx[1],z-pev_.zVtx[1]);
       double eta2 = tmpVector2.eta();
 
 
@@ -741,7 +736,7 @@ TrackAnalyzer::fillTracks(const edm::Event& iEvent, const edm::EventSetup& iSetu
       x = r3*cos(etrk.phi())+etrk.vx();
       y = r3*sin(etrk.eta())+etrk.vy();
       z = r3/tan(atan(exp(-etrk.eta()))*2)+etrk.vz();
-      ROOT::Math::XYZVector tmpVector3(x-pev_.vx[1],y-pev_.vy[1],z-pev_.vz[1]);
+      ROOT::Math::XYZVector tmpVector3(x-pev_.xVtx[1],y-pev_.yVtx[1],z-pev_.zVtx[1]);
       double eta3 = tmpVector3.eta();
 
 
@@ -810,19 +805,39 @@ TrackAnalyzer::fillSimTracks(const edm::Event& iEvent, const edm::EventSetup& iS
     const reco::Track* mtrk=0;
     size_t nrec=0;
     if(simRecColl.find(tpr) != simRecColl.end()){
+       math::XYZPoint v1(pev_.xVtx[pev_.maxPtVtx],pev_.yVtx[pev_.maxPtVtx], pev_.zVtx[pev_.maxPtVtx]);    
+       math::XYZPoint v2(pev_.xVtx[pev_.maxMultVtx],pev_.yVtx[pev_.maxMultVtx], pev_.zVtx[pev_.maxMultVtx]);    
       rt = (std::vector<std::pair<edm::RefToBase<reco::Track>, double> >) simRecColl[tpr];
-      nrec=rt.size();   
-      if(nrec) mtrk = rt.begin()->first.get();      
-    }
-    // remove the association if the track hits the bed region in FPIX
-    // nrec>0 since we don't need it for nrec=0 case 
-    if(fiducialCut_ && nrec>0 && hitDeadPXF(*mtrk)) nrec=0;
-    //cout << "simtrk: " << tp->pdgId() << " pt: " << tp->pt() << " nrec: " << nrec << endl;
+      std::vector<std::pair<edm::RefToBase<reco::Track>, double> >::const_iterator rtit;
+      for (rtit = rt.begin(); rtit != rt.end(); ++rtit)
+      {         
+       const reco::Track* tmtr = rtit->first.get();
+       if (!(tmtr->quality(reco::TrackBase::qualityByName(qualityString_)))) continue;
+       if(doHighestPtVertex_){
+        if ((fabs(tmtr->dz(v1)/sqrt(tmtr->dzError()*tmtr->dzError()+pev_.zVtxErr[pev_.maxPtVtx]*pev_.zVtxErr[pev_.maxPtVtx])) < trackVtxMaxDistance_)&&
+         (fabs( tmtr->dxy(v1)/sqrt(tmtr->dxyError()*tmtr->dxyError()+pev_.xVtxErr[pev_.maxPtVtx]*pev_.yVtxErr[pev_.maxPtVtx])) < trackVtxMaxDistance_)&&
+         (tmtr->ptError()/tmtr->pt()<0.1)&&
+         fabs(tmtr->ptError()/tmtr->eta() < 2.4)&&
+         (tmtr->pt() > trackPtMin_)) nrec++;
+       }
+       else{
+        if ((fabs(tmtr->dz(v2)/sqrt(tmtr->dzError()*tmtr->dzError()+pev_.zVtxErr[pev_.maxMultVtx]*pev_.zVtxErr[pev_.maxMultVtx])) < trackVtxMaxDistance_)&&
+         (fabs( tmtr->dxy(v2)/sqrt(tmtr->dxyError()*tmtr->dxyError()+pev_.xVtxErr[pev_.maxMultVtx]*pev_.yVtxErr[pev_.maxMultVtx])) < trackVtxMaxDistance_)&&
+         (tmtr->ptError()/tmtr->pt()<0.1)&&
+         fabs(tmtr->ptError()/tmtr->eta() < 2.4)&&
+         (tmtr->pt() > trackPtMin_)) nrec++;
+       }
+      }
+      // remove the association if the track hits the bed region in FPIX
+      // nrec>0 since we don't need it for nrec=0 case 
+      if(fiducialCut_ && nrec>0 && hitDeadPXF(*mtrk)) nrec=0;
+      //cout << "simtrk: " << tp->pdgId() << " pt: " << tp->pt() << " nrec: " << nrec << endl;
 
-    // Fill matched rec track info
-    pev_.pNRec[pev_.nParticle] = nrec;
-    pev_.mtrkQual[pev_.nParticle] = 0;
-    if (nrec>0) {
+      // Fill matched rec track info 
+      pev_.pNRec[pev_.nParticle] = nrec;
+      pev_.mtrkQual[pev_.nParticle] = 0;
+      mtrk = rt.begin()->first.get();      
+
       pev_.mtrkPt[pev_.nParticle] = mtrk->pt();
       pev_.mtrkPtError[pev_.nParticle] = mtrk->ptError();
       pev_.mtrkNHit[pev_.nParticle] = mtrk->numberOfValidHits();
@@ -831,23 +846,33 @@ TrackAnalyzer::fillSimTracks(const edm::Event& iEvent, const edm::EventSetup& iS
       if (mtrk->quality(reco::TrackBase::qualityByName(qualityString_))) pev_.mtrkQual[pev_.nParticle] = 1;
       pev_.mtrkChi2[pev_.nParticle]=mtrk->chi2();
       pev_.mtrkNdof[pev_.nParticle]=mtrk->ndof();
-      math::XYZPoint v1(pev_.vx[1],pev_.vy[1], pev_.vz[1]);
       pev_.mtrkDz1[pev_.nParticle] = mtrk->dz(v1);
-      pev_.mtrkDzError1[pev_.nParticle] = sqrt(mtrk->dzError()*mtrk->dzError()+pev_.vzError[1]*pev_.vzError[1]);
+      pev_.mtrkDzError1[pev_.nParticle] = sqrt(mtrk->dzError()*mtrk->dzError()+pev_.zVtxErr[pev_.maxPtVtx]*pev_.zVtxErr[pev_.maxPtVtx]);
       pev_.mtrkDxy1[pev_.nParticle] = mtrk->dxy(v1);
-      pev_.mtrkDxyError1[pev_.nParticle] = sqrt(mtrk->dxyError()*mtrk->dxyError()+pev_.vxError[1]*pev_.vyError[1]);
+      pev_.mtrkDxyError1[pev_.nParticle] = sqrt(mtrk->dxyError()*mtrk->dxyError()+pev_.xVtxErr[pev_.maxPtVtx]*pev_.yVtxErr[pev_.maxPtVtx]);
+      pev_.mtrkDz2[pev_.nParticle] = mtrk->dz(v2);
+      pev_.mtrkDzError2[pev_.nParticle] = sqrt(mtrk->dzError()*mtrk->dzError()+pev_.zVtxErr[pev_.maxMultVtx]*pev_.zVtxErr[pev_.maxMultVtx]);
+      pev_.mtrkDxy2[pev_.nParticle] = mtrk->dxy(v2);
+      pev_.mtrkDxyError2[pev_.nParticle] = sqrt(mtrk->dxyError()*mtrk->dxyError()+pev_.xVtxErr[pev_.maxMultVtx]*pev_.yVtxErr[pev_.maxMultVtx]);
       pev_.mtrkAlgo[pev_.nParticle] = mtrk->algo();
-      // calo matching info for the matched track
+      
+       // calo matching info for the matched track
       if(doPFMatching_) {
-	size_t mtrkkey = rt.begin()->first.key();
-	matchPFCandToTrack(iEvent, iSetup, mtrkkey,
-	    // output to the following vars
-	    pev_.mtrkPfType[pev_.nParticle],
-	    pev_.mtrkPfCandPt[pev_.nParticle],
-	    pev_.mtrkPfSumEcal[pev_.nParticle],
-	    pev_.mtrkPfSumHcal[pev_.nParticle]);
+    	 size_t mtrkkey = rt.begin()->first.key();
+	     matchPFCandToTrack(iEvent, iSetup, mtrkkey,
+	      // output to the following vars
+	     pev_.mtrkPfType[pev_.nParticle],
+	     pev_.mtrkPfCandPt[pev_.nParticle],
+	     pev_.mtrkPfSumEcal[pev_.nParticle],
+	     pev_.mtrkPfSumHcal[pev_.nParticle]);
       }
     }
+    // remove the association if the track hits the bed region in FPIX
+    // nrec>0 since we don't need it for nrec=0 case 
+    if(fiducialCut_ && nrec>0 && hitDeadPXF(*mtrk)) nrec=0;
+    //cout << "simtrk: " << tp->pdgId() << " pt: " << tp->pt() << " nrec: " << nrec << endl;
+
+    // Fill matched rec track info
 
     ++pev_.nParticle;
   }
@@ -1077,17 +1102,12 @@ TrackAnalyzer::beginJob()
   trackTree_->Branch("N",&pev_.N,"N/I");
 
   // vertex
-  trackTree_->Branch("nv",&pev_.nv,"nv/I");
-  trackTree_->Branch("vx",pev_.vx,"vx[nv]/F");
-  trackTree_->Branch("vy",pev_.vy,"vy[nv]/F");
-  trackTree_->Branch("vz",pev_.vz,"vz[nv]/F");
-  trackTree_->Branch("vxErr",pev_.vxError,"vxErr[nv]/F"); 
-  trackTree_->Branch("vyErr",pev_.vyError,"vyErr[nv]/F"); 
-  trackTree_->Branch("vzErr",pev_.vzError,"vzErr[nv]/F");
-  trackTree_->Branch("nDaugher",pev_.nDaugher,"nDaugher[nv]/I");
 
   trackTree_->Branch("nVtx",&pev_.nVtx,"nVtx/I");
-  trackTree_->Branch("maxVtx",&pev_.maxVtx,"maxVtx/I");
+  trackTree_->Branch("nTrk",&pev_.nTrk,"nTrk/I");
+
+  trackTree_->Branch("maxPtVtx",&pev_.maxPtVtx,"maxPtVtx/I");
+  trackTree_->Branch("maxMultVtx",&pev_.maxMultVtx,"maxMultVtx/I");
   //  trackTree_->Branch("maxVtxHard",&pev_.maxVtxHard,"maxVtxHard/I");
 
   trackTree_->Branch("nTrkVtx",pev_.nTrkVtx,"nTrkVtx[nVtx]/I");
@@ -1108,12 +1128,15 @@ TrackAnalyzer::beginJob()
   trackTree_->Branch("vtxDist2D",pev_.vtxDist3D,"vtxDist3D[nVtx]/F");
   trackTree_->Branch("vtxDist3DErr",pev_.vtxDist3DErr,"vtxDist3DErr[nVtx]/F");
   trackTree_->Branch("vtxDist3DSig",pev_.vtxDist3DSig,"vtxDist3DSig[nVtx]/F");
-
+  
+  trackTree_->Branch("nVtxSim",&pev_.nVtxSim,"nVtxSim/I");
+  trackTree_->Branch("xVtxSim",pev_.xVtxSim,"xVtx[nVtxSim]/F");
+  trackTree_->Branch("yVtxSim",pev_.yVtxSim,"yVtx[nVtxSim]/F");
+  trackTree_->Branch("zVtxSim",pev_.zVtxSim,"zVtx[nVtxSim]/F");
+  
   // centrality
   if (useCentrality_) trackTree_->Branch("cbin",&pev_.cbin,"cbin/I");
-
   // Tracks
-  trackTree_->Branch("nTrk",&pev_.nTrk,"nTrk/I");
   trackTree_->Branch("trkPt",&pev_.trkPt,"trkPt[nTrk]/F");
   trackTree_->Branch("trkPtError",&pev_.trkPtError,"trkPtError[nTrk]/F");
   trackTree_->Branch("trkNHit",&pev_.trkNHit,"trkNHit[nTrk]/I");
@@ -1121,12 +1144,19 @@ TrackAnalyzer::beginJob()
   trackTree_->Branch("trkEta",&pev_.trkEta,"trkEta[nTrk]/F");
   trackTree_->Branch("trkPhi",&pev_.trkPhi,"trkPhi[nTrk]/F");
   trackTree_->Branch("trkCharge",&pev_.trkCharge,"trkCharge[nTrk]/I");
-  trackTree_->Branch("trkVtxIndex",&pev_.trkVtxIndex,"trkVtxIndex[nTrk]/I");
-
+  if(doTrackVtxWImpPar_){
+   trackTree_->Branch("trkNVtx",&pev_.trkNVtx,"trkNVtx[nTrk]/I");
+   trackTree_->Branch("nTrkTimesnVtx",&pev_.nTrkTimesnVtx,"nTrkTimesnVtx/I");
+   trackTree_->Branch("trkAssocVtx",&pev_.trkAssocVtx,"trkAssocVtx[nTrkTimesnVtx]/O");
+  }
+  else{
+   trackTree_->Branch("trkVtxIndex",&pev_.trkVtxIndex,"trkVtxIndex[nTrk]/I");
+  }
+  
   if (doDeDx_) {
     trackTree_->Branch("dedx",&pev_.dedx,"dedx[nTrk]/F");
   }
-
+    
   //  trackTree_->Branch("trkQual",&pev_.trkQual,"trkQual[nTrk]/I");
 
   for(unsigned int i  = 0; i < qualityStrings_.size(); ++i){
@@ -1140,6 +1170,10 @@ TrackAnalyzer::beginJob()
   trackTree_->Branch("trkDxyError1",&pev_.trkDxyError1,"trkDxyError1[nTrk]/F");
   trackTree_->Branch("trkDz1",&pev_.trkDz1,"trkDz1[nTrk]/F");
   trackTree_->Branch("trkDzError1",&pev_.trkDzError1,"trkDzError1[nTrk]/F");
+  trackTree_->Branch("trkDzError2",&pev_.trkDzError2,"trkDzError2[nTrk]/F");
+  trackTree_->Branch("trkDxy2",&pev_.trkDxy2,"trkDxy2[nTrk]/F");
+  trackTree_->Branch("trkDz2",&pev_.trkDz2,"trkDz2[nTrk]/F");
+  trackTree_->Branch("trkDxyError2",&pev_.trkDxyError2,"trkDxyError2[nTrk]/F");
   trackTree_->Branch("trkFake",&pev_.trkFake,"trkFake[nTrk]/O");
   trackTree_->Branch("trkAlgo",&pev_.trkAlgo,"trkAlgo[nTrk]/F");
 
@@ -1152,10 +1186,6 @@ TrackAnalyzer::beginJob()
      trackTree_->Branch("trkDxyError",&pev_.trkDxyError,"trkDxyError[nTrk]/F");
      trackTree_->Branch("trkDzError",&pev_.trkDzError,"trkDzError[nTrk]/F");
      trackTree_->Branch("trkChi2hit1D",&pev_.trkChi2hit1D,"trkChi2hit1D[nTrk]/F");
-     trackTree_->Branch("trkDzError2",&pev_.trkDzError2,"trkDzError2[nTrk]/F");
-     trackTree_->Branch("trkDxy2",&pev_.trkDxy2,"trkDxy2[nTrk]/F");
-     trackTree_->Branch("trkDz2",&pev_.trkDz2,"trkDz2[nTrk]/F");
-     trackTree_->Branch("trkDxyError2",&pev_.trkDxyError2,"trkDxyError2[nTrk]/F");
      trackTree_->Branch("trkVx",&pev_.trkVx,"trkVx[nTrk]/F");
      trackTree_->Branch("trkVy",&pev_.trkVy,"trkVy[nTrk]/F");
      trackTree_->Branch("trkVz",&pev_.trkVz,"trkVz[nTrk]/F");
@@ -1191,7 +1221,7 @@ TrackAnalyzer::beginJob()
 	trackTree_->Branch("pPhi",&pev_.pPhi,"pPhi[nParticle]/F");
 	trackTree_->Branch("pPt",&pev_.pPt,"pPt[nParticle]/F");
 	trackTree_->Branch("pAcc",&pev_.pAcc,"pAcc[nParticle]/F");
-        trackTree_->Branch("pAccPair",&pev_.pAccPair,"pAccPair[nParticle]/F");
+  trackTree_->Branch("pAccPair",&pev_.pAccPair,"pAccPair[nParticle]/F");
 	trackTree_->Branch("pNRec",&pev_.pNRec,"pNRec[nParticle]/F");
 	trackTree_->Branch("pNHit",&pev_.pNHit,"pNHit[nParticle]/I");
 	trackTree_->Branch("mtrkPt",&pev_.mtrkPt,"mtrkPt[nParticle]/F");
@@ -1206,6 +1236,10 @@ TrackAnalyzer::beginJob()
 	trackTree_->Branch("mtrkDzError1",&pev_.mtrkDzError1,"mtrkDzError1[nParticle]/F");
 	trackTree_->Branch("mtrkDxy1",&pev_.mtrkDxy1,"mtrkDxy1[nParticle]/F");
 	trackTree_->Branch("mtrkDxyError1",&pev_.mtrkDxyError1,"mtrkDxyError1[nParticle]/F");
+	trackTree_->Branch("mtrkDz2",&pev_.mtrkDz2,"mtrkDz2[nParticle]/F");
+	trackTree_->Branch("mtrkDzError2",&pev_.mtrkDzError2,"mtrkDzError2[nParticle]/F");
+	trackTree_->Branch("mtrkDxy2",&pev_.mtrkDxy2,"mtrkDxy2[nParticle]/F");
+	trackTree_->Branch("mtrkDxyError2",&pev_.mtrkDxyError2,"mtrkDxyError2[nParticle]/F");
 	trackTree_->Branch("mtrkAlgo",&pev_.mtrkAlgo,"mtrkAlgo[nParticle]/F");
 
 	if (doPFMatching_) {
@@ -1234,7 +1268,8 @@ inline void TrackAnalyzer::getProduct(const std::string name, edm::Handle<TYPE> 
       << "Collection with label '" << name << "' is not valid" <<  std::endl;
 }
 
-//--------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+
 template <typename TYPE>
 inline bool TrackAnalyzer::getProductSafe(const std::string name, edm::Handle<TYPE> &prod,
     const edm::Event &event) const

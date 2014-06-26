@@ -32,7 +32,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "file:/afs/cern.ch/work/r/richard/pp-MC-GEN-SIM-RECO.root"
+    "file:/afs/cern.ch/work/r/richard/public/pp-MC-GEN-SIM-RECO.root"
     ))
 
 # Number of events we want to process, -1 = all events
@@ -222,6 +222,7 @@ process.ppTrack.doSimTrack = cms.untracked.bool(False)
 process.temp_step = cms.Path(process.hiGenParticles *
                              process.hiGenParticlesForJets
                              *
+                             process.ak1HiGenJets +
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
