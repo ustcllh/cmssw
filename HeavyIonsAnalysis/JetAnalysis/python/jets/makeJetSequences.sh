@@ -64,7 +64,7 @@ do
                                 if [ $sub == "NONE" ]; then
                                     corrlabel="_generalTracks" #placeholder
                                 fi
-                                genparticles="genParticles"
+                                #genparticles="genParticles"
                             fi
 
                             if [ $sample == "mc" ] || [ $sample == "jec" ] || [ $sample == "mix" ]; then
