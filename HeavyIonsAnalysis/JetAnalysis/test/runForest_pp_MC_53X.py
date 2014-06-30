@@ -202,7 +202,6 @@ process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
-process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
 process.photonMatch.matched = cms.InputTag("genParticles")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
@@ -258,9 +257,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)

@@ -205,9 +205,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)

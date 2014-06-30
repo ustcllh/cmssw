@@ -199,5 +199,3 @@ process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")

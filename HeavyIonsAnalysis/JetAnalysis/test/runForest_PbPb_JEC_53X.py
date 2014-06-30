@@ -228,7 +228,6 @@ process.anaTrack.doPFMatching = False
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
-#process.photonMatch.matched = cms.InputTag("genParticles")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -277,9 +276,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)
