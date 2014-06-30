@@ -19,7 +19,10 @@ hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
 photonMatch.matched = cms.InputTag("hiGenParticles")
 patPhotons.addPhotonID = cms.bool(False)
 
+from RecoHI.HiEgammaAlgos.HiEgamma_cff import hiPhotonSequence
+
 photonStep = cms.Sequence(hiGoodTracks *
+                          hiPhotonSequence * # need to re-run to get track info
                           photonMatch *
                           patPhotons *
                           selectedPatPhotons * 
