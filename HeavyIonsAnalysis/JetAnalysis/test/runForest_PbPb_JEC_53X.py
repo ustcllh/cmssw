@@ -31,7 +31,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:/data/richard/MC_TESTS/PbPb_RECO.root"))
+                            fileNames = cms.untracked.vstring("/store/himc/HiFall13DR53X/Pyquen_DiJet_Pt120_TuneZ2_Unquenched_Hydjet1p8_2760GeV/GEN-SIM-RECO/NoPileUp_STARTHI53_LV1-v3/00000/0010470D-A6DD-E311-99E2-00266CF9AE10.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
