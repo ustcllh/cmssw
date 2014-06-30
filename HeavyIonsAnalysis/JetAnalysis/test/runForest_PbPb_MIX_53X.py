@@ -32,7 +32,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "/store/user/pkurt/Hydjet1p8_TuneDrum_Quenched_MinBias_2760GeV/HydjetDrum_Pyquen_Dijet80_Embedded_RECO_STARTHI53_LV1_Track8_Jet24_0/aa9adba476784a91ce1e2af32aacf2c8/step4_RAW2DIGI_L1Reco_RECO_VALIDATION_DQM_3014_2_jUO.root"
+    "/store/himc/HiFall13DR53X/Pyquen_DiJet_Pt120_TuneZ2_Unquenched_Hydjet1p8_2760GeV/GEN-SIM-RECO/NoPileUp_STARTHI53_LV1-v3/00000/0010470D-A6DD-E311-99E2-00266CF9AE10.root"
     ))
 
 # Number of events we want to process, -1 = all events
