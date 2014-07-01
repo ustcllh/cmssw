@@ -3,9 +3,6 @@
 # Author: Alex Barbieri
 # Date: 2013-10-15
 
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(

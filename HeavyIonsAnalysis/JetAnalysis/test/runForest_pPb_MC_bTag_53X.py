@@ -3,8 +3,6 @@
 # Author: Alex Barbieri
 # Date: 2013-10-15
 
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
 hltProcess="HLT" #some embedding has this as HISIGNAL instead
 
 import FWCore.ParameterSet.Config as cms
