@@ -98,12 +98,12 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    
+
                                     process.akVs4CaloJetSequence +
                                     process.akPu4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
-                                    
+
                                     process.akVs5CaloJetSequence +
                                     process.akPu5CaloJetSequence +
                                     process.akVs5PFJetSequence +
@@ -111,13 +111,12 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.recoJPTJetsHIC +
                                     process.akPu5JPTJetSequence
                                     )
-                                    
+
 
 #####################################################################################
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
@@ -203,7 +202,7 @@ process.ana_step = cms.Path(process.hltanalysis *
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
-                            process.HiForest +                            
+                            process.HiForest +
                             process.anaTrack
                             )
 
