@@ -98,19 +98,19 @@ process.jetSequences = cms.Sequence(process.akPu3CaloJetSequence +
                                     process.akVs3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    
+
                                     process.akPu4CaloJetSequence +
                                     process.akVs4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
-                                    
+
                                     process.akPu5CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence
-                                                                        
+
                                     )
-                                    
+
 
 #####################################################################################
 # Rechits/PFcands
@@ -141,7 +141,7 @@ process.anaTrack.doPFMatching = False
 #####################
 # photons
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
-process.photonStep.remove(process.photonMatch)
+process.photonStep_withReco.remove(process.photonMatch)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -199,7 +199,7 @@ process.ana_step = cms.Path(process.hltanalysis *
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
-                            process.HiForest +                            
+                            process.HiForest +
                             process.anaTrack
                             )
 
@@ -208,5 +208,3 @@ process.pAna = cms.EndPath(process.skimanalysis)
 #Filtering
 #for path in process.paths:
 #    getattr(process,path)._seq = process.superFilterSequence*getattr(process,path)._seq
-
-

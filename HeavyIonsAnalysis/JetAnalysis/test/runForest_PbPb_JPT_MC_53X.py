@@ -102,12 +102,12 @@ process.jetSequences = cms.Sequence(
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    
+
                                     process.akVs4CaloJetSequence +
                                     process.akPu4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
-                                    
+
                                     process.akVs5CaloJetSequence +
                                     process.akPu5CaloJetSequence +
                                     process.akVs5PFJetSequence +
@@ -125,7 +125,6 @@ process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
@@ -170,11 +169,11 @@ process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standA
 
 process.ana_step = cms.Path(process.heavyIon*
                             process.hltanalysis *
-#temp                            process.hltobject *                            
+#temp                            process.hltobject *
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
-                            process.jetSequences +                            
+                            process.jetSequences +
                             process.photonStep_withReco +
                             process.pfcandAnalyzer +
                             process.rechitAna +

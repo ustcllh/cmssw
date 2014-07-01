@@ -100,17 +100,17 @@ process.jetSequences = cms.Sequence(process.akPu3CaloJetSequence +
                                     process.akVs3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    
+
                                     process.akPu4CaloJetSequence +
                                     process.akVs4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
-                                    
+
                                     process.akPu5CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence
-                                    
+
                                     )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
@@ -121,7 +121,6 @@ process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
@@ -164,13 +163,25 @@ process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
+# HYDJET RECO file didn't have ak2GenJets and ak6GenJets as input, so removed them
+# and ran our own hiGenJetsCleaned sequence
+from HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff import *
+
+process.hiSelectGenJets = cms.Sequence(
+    ak3HiGenJetsCleaned +
+    ak4HiGenJetsCleaned +
+    ak5HiGenJetsCleaned +
+    ak7HiGenJetsCleaned
+)
+
 process.ana_step = cms.Path(process.heavyIon*
                             process.hltanalysis *
-#temp                            process.hltobject *                            
+#temp                            process.hltobject *
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleaned*
-                            process.jetSequences +                            
+                            #process.hiGenJetsCleaned*
+                            process.hiSelectGenJets +
+                            process.jetSequences +
                             process.photonStep_withReco +
                             process.pfcandAnalyzer +
                             process.rechitAna +
