@@ -105,227 +105,8 @@ akPu3parton = patJetPartonMatch.clone(
     src = cms.InputTag("akPu3CaloJets")
     )
 
-from RecoJets.JetAssociationProducers.ak5JTA_cff import *
-from RecoBTag.Configuration.RecoBTag_cff import *
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ calo jet
-#### b-tagging:
-# b-tagging general configuration
-# @@@@@@@@@ calo jet
-#### b-tagging:
-# b-tagging general configuration
-icPu5JetTracksAssociatorAtVertex        = ak5JetTracksAssociatorAtVertex.clone()
-icPu5JetTracksAssociatorAtVertex.jets   = cms.InputTag("iterativeConePu5CaloJets")
-icPu5JetTracksAssociatorAtVertex.tracks = cms.InputTag("hiSelectedTracks")
 
-# impact parameter b-tag
-icPu5ImpactParameterTagInfos                = impactParameterTagInfos.clone()
-icPu5ImpactParameterTagInfos.jetTracks      = cms.InputTag("icPu5JetTracksAssociatorAtVertex")
-icPu5ImpactParameterTagInfos.primaryVertex  = cms.InputTag("hiSelectedVertex")
-
-icPu5TrackCountingHighEffBJetTags          = trackCountingHighEffBJetTags.clone()
-icPu5TrackCountingHighEffBJetTags.tagInfos = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"))
-icPu5TrackCountingHighPurBJetTags          = trackCountingHighPurBJetTags.clone()
-icPu5TrackCountingHighPurBJetTags.tagInfos = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"))
-icPu5JetProbabilityBJetTags                = jetProbabilityBJetTags.clone()
-icPu5JetProbabilityBJetTags.tagInfos       = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"))
-icPu5JetBProbabilityBJetTags               = jetBProbabilityBJetTags.clone()
-icPu5JetBProbabilityBJetTags.tagInfos      = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"))
-
-# secondary vertex b-tag
-icPu5SecondaryVertexTagInfos                     = secondaryVertexTagInfos.clone()
-icPu5SecondaryVertexTagInfos.trackIPTagInfos     = cms.InputTag("icPu5ImpactParameterTagInfos")
-icPu5SimpleSecondaryVertexBJetTags               = simpleSecondaryVertexBJetTags.clone()
-icPu5SimpleSecondaryVertexBJetTags.tagInfos      = cms.VInputTag(cms.InputTag("icPu5SecondaryVertexTagInfos"))
-icPu5CombinedSecondaryVertexBJetTags             = combinedSecondaryVertexBJetTags.clone()
-icPu5CombinedSecondaryVertexBJetTags.tagInfos    = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"),
-                                                                         cms.InputTag("icPu5SecondaryVertexTagInfos"))
-icPu5CombinedSecondaryVertexMVABJetTags          = combinedSecondaryVertexMVABJetTags.clone()
-icPu5CombinedSecondaryVertexMVABJetTags.tagInfos = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"),
-                                                                         cms.InputTag("icPu5SecondaryVertexTagInfos"))
-
-# soft muon b-tag
-icPu5SoftMuonTagInfos                = softMuonTagInfos.clone()
-icPu5SoftMuonTagInfos.jets           = cms.InputTag("iterativeConePu5CaloJets")
-icPu5SoftMuonTagInfos.primaryVertex  = cms.InputTag("hiSelectedVertex")
-
-# ghost tracks
-icPu5GhostTrackVertexTagInfos                 = ghostTrackVertexTagInfos.clone()
-icPu5GhostTrackVertexTagInfos.trackIPTagInfos = cms.InputTag("icPu5ImpactParameterTagInfos")
-icPu5GhostTrackBJetTags                       = ghostTrackBJetTags.clone()
-icPu5GhostTrackBJetTags.tagInfos              = cms.VInputTag(cms.InputTag("icPu5ImpactParameterTagInfos"),
-                                                                      cms.InputTag("icPu5GhostTrackVertexTagInfos"))
-# prepare a path running the new modules
-icPu5JetTracksAssociator = cms.Sequence(icPu5JetTracksAssociatorAtVertex)
-icPu5JetBtaggingIP       = cms.Sequence(icPu5ImpactParameterTagInfos * (icPu5TrackCountingHighEffBJetTags +
-                                                                                        icPu5TrackCountingHighPurBJetTags +
-                                                                                        icPu5JetProbabilityBJetTags +
-                                                                                        icPu5JetBProbabilityBJetTags
-                                                                                        )
-                                                )
-
-icPu5JetBtaggingSV = cms.Sequence(icPu5ImpactParameterTagInfos *
-                                          icPu5SecondaryVertexTagInfos * (icPu5SimpleSecondaryVertexBJetTags +
-                                                                                  icPu5CombinedSecondaryVertexBJetTags +
-                                                                                  icPu5CombinedSecondaryVertexMVABJetTags
-                                                                                  )
-                                          +icPu5GhostTrackVertexTagInfos
-                                          *icPu5GhostTrackBJetTags
-                                          )
-
-
-icPu5JetBtaggingMu = cms.Sequence(icPu5SoftMuonTagInfos
-#                                  * (icPu5SoftMuonBJetTags +
-#                                  icPu5SoftMuonByIP3dBJetTags +
-#                                  icPu5SoftMuonByPtBJetTags
-#                                  )
-                                          )
-
-icPu5JetBtagging = cms.Sequence(icPu5JetBtaggingIP 
-                                        *icPu5JetBtaggingSV 
-                                        *icPu5JetBtaggingMu
-                                        )
-#----------------------
-
-
-#----------------------
-
-icPu5clean   = heavyIonCleanedGenJets.clone(src = cms.InputTag('iterativeCone5HiGenJets')) # cleans the jets, but NOT the partons
-icPu5match   = patJetGenJetMatch.clone(src      = cms.InputTag("iterativeConePu5CaloJets"),
-                                                       matched  = cms.InputTag("icPu5clean"))
-
-icPu5parton  = patJetPartonMatch.clone(src      = cms.InputTag("iterativeConePu5CaloJets"))
-
-# ----- flavour bit
-icPu5PatJetPartonAssociation       = patJetPartonAssociation.clone(jets    = cms.InputTag("iterativeConePu5CaloJets"),
-                                                                                   partons = cms.InputTag("genPartons"),
-                                                                                   coneSizeToAssociate = cms.double(0.4))
-icPu5PatJetFlavourAssociation      = patJetFlavourAssociation.clone(srcByReference = cms.InputTag("icPu5PatJetPartonAssociation"))
-
-icPu5PatJetFlavourId               = cms.Sequence(icPu5PatJetPartonAssociation*icPu5PatJetFlavourAssociation)
-
-#-------
-
-icPu5patJets = patJets.clone(jetSource            = cms.InputTag("iterativeConePu5CaloJets"),
-                                             genJetMatch          = cms.InputTag("icPu5match"),
-                                             genPartonMatch       = cms.InputTag("icPu5parton"),
-                                             jetCorrFactorsSource = cms.VInputTag(cms.InputTag("icPu5corr")),
-                                             JetPartonMapSource   = cms.InputTag("icPu5PatJetFlavourAssociation"),
-                                             trackAssociationSource = cms.InputTag("icPu5JetTracksAssociatorAtVertex"),
-                                             discriminatorSources = cms.VInputTag(cms.InputTag("icPu5CombinedSecondaryVertexBJetTags"),
-                                                                                  cms.InputTag("icPu5CombinedSecondaryVertexMVABJetTags"),
-                                                                                  cms.InputTag("icPu5JetBProbabilityBJetTags"),
-                                                                                  cms.InputTag("icPu5JetProbabilityBJetTags"),
-                                                                                  cms.InputTag("icPu5SoftMuonByPtBJetTags"),                
-                                                                                  cms.InputTag("icPu5SoftMuonByIP3dBJetTags"),
-                                                                                  cms.InputTag("icPu5TrackCountingHighEffBJetTags"),
-                                                                                  cms.InputTag("icPu5TrackCountingHighPurBJetTags"),
-                                                                                  ),
-                                             )
-
-
-#### B-tagging for this bit:
-# b-tagging general configuration
-akPu3PFJetTracksAssociatorAtVertex        = ak5JetTracksAssociatorAtVertex.clone()
-akPu3PFJetTracksAssociatorAtVertex.jets   = cms.InputTag("akPu3PFJets")
-akPu3PFJetTracksAssociatorAtVertex.tracks = cms.InputTag("hiSelectedTracks")
-# impact parameter b-tag
-akPu3PFImpactParameterTagInfos               = impactParameterTagInfos.clone()
-akPu3PFImpactParameterTagInfos.jetTracks     = cms.InputTag("akPu3PFJetTracksAssociatorAtVertex")
-akPu3PFImpactParameterTagInfos.primaryVertex = cms.InputTag("hiSelectedVertex")
-akPu3PFTrackCountingHighEffBJetTags          = trackCountingHighEffBJetTags.clone()
-akPu3PFTrackCountingHighEffBJetTags.tagInfos = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"))
-akPu3PFTrackCountingHighPurBJetTags          = trackCountingHighPurBJetTags.clone()
-akPu3PFTrackCountingHighPurBJetTags.tagInfos = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"))
-akPu3PFJetProbabilityBJetTags                = jetProbabilityBJetTags.clone()
-akPu3PFJetProbabilityBJetTags.tagInfos       = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"))
-akPu3PFJetBProbabilityBJetTags               = jetBProbabilityBJetTags.clone()
-akPu3PFJetBProbabilityBJetTags.tagInfos      = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"))
-
-# secondary vertex b-tag
-akPu3PFSecondaryVertexTagInfos                     = secondaryVertexTagInfos.clone()
-akPu3PFSecondaryVertexTagInfos.trackIPTagInfos     = cms.InputTag("akPu3PFImpactParameterTagInfos")
-akPu3PFSimpleSecondaryVertexBJetTags               = simpleSecondaryVertexBJetTags.clone()
-akPu3PFSimpleSecondaryVertexBJetTags.tagInfos      = cms.VInputTag(cms.InputTag("akPu3PFSecondaryVertexTagInfos"))
-akPu3PFCombinedSecondaryVertexBJetTags             = combinedSecondaryVertexBJetTags.clone()
-akPu3PFCombinedSecondaryVertexBJetTags.tagInfos    = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"), 
-                                                                           cms.InputTag("akPu3PFSecondaryVertexTagInfos"))
-akPu3PFCombinedSecondaryVertexMVABJetTags          = combinedSecondaryVertexMVABJetTags.clone()
-akPu3PFCombinedSecondaryVertexMVABJetTags.tagInfos = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"), 
-                                                                           cms.InputTag("akPu3PFSecondaryVertexTagInfos"))
-
-# soft muon b-tag
-akPu3PFSoftMuonTagInfos                = softMuonTagInfos.clone()
-akPu3PFSoftMuonTagInfos.jets           = cms.InputTag("akPu3PFJets")
-akPu3PFSoftMuonTagInfos.primaryVertex  = cms.InputTag("hiSelectedVertex")
-
-# ghost tracks
-akPu3PFGhostTrackVertexTagInfos                 = ghostTrackVertexTagInfos.clone()
-akPu3PFGhostTrackVertexTagInfos.trackIPTagInfos = cms.InputTag("akPu3PFImpactParameterTagInfos")
-akPu3PFGhostTrackBJetTags                       = ghostTrackBJetTags.clone()
-akPu3PFGhostTrackBJetTags.tagInfos              = cms.VInputTag(cms.InputTag("akPu3PFImpactParameterTagInfos"),
-                                                                        cms.InputTag("akPu3PFGhostTrackVertexTagInfos"))
-# prepare a path running the new modules
-akPu3PFJetTracksAssociator = cms.Sequence(akPu3PFJetTracksAssociatorAtVertex)
-akPu3PFJetBtaggingIP       = cms.Sequence(akPu3PFImpactParameterTagInfos * (akPu3PFTrackCountingHighEffBJetTags +
-                                                                                        akPu3PFTrackCountingHighPurBJetTags +
-                                                                                        akPu3PFJetProbabilityBJetTags +
-                                                                                        akPu3PFJetBProbabilityBJetTags
-                                                                                        )
-                                                )
-
-akPu3PFJetBtaggingSV = cms.Sequence(akPu3PFImpactParameterTagInfos *
-                                          akPu3PFSecondaryVertexTagInfos * (akPu3PFSimpleSecondaryVertexBJetTags +
-                                                                                  akPu3PFCombinedSecondaryVertexBJetTags +
-                                                                                  akPu3PFCombinedSecondaryVertexMVABJetTags
-                                                                                  )
-                                          +akPu3PFGhostTrackVertexTagInfos
-                                          *akPu3PFGhostTrackBJetTags
-                                          )
-
-
-akPu3PFJetBtaggingMu = cms.Sequence(akPu3PFSoftMuonTagInfos
-#                                    * (akPu3PFSoftMuonBJetTags +
-#                                                                           akPu3PFSoftMuonByIP3dBJetTags +
-#                                                                           akPu3PFSoftMuonByPtBJetTags
-#                                                                           )
-                                          )
-
-akPu3PFJetBtagging = cms.Sequence(akPu3PFJetBtaggingIP 
-                                        *akPu3PFJetBtaggingSV 
-                                        *akPu3PFJetBtaggingMu
-                                        )
-
-#__________________________________________________________
-# ----- flavour bit
-akPu3PFPatJetPartonAssociation       = patJetPartonAssociation.clone(jets    = cms.InputTag("akPu3PFJets"),
-                                                                                     partons = cms.InputTag("genPartons"),
-                                                                                     coneSizeToAssociate = cms.double(0.4))
-akPu3PFPatJetFlavourAssociation      = patJetFlavourAssociation.clone(srcByReference = cms.InputTag("akPu3PFPatJetPartonAssociation"))
-
-akPu3PFPatJetFlavourId               = cms.Sequence(akPu3PFPatJetPartonAssociation*akPu3PFPatJetFlavourAssociation)
-#
-#-------
-akPu3PFclean   = heavyIonCleanedGenJets.clone(src = cms.InputTag('ak3HiGenJets'))
-akPu3PFmatch   = patJetGenJetMatch.clone(src      = cms.InputTag("akPu3PFJets"),
-                                                         matched  = cms.InputTag("akPu3PFclean"))
-akPu3PFparton  = patJetPartonMatch.clone(src      = cms.InputTag("akPu3PFJets"))
-akPu3PFpatJets = patJets.clone(jetSource            = cms.InputTag("akPu3PFJets"),
-                                               genJetMatch          = cms.InputTag("akPu3PFmatch"),
-                                               genPartonMatch       = cms.InputTag("akPu3PFparton"),
-                                               jetCorrFactorsSource = cms.VInputTag(cms.InputTag("akPu3PFcorr")),
-                                               JetPartonMapSource   = cms.InputTag("akPu3PFPatJetFlavourAssociation"),
-                                               trackAssociationSource = cms.InputTag("akPu3PFJetTracksAssociatorAtVertex"),
-                                               discriminatorSources = cms.VInputTag(cms.InputTag("akPu3PFCombinedSecondaryVertexBJetTags"),
-                                                                                    cms.InputTag("akPu3PFCombinedSecondaryVertexMVABJetTags"),
-                                                                                    cms.InputTag("akPu3PFJetBProbabilityBJetTags"),
-                                                                                    cms.InputTag("akPu3PFJetProbabilityBJetTags"),
-                                                                                    cms.InputTag("akPu3PFSoftMuonByPtBJetTags"),                
-                                                                                    cms.InputTag("akPu3PFSoftMuonByIP3dBJetTags"),
-                                                                                    cms.InputTag("akPu3PFTrackCountingHighEffBJetTags"),
-                                                                                    cms.InputTag("akPu3PFTrackCountingHighPurBJetTags"),
-                                                                                    ),
-                                               )
-
+### btagging moved to bTaggers_cff.py
 
 # === data sequences ===
 # Note still need to use enableData function in cfg to remove mc dep of patjet
@@ -507,6 +288,10 @@ ak4CalopatSequence = cms.Sequence(ak4Calocorr+ak4clean+ak4Calomatch+ak4Caloparto
 ak5CalopatSequence = cms.Sequence(ak5Calocorr+ak5clean+ak5Calomatch+ak5Caloparton+ak5CalopatJets)
 ak6CalopatSequence = cms.Sequence(ak6Calocorr+ak6clean+ak6Calomatch+ak6Caloparton+ak6CalopatJets)
 
+akPu3PFpatSequence_withBtagging = cms.Sequence(akPu3PFcorr * akPu3PFclean * akPu3PFbTagger.match * akPu3PFbTagger.parton * akPu3PFbTagger.PatJetFlavourId * akPu3PFbTagger.JetTracksAssociator * akPu3PFbTagger.JetBtagging * akPu3PFpatJets)
+akPu4PFpatSequence_withBtagging = cms.Sequence(akPu4PFcorr * akPu4PFclean * akPu4PFbTagger.match * akPu4PFbTagger.parton * akPu4PFbTagger.PatJetFlavourId * akPu4PFbTagger.JetTracksAssociator * akPu4PFbTagger.JetBtagging * akPu4PFpatJets)
+akPu5PFpatSequence_withBtagging = cms.Sequence(akPu5PFcorr * akPu5PFclean * akPu5PFbTagger.match * akPu5PFbTagger.parton * akPu5PFbTagger.PatJetFlavourId * akPu5PFbTagger.JetTracksAssociator * akPu5PFbTagger.JetBtagging * akPu5PFpatJets)
+
 makeHeavyIonJets = cms.Sequence(
                                 akPu1PFpatSequence +
                                 akPu2PFpatSequence +
@@ -559,6 +344,12 @@ makeHeavyIonJets2to5 = cms.Sequence(
                                 ak4CalopatSequence +
                                 ak5CalopatSequence 
                                 
+                                )
+
+makeBTaggedHeavyIonJets = cms.Sequence(
+                                akPu3PFpatSequence_withBtagging +
+                                akPu4PFpatSequence_withBtagging +
+                                akPu5PFpatSequence_withBtagging
                                 )
 
 makeHeavyIonVsJets = cms.Sequence(
