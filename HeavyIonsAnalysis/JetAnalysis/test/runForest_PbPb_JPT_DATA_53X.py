@@ -199,7 +199,7 @@ process.ana_step = cms.Path(process.hltanalysis *
                             process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
-                            process.photonStep +
+                            process.photonStep_withReco +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +

@@ -21,9 +21,15 @@ patPhotons.addPhotonID = cms.bool(False)
 
 from RecoHI.HiEgammaAlgos.HiEgamma_cff import hiPhotonSequence
 
+photonStep_withReco = cms.Sequence(hiGoodTracks *
+                                   hiPhotonSequence * # need to re-run to get track info
+                                   photonMatch *
+                                   patPhotons *
+                                   selectedPatPhotons *
+                                   multiPhotonAnalyzer)
+
 photonStep = cms.Sequence(hiGoodTracks *
-                          hiPhotonSequence * # need to re-run to get track info
                           photonMatch *
                           patPhotons *
-                          selectedPatPhotons * 
+                          selectedPatPhotons *
                           multiPhotonAnalyzer)

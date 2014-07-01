@@ -256,7 +256,7 @@ process.ana_step = cms.Path(process.heavyIon*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
                             process.jetSequences +                            
-                            process.photonStep +
+                            process.photonStep_withReco +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +

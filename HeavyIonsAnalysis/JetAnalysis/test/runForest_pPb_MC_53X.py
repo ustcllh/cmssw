@@ -3,9 +3,6 @@
 # Author: Alex Barbieri
 # Date: 2013-10-15
 
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(
@@ -90,10 +87,6 @@ process.load('RecoJets.Configuration.GenJetParticles_cff')
 
 process.hiGenParticles.srcVector = cms.vstring('generator')
 
-#process.hiCentrality.producePixelhits = False
-#process.hiCentrality.producePixelTracks = False
-#process.hiCentrality.srcTracks = cms.InputTag("generalTracks")
-#process.hiCentrality.srcVertex = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.hiEvtPlane.vtxCollection_ = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.hiEvtPlane.trackCollection_ = cms.InputTag("generalTracks")
 
@@ -229,7 +222,7 @@ process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAlo
 process.genStep = cms.Path(process.hiGenParticles *
                            process.hiGenParticlesForJets)
 
-process.temp_step = cms.Path(
+process.temp_step = cms.Path(process.ak1HiGenJets +
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
