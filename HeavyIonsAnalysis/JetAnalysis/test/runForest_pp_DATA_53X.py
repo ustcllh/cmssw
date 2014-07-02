@@ -191,6 +191,7 @@ process.hiTracks.cut = cms.string('quality("highPurity")')
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 process.ppTrack.doPFMatching = False
+process.ppTrack.doSimTrack = False
 
 #####################
 # photons
