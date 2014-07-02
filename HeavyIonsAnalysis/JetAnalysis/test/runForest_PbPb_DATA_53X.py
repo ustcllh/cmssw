@@ -132,9 +132,6 @@ process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPurity
 process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 process.hiTracks.cut = cms.string('quality("highPurity")')
 
-# set track collection to iterative tracking
-process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
-
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 

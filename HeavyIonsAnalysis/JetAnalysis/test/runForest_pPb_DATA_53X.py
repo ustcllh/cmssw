@@ -32,12 +32,12 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                "root://xrootd.unl.edu//store/hidata/HIRun2013/PAHighPt/RECO/PromptReco-v1/000/209/842/00000/26155966-085F-E211-A318-003048F118D2.root"
+                                "/store/hidata/HIRun2013A/PAHighPt/RECO/PromptReco-v1/000/210/354/CC8F3FCD-EB62-E211-ABBF-BCAEC5329716.root"
                             ))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(100))
 
 
 #####################################################################################
@@ -172,8 +172,8 @@ process.hiTracks.cut = cms.string('quality("highPurity")')
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 process.ppTrack.doPFMatching = False
-
 process.ppTrack.pfCandSrc = cms.InputTag("particleFlow")
+process.ppTrack.doSimTrack = False
 
 #####################
 # photons
