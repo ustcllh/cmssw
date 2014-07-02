@@ -210,7 +210,12 @@ process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAlo
 #process.skimanalysis.superFilters = cms.vstring("superFilterPath")
 ################################################################
 
-process.ana_step = cms.Path(process.pACentrality +
+process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+process.hltobject.triggerNames = cms.vstring("HLT_PAJet100_NoJetID_v1","HLT_PAJet80_NoJetID_v1","HLT_PAJet60_NoJetID_v1","HLT_PAJet40_NoJetID_v1","HLT_PAJet20_NoJetID_v1")
+
+process.ana_step = cms.Path(process.hltanalysis +
+                            process.hltobject +
+                            process.pACentrality +
                             process.centralityBin +
                             process.hiEvtPlane +
                             process.hiEvtAnalyzer*
@@ -233,9 +238,7 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
-process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 #Filtering
