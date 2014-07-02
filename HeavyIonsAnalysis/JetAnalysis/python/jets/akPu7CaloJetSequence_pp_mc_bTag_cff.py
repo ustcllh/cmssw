@@ -170,7 +170,7 @@ akPu7CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu7Ca
                                                              genjetTag = 'ak7HiGenJets',
                                                              rParam = 0.7,
                                                              matchJets = cms.untracked.bool(False),
-                                                             matchTag = 'akPu7PFpatJetsWithBtagging',
+                                                             matchTag = 'patJetsWithBtagging',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlow'),
                                                              trackTag = cms.InputTag("generalTracks"),
                                                              fillGenJets = True,
