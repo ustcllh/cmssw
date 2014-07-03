@@ -37,7 +37,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100))
+    input = cms.untracked.int32(10))
 
 
 #####################################################################################
@@ -228,14 +228,35 @@ process.ana_step = cms.Path(process.hltanalysis +
                             process.ppTrack)
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
+process.primaryVertexFilter.src = cms.InputTag("offlinePrimaryVerticesWithBS")
+process.PAprimaryVertexFilter.src = cms.InputTag("offlinePrimaryVerticesWithBS")
+
 process.phltJetHI = cms.Path( process.hltJetHI )
-#process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
+process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
+process.pPAcollisionEventSelectionPA = cms.Path(process.PAcollisionEventSelection)
 process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
 process.phfCoincFilter = cms.Path(process.hfCoincFilter )
 process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3 )
-#process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
+process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
+process.pPAprimaryVertexFilter = cms.Path(process.PAprimaryVertexFilter)
 process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hltPixelClusterShapeFilter )
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
+process.phfPosFilter3 = cms.Path(process.towersAboveThreshold+process.hfPosTowers+process.hfNegTowers+process.hfPosFilter3)
+process.phfNegFilter3 = cms.Path(process.towersAboveThreshold+process.hfPosTowers+process.hfNegTowers+process.hfNegFilter3)
+#process.phfPosFilter2 = cms.Path(process.towersAboveThreshold+process.hfPosTowers+process.hfNegTowers+process.hfPosFilter2)
+#process.phfNegFilter2 = cms.Path(process.towersAboveThreshold+process.hfPosTowers+process.hfNegTowers+process.hfNegFilter2)
+#process.phfPosFilter1 = cms.Path(process.towersAboveThreshold+process.hfPosTowers+process.hfNegTowers+process.hfPosFilter)
+#process.phfNegFilter1 = cms.Path(process.towersAboveThreshold+process.hfPosTowers+process.hfNegTowers+process.hfNegFilter)
+process.pBeamScrapingFilter=cms.Path(process.NoScraping)
+
+process.load("HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff")
+
+process.pVertexFilterCutG = cms.Path(process.pileupVertexFilterCutG)
+process.pVertexFilterCutGloose = cms.Path(process.pileupVertexFilterCutGloose)
+process.pVertexFilterCutGtight = cms.Path(process.pileupVertexFilterCutGtight)
+process.pVertexFilterCutGplus = cms.Path(process.pileupVertexFilterCutGplus)
+process.pVertexFilterCutE = cms.Path(process.pileupVertexFilterCutE)
+process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 
 # Customization
 
