@@ -127,7 +127,10 @@ process.jetSequences = cms.Sequence(
                                     process.ak5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence +
-                                    process.ak5PFJetSequence
+                                    process.ak5PFJetSequence +
+                                    process.recoJPTJetsHIC +
+                                    process.akPu5JPTJetSequence
+
 
                                     )
 
