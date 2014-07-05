@@ -93,6 +93,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_mc_cff'
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_PbPb_mc_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_PbPb_mc_cff')
 
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5JPTJetSequence_PbPb_mc_cff')
@@ -112,6 +113,7 @@ process.jetSequences = cms.Sequence(
                                     process.akPu5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence +
+                                    process.ak5PFJetSequence +
                                     process.recoJPTJetsHIC +
                                     process.akPu5JPTJetSequence
                                     )
