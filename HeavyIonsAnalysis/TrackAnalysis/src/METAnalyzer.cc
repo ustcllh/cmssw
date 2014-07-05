@@ -3,13 +3,13 @@
 //
 // Package:    METAnalyzer
 // Class:      METAnalyzer
-// 
+//
 /**\class METAnalyzer METAnalyzer.cc MitHig/METAnalyzer/src/METAnalyzer.cc
 
- Description: <one line class summary>
+   Description: <one line class summary>
 
- Implementation:
-     Prepare the Treack Tree for analysis
+   Implementation:
+   Prepare the Treack Tree for analysis
 */
 //
 // Original Author:  Yen-Jie Lee
@@ -62,53 +62,53 @@ using namespace reco;
 
 struct METEvent{
 
-   // event information
-   int nRun;
-   int nEv;
-   int nLumi;
-   int nBX;
+  // event information
+  int nRun;
+  int nEv;
+  int nLumi;
+  int nBX;
 
-   int nMET;   
-   float METEt[MAXMETS];
-   float METPhi[MAXMETS];
-   float METSumEt[MAXMETS];
-   
+  int nMET;
+  float METEt[MAXMETS];
+  float METPhi[MAXMETS];
+  float METSumEt[MAXMETS];
+
 };
 
 class METAnalyzer : public edm::EDAnalyzer {
 public:
   explicit METAnalyzer(const edm::ParameterSet&);
   ~METAnalyzer();
-  
+
 private:
   virtual void beginJob() ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob() ;
-  
+
   void fillMETs(const edm::Event& iEvent, const edm::EventSetup& iSetup);
-  
+
   // ----------member data ---------------------------
-  
+
   bool doMET_;
 
   std::string qualityString_;
-  
-  edm::Service<TFileService> fs;           
+
+  edm::Service<TFileService> fs;
   edm::InputTag METSrc_;
-  
+
   // Root object
   TTree* metTree_;
-  
+
   METEvent pev_;
-  
+
 };
 
 //--------------------------------------------------------------------------------------------------
 METAnalyzer::METAnalyzer(const edm::ParameterSet& iConfig)
 
 {
-   doMET_             = iConfig.getUntrackedParameter<bool>  ("doMET",true);
-   METSrc_ = iConfig.getParameter<edm::InputTag>("METSrc");
+  doMET_             = iConfig.getUntrackedParameter<bool>  ("doMET",true);
+  METSrc_ = iConfig.getParameter<edm::InputTag>("METSrc");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -120,24 +120,24 @@ METAnalyzer::~METAnalyzer()
 void
 METAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
-	pev_.nEv = (int)iEvent.id().event();
-	pev_.nRun = (int)iEvent.id().run();
-	pev_.nLumi = (int)iEvent.luminosityBlock();
-	pev_.nBX = (int)iEvent.bunchCrossing();
-	
-	if (doMET_) fillMETs(iEvent, iSetup);
-	metTree_->Fill();
+  pev_.nEv = (int)iEvent.id().event();
+  pev_.nRun = (int)iEvent.id().run();
+  pev_.nLumi = (int)iEvent.luminosityBlock();
+  pev_.nBX = (int)iEvent.bunchCrossing();
+
+  if (doMET_) fillMETs(iEvent, iSetup);
+  metTree_->Fill();
 }
 
 //--------------------------------------------------------------------------------------------------
 void
 METAnalyzer::fillMETs(const edm::Event& iEvent, const edm::EventSetup& iSetup){
- 
+
   Handle<edm::View<reco::MET> > mets;
   iEvent.getByLabel(METSrc_, mets);
-  
+
   pev_.nMET = 0;
-  
+
   for (unsigned it=0; it<mets->size();it++) {
     const reco::MET & met = (*mets)[it];
     pev_.METEt[pev_.nMET] = met.et();
@@ -148,7 +148,7 @@ METAnalyzer::fillMETs(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 }
 
 // ------------ method called once each job just before starting event loop  ------------
-void 
+void
 METAnalyzer::beginJob()
 {
 
@@ -159,7 +159,7 @@ METAnalyzer::beginJob()
   metTree_->Branch("nLumi",&pev_.nLumi,"nLumi/I");
   metTree_->Branch("nBX",&pev_.nBX,"nBX/I");
   metTree_->Branch("nRun",&pev_.nRun,"nRun/I");
-  
+
   metTree_->Branch("nMET",&pev_.nMET,"nMET/I");
   metTree_->Branch("MET",pev_.METEt,"MET[nMET]/F");
   metTree_->Branch("METPhi",pev_.METPhi,"METPhi[nMET]/F");
@@ -168,7 +168,7 @@ METAnalyzer::beginJob()
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
+void
 METAnalyzer::endJob() {
 }
 
