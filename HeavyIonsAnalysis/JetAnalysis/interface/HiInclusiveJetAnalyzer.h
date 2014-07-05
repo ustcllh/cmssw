@@ -26,22 +26,22 @@
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 //
 
-/**\class HiInclusiveJetAnalyzer 
+/**\class HiInclusiveJetAnalyzer
 
-\author Matt Nguyen
-\date   November 2010
+   \author Matt Nguyen
+   \date   November 2010
 */
 
 
 
 
 class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
- public:
+public:
 
   explicit HiInclusiveJetAnalyzer(const edm::ParameterSet&);
 
   ~HiInclusiveJetAnalyzer();
-  
+
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
 
   virtual void beginRun(const edm::Run & r, const edm::EventSetup & c);
@@ -53,15 +53,15 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   void fillHLTBits(const edm::Event &iEvent);
 
   template <typename TYPE>
-    void                          getProduct(const std::string name, edm::Handle<TYPE> &prod,
-					     const edm::Event &event) const;    
+    void getProduct(const std::string name, edm::Handle<TYPE> &prod,
+		    const edm::Event &event) const;
   template <typename TYPE>
-    bool                          getProductSafe(const std::string name, edm::Handle<TYPE> &prod,
-						 const edm::Event &event) const;
-  
+    bool getProductSafe(const std::string name, edm::Handle<TYPE> &prod,
+			const edm::Event &event) const;
 
- private:
-  
+
+private:
+
   int getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandidateCollection *pfCandidateColl);
 
   double getPtRel(const reco::PFCandidate lep, const pat::Jet& jet );
@@ -72,7 +72,7 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   math::XYZPoint getPosition(const DetId &id, reco::Vertex::Point vtx = reco::Vertex::Point(0,0,0));
   int TaggedJet(reco::Jet calojet, edm::Handle<reco::JetTagCollection > jetTags );
 
-  edm::InputTag   jetTag_, vtxTag_, genjetTag_, eventInfoTag_, L1gtReadout_, pfCandidateLabel_, trackTag_, matchTag_; 
+  edm::InputTag   jetTag_, vtxTag_, genjetTag_, eventInfoTag_, L1gtReadout_, pfCandidateLabel_, trackTag_, matchTag_;
   edm::InputTag HcalRecHitHFSrc_;
   edm::InputTag HcalRecHitHBHESrc_;
   edm::InputTag EBSrc_;
@@ -82,8 +82,8 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   std::vector<float> usedStringPts;
 
   /// verbose ?
-  bool   verbose_;
-  bool  doMatch_;
+  bool verbose_;
+  bool doMatch_;
   bool useCentrality_;
   bool useVtx_;
   bool useJEC_;
@@ -153,7 +153,7 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
   static const int MAXBFRAG = 500;
 
   struct JRA{
-    
+
     int nref;
     int run;
     int evt;
@@ -169,39 +169,39 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
     float jtphi[MAXJETS];
     float jty[MAXJETS];
     float jtpu[MAXJETS];
-     float jtm[MAXJETS];
+    float jtm[MAXJETS];
 
-     float trackMax[MAXJETS];
-     float trackSum[MAXJETS];
-     int trackN[MAXJETS];
+    float trackMax[MAXJETS];
+    float trackSum[MAXJETS];
+    int trackN[MAXJETS];
 
-     float chargedMax[MAXJETS];
-     float chargedSum[MAXJETS];
-     int chargedN[MAXJETS];
+    float chargedMax[MAXJETS];
+    float chargedSum[MAXJETS];
+    int chargedN[MAXJETS];
 
-     float photonMax[MAXJETS];
-     float photonSum[MAXJETS];
-     int photonN[MAXJETS];
+    float photonMax[MAXJETS];
+    float photonSum[MAXJETS];
+    int photonN[MAXJETS];
 
-     float trackHardSum[MAXJETS];
-     float chargedHardSum[MAXJETS];
-     float photonHardSum[MAXJETS];
+    float trackHardSum[MAXJETS];
+    float chargedHardSum[MAXJETS];
+    float photonHardSum[MAXJETS];
 
-     int trackHardN[MAXJETS];
-     int chargedHardN[MAXJETS];
-     int photonHardN[MAXJETS];
+    int trackHardN[MAXJETS];
+    int chargedHardN[MAXJETS];
+    int photonHardN[MAXJETS];
 
-     float neutralMax[MAXJETS];
-     float neutralSum[MAXJETS];
-     int neutralN[MAXJETS];
+    float neutralMax[MAXJETS];
+    float neutralSum[MAXJETS];
+    int neutralN[MAXJETS];
 
-     float eMax[MAXJETS];
-     float eSum[MAXJETS];
-     int eN[MAXJETS];
+    float eMax[MAXJETS];
+    float eSum[MAXJETS];
+    int eN[MAXJETS];
 
-     float muMax[MAXJETS];
-     float muSum[MAXJETS];
-     int muN[MAXJETS];
+    float muMax[MAXJETS];
+    float muSum[MAXJETS];
+    int muN[MAXJETS];
 
     float genChargedSum[MAXJETS];
     float genHardSum[MAXJETS];
@@ -243,10 +243,10 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
 
     int subid[MAXJETS];
 
-     float matchedPt[MAXJETS];
-     float matchedRawPt[MAXJETS];
-     float matchedR[MAXJETS];
-     float matchedPu[MAXJETS];
+    float matchedPt[MAXJETS];
+    float matchedRawPt[MAXJETS];
+    float matchedR[MAXJETS];
+    float matchedPu[MAXJETS];
 
     float discr_csvMva[MAXJETS];
     float discr_csvSimple[MAXJETS];
@@ -254,7 +254,7 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
     float discr_muByPt[MAXJETS];
     float discr_prob[MAXJETS];
     float discr_probb[MAXJETS];
-    float discr_tcHighEff[MAXJETS];    
+    float discr_tcHighEff[MAXJETS];
     float discr_tcHighPur[MAXJETS];
     float discr_ssvHighEff[MAXJETS];
     float discr_ssvHighPur[MAXJETS];
@@ -272,12 +272,12 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
     float pdiscr_prob[MAXJETS];
     float pdiscr_probb[MAXJETS];
 
-    int nsvtx[MAXJETS];    
-    int svtxntrk[MAXJETS]; 
-    float svtxdl[MAXJETS];   
-    float svtxdls[MAXJETS];  
-    float svtxm[MAXJETS];    
-    float svtxpt[MAXJETS];   
+    int nsvtx[MAXJETS];
+    int svtxntrk[MAXJETS];
+    float svtxdl[MAXJETS];
+    float svtxdls[MAXJETS];
+    float svtxm[MAXJETS];
+    float svtxpt[MAXJETS];
     float svtxnormchi2[MAXJETS];
 
     int nIPtrk[MAXJETS];
@@ -304,14 +304,14 @@ class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
     float ipDist2JetSig[MAXTRACKS];
     float ipClosest2Jet[MAXTRACKS];
 
-    float mue[MAXJETS];     
-    float mupt[MAXJETS];    
-    float mueta[MAXJETS];   
-    float muphi[MAXJETS];   
-    float mudr[MAXJETS];    
-    float muptrel[MAXJETS]; 
-    int muchg[MAXJETS];   
-    
+    float mue[MAXJETS];
+    float mupt[MAXJETS];
+    float mueta[MAXJETS];
+    float muphi[MAXJETS];
+    float mudr[MAXJETS];
+    float muptrel[MAXJETS];
+    int muchg[MAXJETS];
+
     float discr_fr01[MAXJETS];
 
     float refpt[MAXJETS];
