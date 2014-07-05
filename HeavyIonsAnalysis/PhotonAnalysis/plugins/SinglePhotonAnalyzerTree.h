@@ -33,10 +33,10 @@ class ConversionLikelihoodCalculator;
 bool operator < (const TLorentzVector & a, const TLorentzVector & b);
 bool operator < (const TVector3 & a,       const TVector3 & b      );
 
-class SinglePhotonAnalyzerTree : public edm::EDAnalyzer { 
-  
+class SinglePhotonAnalyzerTree : public edm::EDAnalyzer {
+
 public:
-  
+
   explicit SinglePhotonAnalyzerTree(const edm::ParameterSet&);
   ~SinglePhotonAnalyzerTree();
 
@@ -44,32 +44,32 @@ public:
 
 
 protected:
-	
+
   virtual void beginJob() ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob() ;
-	
+
   virtual bool analyzeMC(const edm::Event&,  const edm::EventSetup& );
   virtual Float_t getESRatio(pat::Photon *photon, const edm::Event&, const edm::EventSetup&);
   virtual Int_t getNumOfPreshClusters(pat::Photon *photon, const edm::Event&);
 
-  
-  // obtain generator-level calorimeter isolation and track isolation 
+
+  // obtain generator-level calorimeter isolation and track isolation
   // distribution, return number of particles and sumet surrounding the candidate
-  
+
   virtual Float_t getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
 			       reco::GenParticleCollection::const_iterator thisPho, const Float_t dRMax=0.4);
   virtual Float_t getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
 			       reco::GenParticleCollection::const_iterator thisPho, const Float_t dRMax=0.4);
-	
-	// Configured fields
+
+  // Configured fields
   bool verbose_;                 // verbose flag
   bool fillMCNTuple_;            // fill generator ntuple flag
   bool doL1Objects_;             // store L1 Object flag
   bool isMC_;                // run over MCData flag
   bool storePhysVectors_;        // store TLorentzVector/TVector3 objects instead of plain floats
   std::string outputFile_;       // name of output file
-	
+
   edm::InputTag hlTriggerResults_;    // Input tag for TriggerResults
   edm::InputTag l1gtReadout_;         // Input tag for L1 Global Trigger Readout
   edm::InputTag l1IsolTag_;           // Input tag for L1 EM isolated collection
@@ -80,33 +80,33 @@ protected:
   edm::InputTag hepMCProducer_; // MC hepMC producer
   edm::InputTag genEventScale_; // MC gen Event Scale
   edm::InputTag photonProducer_;      // photon producer
-  edm::InputTag trackProducer_;       // track producer 
-  edm::InputTag jetProducer_;         // jet producer 
-  edm::InputTag metProducer_;         // input tag for MET 
+  edm::InputTag trackProducer_;       // track producer
+  edm::InputTag jetProducer_;         // jet producer
+  edm::InputTag metProducer_;         // input tag for MET
   edm::InputTag vertexProducer_;      // vertecies producer
   edm::InputTag beamSpotProducer_;    // beam spot producer
-	
-  edm::InputTag compPhotonProducer_;      // photon producer                                                                                                          
-  
+
+  edm::InputTag compPhotonProducer_;      // photon producer
+
   edm::InputTag ebReducedRecHitCollection_;
   edm::InputTag eeReducedRecHitCollection_;
   edm::InputTag srcTowers_;           // CaloTowers
-  
+
   edm::TriggerNames triggerNames_;    // TriggerNames class
-	
+
   edm::InputTag evtPlaneLabel;
   edm::InputTag EleTag_;  // gsf electrons
-  
+
 
   // HepMC switch for HI July Exercise.
-  
+
   // basiccluster inputtags for heavy ion
   edm::InputTag basicClusterBarrel_;
   edm::InputTag basicClusterEndcap_;
   edm::InputTag hbhe_;
   edm::InputTag hf_;
   edm::InputTag ho_;
-     
+
   double       ptMin_;            // Photon pt threshold
   double       etaMax_;           // Maximum photon |eta|
   double       ecalBarrelMaxEta_; // Begining of ECAL Barrel/Endcap gap
@@ -119,14 +119,14 @@ protected:
   double       mcPtMin_;          // min MC particle pt
   double       mcEtaMax_;         // max MC particle eta
 
-  double       etCutGenMatch_;    // cut for the genMatching.. 
+  double       etCutGenMatch_;    // cut for the genMatching..
   double       etaCutGenMatch_;   // cut for the genMatching..
   // TupleManager, Histograms, ntuples
 
   // Flags for the fillers
   bool 	doStoreGeneral_; 	 // Store General information
   bool 	doStoreCentrality_; 	 // Store Centrality information
-  bool 	doStoreHLT_;     	 // Store HLT Trigger	
+  bool 	doStoreHLT_;     	 // Store HLT Trigger
   bool	doStoreL1Trigger_;	 // Store L1 Trigger
   bool 	doStoreHF_;		 // Store HF
   bool	doStoreVertex_;		 // Store Vertex
@@ -142,8 +142,8 @@ protected:
 
   const CentralityBins * cbins_;
   CentralityProvider *centrality_;
-  
-  
+
+
   edm::Service<TFileService> fs;
   TTree *theTree;
   int run;
@@ -155,7 +155,7 @@ protected:
   // float p[kMaxPhotons];
   float pt[kMaxPhotons];
   float et[kMaxPhotons]; // same to pt
-  float energy[kMaxPhotons]; // same to scEnergy                                                                                        
+  float energy[kMaxPhotons]; // same to scEnergy
   float rawEnergy[kMaxPhotons];
   float px[kMaxPhotons];
   float py[kMaxPhotons];
@@ -193,7 +193,7 @@ protected:
   float covEtaPhi[kMaxPhotons];
   float covEtaEta[kMaxPhotons];
 
-  
+
   float r1x5[kMaxPhotons];
   float r2x5[kMaxPhotons];
   float e1x5[kMaxPhotons];
@@ -214,8 +214,8 @@ protected:
   float e2x5Left[kMaxPhotons];
   float e2x5Top[kMaxPhotons];
   float e2x5Bottom[kMaxPhotons];
-  
-  
+
+
   float seedTime[kMaxPhotons];
   float seedChi2[kMaxPhotons];
   float seedOutOfTimeChi2[kMaxPhotons];
@@ -226,7 +226,7 @@ protected:
   float tTop[kMaxPhotons];
   float tBottom[kMaxPhotons];
   float swissCrx[kMaxPhotons];
-  
+
 
   float hadronicOverEm[kMaxPhotons];
   float hadronicDepth1OverEm[kMaxPhotons];
@@ -252,7 +252,7 @@ protected:
   float dphiEle[kMaxPhotons];
   float eleCharge[kMaxPhotons];
   float eleEoverP[kMaxPhotons];
-  
+
 
   float c1[kMaxPhotons];
   float c2[kMaxPhotons];
@@ -266,7 +266,7 @@ protected:
   float t3[kMaxPhotons];
   float t4[kMaxPhotons];
   float t5[kMaxPhotons];
-  
+
   float r1[kMaxPhotons];
   float r2[kMaxPhotons];
   float r3[kMaxPhotons];
@@ -278,7 +278,7 @@ protected:
   float t3PtCut[kMaxPhotons];
   float t4PtCut[kMaxPhotons];
   float t5PtCut[kMaxPhotons];
-  
+
   float cc1[kMaxPhotons];
   float cc2[kMaxPhotons];
   float cc3[kMaxPhotons];
@@ -345,7 +345,7 @@ protected:
   float t24[kMaxPhotons];
   float t34[kMaxPhotons];
   float t44[kMaxPhotons];
-  
+
   int   isGenMatched[kMaxPhotons];
   float genMatchedPt[kMaxPhotons];
   float genMatchedEta[kMaxPhotons];
@@ -377,7 +377,7 @@ protected:
   int gpCollId[100];
   int  gpId[100];
   int gpMomId[100];
-    
+
 };
 
 
