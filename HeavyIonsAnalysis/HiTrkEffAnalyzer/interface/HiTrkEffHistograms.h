@@ -50,7 +50,7 @@ typedef struct
   Float_t pterr;
   Float_t d0err;
   Float_t dzerr;
-  Int_t hitr; 
+  Int_t hitr;
   Int_t algo;
   Int_t nsim;
   Int_t status;
@@ -71,70 +71,70 @@ typedef struct
 class HiTrkEffHistograms
 {
 
- public:
-   HiTrkEffHistograms(const edm::ParameterSet& pset);
-   ~HiTrkEffHistograms();
+public:
+  HiTrkEffHistograms(const edm::ParameterSet& pset);
+  ~HiTrkEffHistograms();
 
   void declareHistograms();
   void fillSimHistograms(const SimTrack_t & s);
   void fillRecHistograms(const RecTrack_t & r);
   void writeHistograms();
 
- private: 
-   std::vector<TTree*> trackTrees;
-   SimTrack_t simTrackValues;
-   RecTrack_t recTrackValues;
-   bool fillHistograms;
-   bool fillNtuples;
-   Int_t ptBinScheme;
-   bool lowPtMode;
-   Double_t trkPtMin;
-   edm::Service<TFileService> f;
+private:
+  std::vector<TTree*> trackTrees;
+  SimTrack_t simTrackValues;
+  RecTrack_t recTrackValues;
+  bool fillHistograms;
+  bool fillNtuples;
+  Int_t ptBinScheme;
+  bool lowPtMode;
+  Double_t trkPtMin;
+  edm::Service<TFileService> f;
 
-   std::vector<Double_t> etaBins, ptBins, jetBins;
+  std::vector<Double_t> etaBins, ptBins, jetBins;
 
-   std::vector<int32_t> neededCentBins;
-
-
-   // SimTrack
-   TH2F* hsim;
-   TH2F* hacc;
-   TH2F* heff;
-   TH2F* hmul;
-
-   TH3F* hsim3D;
-   TH3F* heff3D;
-   TH3F* hmul3D;
-   TH3F* hresStoR3D;
-   TH3F* hresStoR3D_etaS;
-   TH3F* hresStoR3D_etaL;
-   TH3F* hresStoR3D_v2;
-
-   TH1F* hsimSPt1D; // sim dn/dpt with sim pt for mom. res. closure
-   TH1F* hsimRPt1D; // sim dn/dpt with rec pt for mom. res. closure
-
-   // RecTrack
-   TH2F* hrec;
-   TH2F* hfak;
-   TH2F* hsec;
-
-   TH3F* hrec3D;
-   TH3F* hfak3D;
-   TH3F* hsec3D;
-   
-   TH2F* hetaphi;
+  std::vector<int32_t> neededCentBins;
 
 
-   // vector of histograms
-   std::vector<TH3F*> vhsim3D;
-   std::vector<TH3F*> vheff3D;
-   std::vector<TH3F*> vhmul3D;
+  // SimTrack
+  TH2F* hsim;
+  TH2F* hacc;
+  TH2F* heff;
+  TH2F* hmul;
 
-   std::vector<TH3F*> vhrec3D;
-   std::vector<TH3F*> vhfak3D;
-   std::vector<TH3F*> vhsec3D;
-   
-   std::vector<TH3F*> vhresStoR3D;
+  TH3F* hsim3D;
+  TH3F* heff3D;
+  TH3F* hmul3D;
+  TH3F* hresStoR3D;
+  TH3F* hresStoR3D_etaS;
+  TH3F* hresStoR3D_etaL;
+  TH3F* hresStoR3D_v2;
+
+  TH1F* hsimSPt1D; // sim dn/dpt with sim pt for mom. res. closure
+  TH1F* hsimRPt1D; // sim dn/dpt with rec pt for mom. res. closure
+
+  // RecTrack
+  TH2F* hrec;
+  TH2F* hfak;
+  TH2F* hsec;
+
+  TH3F* hrec3D;
+  TH3F* hfak3D;
+  TH3F* hsec3D;
+
+  TH2F* hetaphi;
+
+
+  // vector of histograms
+  std::vector<TH3F*> vhsim3D;
+  std::vector<TH3F*> vheff3D;
+  std::vector<TH3F*> vhmul3D;
+
+  std::vector<TH3F*> vhrec3D;
+  std::vector<TH3F*> vhfak3D;
+  std::vector<TH3F*> vhsec3D;
+
+  std::vector<TH3F*> vhresStoR3D;
 
 
 

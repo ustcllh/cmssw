@@ -31,7 +31,7 @@
 //#define DEBUG
 
 HiTrkEffAnalyzer::HiTrkEffAnalyzer(const edm::ParameterSet& iConfig)
-:
+  :
   trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
   jetTags_(iConfig.getUntrackedParameter<edm::InputTag>("jets")),
   label_tp_effic_(iConfig.getUntrackedParameter<edm::InputTag>("label_tp_effic")),
@@ -90,8 +90,8 @@ HiTrkEffAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   int cbin = centrality_->getBin();
 
   if(pixelMultMode_){
-     pixelMult = centrality_->raw()->multiplicityPixel();
-     pixelMult = pixelMult/100.; // scale it (120K -> 1200)
+    pixelMult = centrality_->raw()->multiplicityPixel();
+    pixelMult = pixelMult/100.; // scale it (120K -> 1200)
   }
 
   // PAT jet, to get leading jet ET
@@ -100,34 +100,34 @@ HiTrkEffAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   std::vector<const pat::Jet *> sortedJets;         // jets for event classfication
 
   if(useJetEtMode_>0){
-     edm::Handle<std::vector<pat::Jet> > jets;
-     iEvent.getByLabel(jetTags_, jets);
+    edm::Handle<std::vector<pat::Jet> > jets;
+    iEvent.getByLabel(jetTags_, jets);
 
 
-     for(unsigned it=0; it<jets->size(); ++it){
-	const pat::Jet* jet = &((*jets)[it]);
+    for(unsigned it=0; it<jets->size(); ++it){
+      const pat::Jet* jet = &((*jets)[it]);
 
-	if(trkAcceptedJet_) { // fill the jet pull only when the jet axes are within trk acceptance
-	   if(fabs(jet->eta())<2.) {
-	      sortedJets.push_back(jet);
-	      sortByEtRef (&sortedJets);
-	   }
-	}else{
-	   sortedJets.push_back(jet);
-	   sortByEtRef (&sortedJets);
+      if(trkAcceptedJet_) { // fill the jet pull only when the jet axes are within trk acceptance
+	if(fabs(jet->eta())<2.) {
+	  sortedJets.push_back(jet);
+	  sortByEtRef (&sortedJets);
 	}
-     }
+      }else{
+	sortedJets.push_back(jet);
+	sortByEtRef (&sortedJets);
+      }
+    }
 
-     for(unsigned it=0; it<sortedJets.size(); ++it){
-	if(useSubLeadingJet_){ // use sub-leading jet
-	   if(sortedJets.size()>1) it++;
-	   else break; // if not sub-leading jet, break
-	}
-	jet_et = sortedJets[it]->et();
-	jet_eta = sortedJets[it]->eta();
-	jet_phi= sortedJets[it]->phi();
-	break;
-     }
+    for(unsigned it=0; it<sortedJets.size(); ++it){
+      if(useSubLeadingJet_){ // use sub-leading jet
+	if(sortedJets.size()>1) it++;
+	else break; // if not sub-leading jet, break
+      }
+      jet_et = sortedJets[it]->et();
+      jet_eta = sortedJets[it]->eta();
+      jet_phi= sortedJets[it]->phi();
+      break;
+    }
   }
 
   // sim track collections
@@ -191,11 +191,11 @@ HiTrkEffAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	nrec=rt.size();
 
 	if(useQaulityStr_){ // if true, re-calculate nrec
-	   nrec = 0; // set it to 0
-	   for (std::vector<std::pair<edm::RefToBase<reco::Track>, double> >::const_iterator rtit = rt.begin(); rtit != rt.end(); ++rtit){
-	      const reco::Track* tmtr = rtit->first.get();
-	      if(tmtr->quality(reco::TrackBase::qualityByName(qualityString_))) nrec++;
-	   }
+	  nrec = 0; // set it to 0
+	  for (std::vector<std::pair<edm::RefToBase<reco::Track>, double> >::const_iterator rtit = rt.begin(); rtit != rt.end(); ++rtit){
+	    const reco::Track* tmtr = rtit->first.get();
+	    if(tmtr->quality(reco::TrackBase::qualityByName(qualityString_))) nrec++;
+	  }
 	}
 
 	if(nrec) mtr = rt.begin()->first.get();
@@ -206,8 +206,8 @@ HiTrkEffAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 #ifdef DEBUG
       if(nrec) edm::LogVerbatim("HiTrkEffAnalyzer")
-	<< "TrackingParticle #" << i << " with pt=" << tp->pt()
-	<< " associated with quality:" << rt.begin()->second;
+		 << "TrackingParticle #" << i << " with pt=" << tp->pt()
+		 << " associated with quality:" << rt.begin()->second;
 #endif
     }
 
@@ -242,8 +242,8 @@ HiTrkEffAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 #ifdef DEBUG
     if(nsim) edm::LogVerbatim("HiTrkEffAnalyzer")
-      << "reco::Track #" << i << " with pt=" << track->pt()
-      << " associated with quality:" << tp.begin()->second;
+	       << "reco::Track #" << i << " with pt=" << track->pt()
+	       << " associated with quality:" << tp.begin()->second;
 #endif
   }
 
@@ -306,7 +306,7 @@ HiTrkEffAnalyzer::setSimTrack(TrackingParticle& tp, const reco::Track& mtr, size
   // remove the association if the track hits the bed region in FPIX
   // nrec>0 since we don't need it for nrec=0 case
   if(fiducialCut_ && nrec>0 && hitDeadPXF(*const_cast<reco::Track*>(&mtr)))
-     nrec=0;
+    nrec=0;
 
   s.nrec = nrec;
   s.jetr = jet;
@@ -316,13 +316,13 @@ HiTrkEffAnalyzer::setSimTrack(TrackingParticle& tp, const reco::Track& mtr, size
     Float_t bestJetDR=99, dR=99;
     Int_t bestJetInd=-99;
     unsigned int maxnjet
-       = (sortedJets.size()<2) ?  sortedJets.size() : 2;
+      = (sortedJets.size()<2) ?  sortedJets.size() : 2;
 
     for (UInt_t j=0; j<maxnjet; ++j) { // leading, sub-leading only, if there's any
       if (sortedJets[j]->et()<40) continue; // fake jet meaningless
       dR=deltaR(*sortedJets[j],tp);
       if(dR<0.8 && dR<bestJetDR){ // dR>0.8, should not influence efficiency..
-	 bestJetDR=dR, bestJetInd=j;
+	bestJetDR=dR, bestJetInd=j;
       }
     }
     if (bestJetInd<0) {
@@ -403,12 +403,12 @@ HiTrkEffAnalyzer::setRecTrack(reco::Track& tr, const TrackingParticle& tp, size_
     Float_t bestJetDR=99, dR=99;
     Int_t bestJetInd=-99;
     unsigned int maxnjet
-       = (sortedJets.size()<2) ?  sortedJets.size() : 2;
+      = (sortedJets.size()<2) ?  sortedJets.size() : 2;
     for (UInt_t j=0; j<maxnjet; ++j) {
       if (sortedJets[j]->et()<40) continue; // fake jet meaningless
       dR=deltaR(*sortedJets[j],tr);
       if(dR<0.8 && dR<bestJetDR){ // dR>0.8, should not influence efficiency..
-         bestJetDR=dR, bestJetInd=j;
+	bestJetDR=dR, bestJetInd=j;
       }
     }
     if (bestJetInd<0) {
@@ -488,7 +488,7 @@ HiTrkEffAnalyzer::isAccepted(TrackingParticle & tp)
   const std::vector<PSimHit> & simHits = tp.trackPSimHit(DetId::Tracker);
 
   for(std::vector<PSimHit>::const_iterator simHit = simHits.begin();
-                                      simHit!= simHits.end(); simHit++)
+      simHit!= simHits.end(); simHit++)
   {
     int id = getLayerId(*simHit);
 
@@ -528,14 +528,14 @@ HiTrkEffAnalyzer::getLayerId(const PSimHit & simHit)
   unsigned int id = simHit.detUnitId();
 
   if(theTracker->idToDetUnit(id)->subDetector() ==
-       GeomDetEnumerators::PixelBarrel)
+     GeomDetEnumerators::PixelBarrel)
   {
     PXBDetId pid(id);
     return pid.layer() - 1; // 0, 1, 2
   }
 
   if(theTracker->idToDetUnit(id)->subDetector() ==
-       GeomDetEnumerators::PixelEndcap)
+     GeomDetEnumerators::PixelEndcap)
   {
     PXFDetId pid(id);
     return BPix3 + ((pid.side()-1) << 1) + pid.disk(); // 3 -
@@ -549,40 +549,40 @@ HiTrkEffAnalyzer::getLayerId(const PSimHit & simHit)
 bool
 HiTrkEffAnalyzer::hitDeadPXF(reco::Track& tr){
 
-   //-----------------------------------------------
-   // For a given track, check whether this contains
-   // hits on the dead region in the forward pixel
-   //-----------------------------------------------
+  //-----------------------------------------------
+  // For a given track, check whether this contains
+  // hits on the dead region in the forward pixel
+  //-----------------------------------------------
 
-   bool hitDeadRegion = false;
+  bool hitDeadRegion = false;
 
-   for(trackingRecHit_iterator recHit = tr.recHitsBegin();recHit!= tr.recHitsEnd(); recHit++){
+  for(trackingRecHit_iterator recHit = tr.recHitsBegin();recHit!= tr.recHitsEnd(); recHit++){
 
-      if((*recHit)->isValid()){
+    if((*recHit)->isValid()){
 
-	 DetId detId = (*recHit)->geographicalId();
-	 if(!theTracker->idToDet(detId)) continue;
+      DetId detId = (*recHit)->geographicalId();
+      if(!theTracker->idToDet(detId)) continue;
 
-	 Int_t diskLayerNum=0, bladeLayerNum=0, hcylLayerNum=0;
+      Int_t diskLayerNum=0, bladeLayerNum=0, hcylLayerNum=0;
 
-	 unsigned int subdetId = static_cast<unsigned int>(detId.subdetId());
+      unsigned int subdetId = static_cast<unsigned int>(detId.subdetId());
 
-	 if (subdetId == PixelSubdetector::PixelEndcap){
+      if (subdetId == PixelSubdetector::PixelEndcap){
 
-	    PixelEndcapName pxfname(detId.rawId());
-	    diskLayerNum = pxfname.diskName();
-	    bladeLayerNum = pxfname.bladeName();
-	    hcylLayerNum = pxfname.halfCylinder();
+	PixelEndcapName pxfname(detId.rawId());
+	diskLayerNum = pxfname.diskName();
+	bladeLayerNum = pxfname.bladeName();
+	hcylLayerNum = pxfname.halfCylinder();
 
-	    // hard-coded now based on /UserCode/Appeltel/PixelFiducialRemover/pixelfiducialremover_cfg.py
-	    if((bladeLayerNum==4 || bladeLayerNum==5 || bladeLayerNum==6) &&
-	       (diskLayerNum==2) && (hcylLayerNum==4)) hitDeadRegion = true;
-	 }
+	// hard-coded now based on /UserCode/Appeltel/PixelFiducialRemover/pixelfiducialremover_cfg.py
+	if((bladeLayerNum==4 || bladeLayerNum==5 || bladeLayerNum==6) &&
+	   (diskLayerNum==2) && (hcylLayerNum==4)) hitDeadRegion = true;
+      }
 
-      }// end of isValid
-   }
+    }// end of isValid
+  }
 
-   return hitDeadRegion;
+  return hitDeadRegion;
 }
 
 

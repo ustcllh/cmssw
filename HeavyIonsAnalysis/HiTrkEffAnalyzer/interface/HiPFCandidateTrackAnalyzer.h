@@ -31,27 +31,27 @@
 
 
 class HiPFCandidateTrackAnalyzer : public edm::EDAnalyzer {
- public:
+public:
 
   explicit HiPFCandidateTrackAnalyzer(const edm::ParameterSet&);
 
   ~HiPFCandidateTrackAnalyzer();
-  
+
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
 
   virtual void beginRun(const edm::Run & r, const edm::EventSetup & c);
 
   virtual void beginJob();
 
- private:
-  
+private:
+
 
   void printElementsInBlocks(const reco::PFCandidate& cand,
 			     std::ostream& out=std::cout) const;
 
 
-  
-  /// PFCandidates in which we'll look for pile up particles 
+
+  /// PFCandidates in which we'll look for pile up particles
   edm::InputTag   inputTagPFCandidates_;
 
   /// Vertices for track selection
@@ -62,7 +62,7 @@ class HiPFCandidateTrackAnalyzer : public edm::EDAnalyzer {
 
   /// Tracks for track association
   edm::InputTag   inputTagTracks_;
-  
+
   /// verbose ?
   bool   verbose_;
 
@@ -77,7 +77,7 @@ class HiPFCandidateTrackAnalyzer : public edm::EDAnalyzer {
   std::string funcCaloComp_;
 
   bool applyTrkQCs_;
-  
+
   double minHits_, maxPtErr_, maxD0_, maxDZ_, maxD0Norm_, maxDZNorm_;
   bool pixelSeedOnly_;
 
@@ -104,7 +104,7 @@ class HiPFCandidateTrackAnalyzer : public edm::EDAnalyzer {
   TH2F *hD0EtaAccept, *hD0EtaReject;
   TH2F *hDZEtaAccept, *hDZEtaReject;
   TH2F *hD0ErrEtaAccept, *hD0ErrEtaReject; // quadratic sum of d0 err and xy err w.r.t vtx
-  TH2F *hDZErrEtaAccept, *hDZErrEtaReject; // quadratic sum of dz err and z err w.r.t vtx 
+  TH2F *hDZErrEtaAccept, *hDZErrEtaReject; // quadratic sum of dz err and z err w.r.t vtx
   TH2F *hD0PerErrEtaAccept, *hD0PerErrEtaReject;
   TH2F *hDZPerErrEtaAccept, *hDZPerErrEtaReject;
 
@@ -143,7 +143,7 @@ class HiPFCandidateTrackAnalyzer : public edm::EDAnalyzer {
 
   std::vector<double> etaBins, ptBins, cEtSumBins, nhitBins;
 
-  //vector<pair<float,float>> elements; // type, pt 
+  //vector<pair<float,float>> elements; // type, pt
 
 };
 
