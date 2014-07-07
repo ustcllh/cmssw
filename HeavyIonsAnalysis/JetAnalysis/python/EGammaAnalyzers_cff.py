@@ -12,7 +12,7 @@ multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGs
 multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
 multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 
-from edwenger.HiTrkEffAnalyzer.TrackSelections_cff import hiGoodTracks
+from HeavyIonsAnalysis.HiTrkEffAnalyzer.TrackSelections_cff import hiGoodTracks
 from PhysicsTools.PatAlgos.patHeavyIonSequences_cff import photonMatch, patPhotons, selectedPatPhotons
 
 hiGoodTracks.src = cms.InputTag("hiGeneralTracks")

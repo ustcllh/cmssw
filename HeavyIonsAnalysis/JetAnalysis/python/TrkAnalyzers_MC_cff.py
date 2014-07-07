@@ -30,7 +30,7 @@ pixelTrack.tpEffSrc = cms.untracked.InputTag("cutsTPForEff")
 
 cutsTPForFak.ptMin = 0.4
 cutsTPForEff.ptMin = 0.4
-                                                                         
+
 ppTrack.doSimVertex = True
 ppTrack.doSimTrack = True
 ppTrack.fillSimTrack = cms.untracked.bool(True)

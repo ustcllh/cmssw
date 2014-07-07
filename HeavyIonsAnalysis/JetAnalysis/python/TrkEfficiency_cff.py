@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-from edwenger.HiTrkEffAnalyzer.hitrkEffAnalyzer_cff import *
+from HeavyIonsAnalysis.HiTrkEffAnalyzer.hitrkEffAnalyzer_cff import *
 hitrkEffAnalyzer_Basic = hitrkEffAnalyzer.clone(
        # evt
        neededCentBins = cms.untracked.vint32(0, 1, 3, 11, 19, 39),
@@ -43,7 +43,7 @@ hitrkEffAnalyzer_akpu3pf = hitrkEffAnalyzer_Basic.clone(
       jets = 'akPu3PFpatJets',
         )
 
-trackeff_seq = cms.Sequence( 
+trackeff_seq = cms.Sequence(
     hitrkEffAnalyzer_MergedSelected *
     hitrkEffAnalyzer_MergedGeneral *
     hitrkEffAnalyzer_MergedGeneralCalo
