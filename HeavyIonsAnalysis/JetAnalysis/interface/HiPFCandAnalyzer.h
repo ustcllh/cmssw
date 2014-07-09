@@ -23,7 +23,7 @@ const Int_t MAXPARTICLE = 10000;
 //
 class TreePFCandEventData
 {
- public:
+public:
   // ===== Class Methods =====
   void SetDefaults();
   TreePFCandEventData();
@@ -33,73 +33,71 @@ class TreePFCandEventData
   bool doJets;
   bool doMC;
 
-  Float_t                 jdphi_;
+  Float_t         jdphi_;
   // -- particle info --
-  Int_t                   nPFpart_, nGENpart_, njets_;
-  Int_t                   pfId_[MAXPARTICLE], genPDGId_[MAXPARTICLE];
-  Float_t                 pfPt_[MAXPARTICLE], genPt_[MAXPARTICLE],  jetPt_[MAXPARTICLE];
-  Float_t                 pfEta_[MAXPARTICLE], genEta_[MAXPARTICLE],  jetEta_[MAXPARTICLE];
-  Float_t                 pfPhi_[MAXPARTICLE], genPhi_[MAXPARTICLE],  jetPhi_[MAXPARTICLE];
-  Float_t                 pfVsPt_[MAXPARTICLE];
-  Float_t                 pfVsPtInitial_[MAXPARTICLE];
-  Float_t                 pfVsPtEqualized_[MAXPARTICLE];
-  Float_t                 pfArea_[MAXPARTICLE];
-  Float_t                 sumpt[20];
-  Float_t                 vn[200];
-  Float_t                 psin[200];
-  Float_t                 ueraw[1200];
+  Int_t           nPFpart_, nGENpart_, njets_;
+  Int_t           pfId_[MAXPARTICLE], genPDGId_[MAXPARTICLE];
+  Float_t         pfPt_[MAXPARTICLE], genPt_[MAXPARTICLE],  jetPt_[MAXPARTICLE];
+  Float_t         pfEta_[MAXPARTICLE], genEta_[MAXPARTICLE],  jetEta_[MAXPARTICLE];
+  Float_t         pfPhi_[MAXPARTICLE], genPhi_[MAXPARTICLE],  jetPhi_[MAXPARTICLE];
+  Float_t         pfVsPt_[MAXPARTICLE];
+  Float_t         pfVsPtInitial_[MAXPARTICLE];
+  Float_t         pfVsPtEqualized_[MAXPARTICLE];
+  Float_t         pfArea_[MAXPARTICLE];
+  Float_t         sumpt[20];
+  Float_t         vn[200];
+  Float_t         psin[200];
+  Float_t         ueraw[1200];
 
- private:
+private:
   TTree*                 tree_;
 };
 
 class HiPFCandAnalyzer : public edm::EDAnalyzer {
-  public:
-    explicit HiPFCandAnalyzer(const edm::ParameterSet&);
-    ~HiPFCandAnalyzer();
+public:
+  explicit HiPFCandAnalyzer(const edm::ParameterSet&);
+  ~HiPFCandAnalyzer();
 
-    // class methods
-
-
-  private:
-    virtual void beginJob() ;
-    virtual void analyze(const edm::Event&, const edm::EventSetup&);
-    virtual void endJob() ;
-
-    // ----------member data ---------------------------
-    edm::Service<TFileService> fs;
-    edm::Handle<reco::VoronoiMap> backgrounds_;
-    edm::Handle<std::vector<float> > vn_;
-    edm::Handle<reco::CandidateView> candidates_;
-
-    // === Ana setup ===
-
-    // Event Info
-    edm::InputTag pfCandidateLabel_;
-    edm::InputTag genLabel_;
-    edm::InputTag jetLabel_;
-    edm::InputTag srcVor_;
+  // class methods
 
 
-    TTree	  *pfTree_;
-    TreePFCandEventData pfEvt_;
+private:
+  virtual void beginJob() ;
+  virtual void analyze(const edm::Event&, const edm::EventSetup&);
+  virtual void endJob() ;
 
-    // cuts
-    Double_t        pfPtMin_;
-    Double_t        jetPtMin_;
-    Double_t        genPtMin_;
+  // ----------member data ---------------------------
+  edm::Service<TFileService> fs;
+  edm::Handle<reco::VoronoiMap> backgrounds_;
+  edm::Handle<std::vector<float> > vn_;
+  edm::Handle<reco::CandidateView> candidates_;
 
-    int           fourierOrder_;
-    int           etaBins_;
+  // === Ana setup ===
 
-   // debug
-    Int_t	  verbosity_;
+  // Event Info
+  edm::InputTag pfCandidateLabel_;
+  edm::InputTag genLabel_;
+  edm::InputTag jetLabel_;
+  edm::InputTag srcVor_;
 
-    bool   doJets_;
-    bool   doMC_;
-    bool   doVS_;
-    bool   doUEraw_;
-    bool   skipCharged_;
+
+  TTree	  *pfTree_;
+  TreePFCandEventData pfEvt_;
+
+  // cuts
+  Double_t        pfPtMin_;
+  Double_t        jetPtMin_;
+  Double_t        genPtMin_;
+
+  int           fourierOrder_;
+  int           etaBins_;
+
+  // debug
+  Int_t	  verbosity_;
+
+  bool   doJets_;
+  bool   doMC_;
+  bool   doVS_;
+  bool   doUEraw_;
+  bool   skipCharged_;
 };
-
-

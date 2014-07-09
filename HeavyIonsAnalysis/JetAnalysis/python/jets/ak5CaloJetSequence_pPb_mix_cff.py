@@ -10,7 +10,7 @@ ak5Calomatch = patJetGenJetMatch.clone(
     )
 
 ak5Caloparton = patJetPartonMatch.clone(src = cms.InputTag("ak5CaloJets"),
-                                                        matched = cms.InputTag("genParticles")
+                                                        matched = cms.InputTag("hiGenParticles")
                                                         )
 
 ak5Calocorr = patJetCorrFactors.clone(
@@ -45,12 +45,12 @@ ak5CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("ak5Calopa
                                                              genjetTag = 'ak5HiGenJetsCleaned',
                                                              rParam = 0.5,
                                                              matchJets = cms.untracked.bool(False),
-                                                             matchTag = 'ak5CalopatJets',
-                                                             pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
+                                                             matchTag = 'patJets',
+                                                             pfCandidateLabel = cms.untracked.InputTag('particleFlow'),
                                                              trackTag = cms.InputTag("generalTracks"),
                                                              fillGenJets = True,
                                                              isMC = True,
-                                                             genParticles = cms.untracked.InputTag("genParticles"),
+                                                             genParticles = cms.untracked.InputTag("hiGenParticles"),
 							     eventInfoTag = cms.InputTag("hiSignal")
                                                              )
 

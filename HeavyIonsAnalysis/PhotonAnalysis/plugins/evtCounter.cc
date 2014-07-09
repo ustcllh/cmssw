@@ -2,14 +2,14 @@
 //
 // Package:    evtCounter
 // Class:      evtCounter
-// 
+//
 /**\class evtCounter evtCounter.cc CmsHi/evtCounter/src/evtCounter.cc
 
-Description: [one line class summary]
+   Description: [one line class summary]
 
-Implementation:
-[Notes on implementation]
- */
+   Implementation:
+   [Notes on implementation]
+*/
 //
 // Original Author:  Yong Kim,32 4-A08,+41227673039,
 //         Created:  Fri Oct 29 12:18:14 CEST 2010
@@ -73,29 +73,29 @@ Implementation:
 //
 
 class evtCounter : public edm::EDAnalyzer {
-    public:
-        explicit evtCounter(const edm::ParameterSet&);
-        ~evtCounter();
+public:
+  explicit evtCounter(const edm::ParameterSet&);
+  ~evtCounter();
 
 
-    private:
-        virtual void beginJob() ;
-        virtual void analyze(const edm::Event&, const edm::EventSetup&);
-        virtual void endJob() ;
+private:
+  virtual void beginJob() ;
+  virtual void analyze(const edm::Event&, const edm::EventSetup&);
+  virtual void endJob() ;
 
-        // ----------member data ---------------------------
+  // ----------member data ---------------------------
 
-        edm::Service<TFileService> fs;
-   
-        TH1D*  NoE ;
-        CentralityProvider *centrality_;
-        TNtuple* nt;
-        
-        double hf;
-        double eb;
-        double nPix;
-        double cbin;
-        double nPixelTracks;
+  edm::Service<TFileService> fs;
+
+  TH1D*  NoE ;
+  CentralityProvider *centrality_;
+  TNtuple* nt;
+
+  double hf;
+  double eb;
+  double nPix;
+  double cbin;
+  double nPixelTracks;
 };
 
 //
@@ -112,15 +112,15 @@ class evtCounter : public edm::EDAnalyzer {
 evtCounter::evtCounter(const edm::ParameterSet& iConfig)
 
 {
-   
+
 }
 
 
 evtCounter::~evtCounter()
 {
 
-    // do anything here that needs to be done at desctruction time
-    // (e.g. close files, deallocate resources etc.)
+  // do anything here that needs to be done at desctruction time
+  // (e.g. close files, deallocate resources etc.)
 
 }
 
@@ -130,46 +130,46 @@ evtCounter::~evtCounter()
 //
 
 // ------------ method called to for each event  ------------
-    void
+void
 evtCounter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
-   using namespace edm;
-   NoE->Fill(0);
-   
-   centrality_ = new CentralityProvider(iSetup);
-   centrality_->newEvent(iEvent,iSetup);
-   const reco::Centrality *cent = centrality_->raw();
-   hf = cent->EtHFhitSum();
-   eb = cent->EtEBSum();
-   nPix = cent->multiplicityPixel();
-   nPixelTracks = cent->NpixelTracks();
-   cbin = centrality_->getBin();
-   Float_t var[100]; 
-   int idx = 0;
-   var[idx] = hf;   idx++;
-   var[idx] = eb;   idx++;
-   var[idx] = nPix;   idx++;
-   var[idx] = nPixelTracks;   idx++;
-   var[idx] = (float)cbin;    idx++;
-   nt->Fill(var);
-   
-   
+  using namespace edm;
+  NoE->Fill(0);
+
+  centrality_ = new CentralityProvider(iSetup);
+  centrality_->newEvent(iEvent,iSetup);
+  const reco::Centrality *cent = centrality_->raw();
+  hf = cent->EtHFhitSum();
+  eb = cent->EtEBSum();
+  nPix = cent->multiplicityPixel();
+  nPixelTracks = cent->NpixelTracks();
+  cbin = centrality_->getBin();
+  Float_t var[100];
+  int idx = 0;
+  var[idx] = hf;   idx++;
+  var[idx] = eb;   idx++;
+  var[idx] = nPix;   idx++;
+  var[idx] = nPixelTracks;   idx++;
+  var[idx] = (float)cbin;    idx++;
+  nt->Fill(var);
+
+
 }
 
 
 // ------------ method called once each job just before starting event loop  ------------
-    void 
-evtCounter::beginJob() 
+void
+evtCounter::beginJob()
 {
-   NoE      = fs->make<TH1D>( "NoE"  , "", 1,  -100., 100. );
-   nt       = fs->make<TNtuple>("cent", "centrality info",
-				"hf:eb:nPix:nPixTrk:cbin");
-   centrality_ = 0;
-   std::cout<<"done beginjob"<<std::endl;
+  NoE      = fs->make<TH1D>( "NoE"  , "", 1,  -100., 100. );
+  nt       = fs->make<TNtuple>("cent", "centrality info",
+			       "hf:eb:nPix:nPixTrk:cbin");
+  centrality_ = 0;
+  std::cout<<"done beginjob"<<std::endl;
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
+void
 evtCounter::endJob() {
 }
 

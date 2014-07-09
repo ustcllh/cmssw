@@ -19,8 +19,14 @@ rechitanalyzer = cms.EDAnalyzer("RecHitTreeProducer",
   doEbyEonly = cms.untracked.bool(False),
   HFtowerMin = cms.untracked.double(3),
   HFlongMin = cms.untracked.double(0.5),
-  HFshortMin = cms.untracked.double(0.85)
-)
+  HFshortMin = cms.untracked.double(0.85),
+                                doVS = cms.untracked.bool(True),
+                                bkg = cms.InputTag("voronoiBackgroundCalo"),
+                                etaBins = cms.int32(15),
+                                fourierOrder = cms.int32(5),
+                                doUEraw_ = cms.untracked.bool(False),     
+                                
+                                )
 
 pfTowers = rechitanalyzer.clone(
     doEcal  = cms.untracked.bool(False),
@@ -28,7 +34,8 @@ pfTowers = rechitanalyzer.clone(
     hasVtx  = cms.untracked.bool(False),
     doFastJet = cms.untracked.bool(False),
     towersSrc = cms.untracked.InputTag("PFTowers"),
-    TowerTreePtMin = cms.untracked.double(-99)
+    TowerTreePtMin = cms.untracked.double(-99),
+    doVS = cms.untracked.bool(False),    
     )
 
 

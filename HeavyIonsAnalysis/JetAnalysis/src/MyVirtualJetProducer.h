@@ -42,7 +42,7 @@ protected:
     static const char *names[];
     static Type byName(const std::string &name);
   };
-    
+
   JetType::Type jetTypeE;
 
   inline bool makeCaloJet(const JetType::Type &fTag) {
@@ -60,7 +60,7 @@ protected:
   inline bool makeBasicJet(const JetType::Type &fTag) {
     return fTag == JetType::BasicJet;
   }
-  
+
 
   //
   // construction/destruction
@@ -68,7 +68,7 @@ protected:
 public:
   explicit MyVirtualJetProducer(const edm::ParameterSet& iConfig);
   virtual ~MyVirtualJetProducer();
-  
+
   // typedefs
   typedef boost::shared_ptr<fastjet::ClusterSequence>        ClusterSequencePtr;
   typedef boost::shared_ptr<fastjet::JetDefinition::Plugin>  PluginPtr;
@@ -77,28 +77,28 @@ public:
   typedef boost::shared_ptr<fastjet::RangeDefinition>        RangeDefPtr;
 
   TNtuple* ntuple;
-  
+
   //
   // member functions
   //
 public:
   virtual void  produce(edm::Event& iEvent, const edm::EventSetup& iSetup);
   std::string   jetType() const { return jetType_; }
-  
+
 protected:
 
   //
   // Internal methods for jet production.
-  // The user can either use the defaults, or override all of these methods. 
+  // The user can either use the defaults, or override all of these methods.
   //
 
   // This method creates the "produces" statement in the constructor.
   // The default is to produce a single jet collection as per the user's request
-  // (Calo,PF,Basic, or Gen). 
+  // (Calo,PF,Basic, or Gen).
   virtual void makeProduces( std::string s, std::string tag = "" );
 
   // This method inputs the constituents from "inputs" and modifies
-  // fjInputs. 
+  // fjInputs.
   virtual void inputTowers();
 
   // This checks if the tower is anomalous (if a calo tower).
@@ -109,32 +109,32 @@ protected:
 				reco::Jet* jet);
 
   // This will run the actual algorithm. This method is pure virtual and
-  // has no default. 
+  // has no default.
   virtual void runAlgorithm( edm::Event& iEvent, const edm::EventSetup& iSetup) = 0;
 
-  // Do the offset correction. 
-  // Only runs if "doPUOffsetCorrection_" is true.  
+  // Do the offset correction.
+  // Only runs if "doPUOffsetCorrection_" is true.
   void offsetCorrectJets(std::vector<fastjet::PseudoJet> & orphanInput);
 
-  // This will write the jets to the event. 
+  // This will write the jets to the event.
   // The default is to write out the single jet collection in the default "produces"
-  // statement. 
+  // statement.
   // This is a function template that can be called for the five types
   // CaloJet, PFJet, GenJet, TrackJet, BasicJet. This is not suitable
-  // for compound jets. 
+  // for compound jets.
   // Note: The "output" method is virtual and can be overriden.
-  // The default behavior is to call the function template "writeJets". 
+  // The default behavior is to call the function template "writeJets".
   virtual void output(  edm::Event & iEvent, edm::EventSetup const& iSetup );
   template< typename T >
-  void writeJets( edm::Event & iEvent, edm::EventSetup const& iSetup );
-  
+    void writeJets( edm::Event & iEvent, edm::EventSetup const& iSetup );
+
   // This method copies the constituents from the fjConstituents method
-  // to an output of CandidatePtr's. 
+  // to an output of CandidatePtr's.
   virtual std::vector<reco::CandidatePtr>
     getConstituents(const std::vector<fastjet::PseudoJet>&fjConstituents);
-  
-  
-  
+
+
+
   //
   // member data
   //
@@ -148,32 +148,32 @@ protected:
   double                inputEtMin_;                // minimum et of input constituents
   double                inputEMin_;                 // minimum e of input constituents
   double                jetPtMin_;                  // minimum jet pt
-  bool                  doPVCorrection_;            // correct to primary vertex? 
+  bool                  doPVCorrection_;            // correct to primary vertex?
 
   // for restricting inputs due to processing time
   bool                  restrictInputs_;            // restrict inputs to first "maxInputs" inputs.
-  unsigned int          maxInputs_;                 // maximum number of inputs. 
+  unsigned int          maxInputs_;                 // maximum number of inputs.
 
   // for fastjet jet area calculation
   bool                  doAreaFastjet_;             // calculate area w/ fastjet?
   // for fastjet rho calculation
   bool                  doRhoFastjet_;              // calculate rho w/ fastjet?
   bool                  doFastJetNonUniform_;       // choice of eta-dependent PU calculation
-  
+
   // for pileup offset correction
-  bool                  doPUOffsetCorr_;            // add the pileup calculation from offset correction? 
+  bool                  doPUOffsetCorr_;            // add the pileup calculation from offset correction?
   std::string           puSubtractorName_;
 
   // anomalous cell cuts
   unsigned int          maxBadEcalCells_;           // maximum number of bad ECAL cells
   unsigned int          maxRecoveredEcalCells_;     // maximum number of recovered ECAL cells
   unsigned int          maxProblematicEcalCells_;   // maximum number of problematic ECAL cells
-  unsigned int          maxBadHcalCells_;           // maximum number of bad HCAL cells        
-  unsigned int          maxRecoveredHcalCells_;	    // maximum number of recovered HCAL cells  
+  unsigned int          maxBadHcalCells_;           // maximum number of bad HCAL cells
+  unsigned int          maxRecoveredHcalCells_;	    // maximum number of recovered HCAL cells
   unsigned int          maxProblematicHcalCells_;   // maximum number of problematic HCAL cells
 
   std::vector<edm::Ptr<reco::Candidate> > inputs_;  // input candidates [View, PtrVector and CandCollection have limitations]
-  reco::Particle::Point           vertex_;          // Primary vertex 
+  reco::Particle::Point           vertex_;          // Primary vertex
   ClusterSequencePtr              fjClusterSeq_;    // fastjet cluster sequence
   JetDefPtr                       fjJetDefinition_; // fastjet jet definition
   PluginPtr                       fjPlugin_;        // fastjet plugin
@@ -188,7 +188,7 @@ protected:
 
   std::string                     jetCollInstanceName_;       // instance name for output jet collection
 
- public:
+public:
   boost::shared_ptr<PileUpSubtractor>  subtractor_;
   const CaloGeometry *geo;
 

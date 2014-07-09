@@ -18,7 +18,7 @@ ak4PFcorr = patJetCorrFactors.clone(
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("ak4PFJets"),
-    payload = "AK4PF_hiIterativeTracks"
+    payload = "AK4PF_generalTracks"
     )
 
 ak4PFpatJets = patJets.clone(jetSource = cms.InputTag("ak4PFJets"),
@@ -44,8 +44,8 @@ ak4PFpatJets = patJets.clone(jetSource = cms.InputTag("ak4PFJets"),
 ak4PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("ak4PFpatJets"),
                                                              genjetTag = 'ak4HiGenJetsCleaned',
                                                              rParam = 0.4,
-                                                             matchJets = cms.untracked.bool(True),
-                                                             matchTag = 'ak4CalopatJets',
+                                                             matchJets = cms.untracked.bool(False),
+                                                             matchTag = 'patJets',
                                                              pfCandidateLabel = cms.untracked.InputTag('particleFlowTmp'),
                                                              trackTag = cms.InputTag("hiGeneralTracks"),
                                                              fillGenJets = True,

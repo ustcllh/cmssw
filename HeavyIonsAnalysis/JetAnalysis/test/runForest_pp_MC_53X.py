@@ -3,9 +3,6 @@
 # Author: Alex Barbieri
 # Date: 2013-10-15
 
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(
@@ -31,11 +28,13 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:MC_RECO.root"))
+                            fileNames = cms.untracked.vstring(
+    "file:/afs/cern.ch/work/r/richard/public/pp-MC-GEN-SIM-RECO.root"
+    ))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(10))
 
 
 #####################################################################################
@@ -51,19 +50,21 @@ process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
 process.load('Configuration.StandardSequences.RawToDigi_cff')
 process.load('Configuration.StandardSequences.ReconstructionHeavyIons_cff')
+process.load('RecoHI.HiCentralityAlgos.CentralityBin_cfi')
+
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_pp2760(process)
 overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
-    centralityVariable = cms.string("HFtowers"),
-    nonDefaultGlauberModel = cms.string("Hydjet_Drum"),
+    centralityVariable = cms.string("HFtowersTrunc"),
+    nonDefaultGlauberModel = cms.string("Hijing"),
     centralitySrc = cms.InputTag("hiCentrality")
     )
 
@@ -72,7 +73,7 @@ process.HeavyIonGlobalParameters = cms.PSet(
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("HiForest_pp_mc.root"))
+                                   fileName=cms.string("HiForest.root"))
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
@@ -80,31 +81,102 @@ process.TFileService = cms.Service("TFileService",
 
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('RecoJets.Configuration.GenJetParticles_cff')
+#process.load('RecoHI.HiJetAlgos.HiGenJets_cff')
+#process.load('RecoHI.HiJetAlgos.HiRecoJets_cff')
+#process.load('RecoHI.HiJetAlgos.HiRecoPFJets_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.allJets_pp_mc_cff')
+process.hiGenParticles.srcVector = cms.vstring('generator')
 
-process.jetSequences = cms.Sequence(process.allJets)
-process.jetSequences.remove(process.ak7CaloJetSequence)
-process.jetSequences.remove(process.akPu7CaloJetSequence)
-process.jetSequences.remove(process.akVs7CaloJetSequence)
-process.jetSequences.remove(process.ak7PFJetSequence)
-process.jetSequences.remove(process.akPu7PFJetSequence)
-process.jetSequences.remove(process.akVs7PFJetSequence)
+process.hiCentrality.producePixelhits = False
+process.hiCentrality.producePixelTracks = False
+process.hiCentrality.srcTracks = cms.InputTag("generalTracks")
+process.hiCentrality.srcVertex = cms.InputTag("offlinePrimaryVerticesWithBS")
+process.hiEvtPlane.vtxCollection_ = cms.InputTag("offlinePrimaryVerticesWithBS")
+process.hiEvtPlane.trackCollection_ = cms.InputTag("generalTracks")
 
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_JEC_cff')
 
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu2CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs2CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs2PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu2PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak2PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak2CaloJetSequence_pp_mc_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak3PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak3CaloJetSequence_pp_mc_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pp_mc_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_pp_mc_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5CaloJetSequence_pp_mc_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiReRecoJets_pp_cff')
+process.voronoiBackgroundPF.src = cms.InputTag("particleFlow")
+process.PFTowers.src = cms.InputTag("particleFlow")
+
+process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
+                                    process.voronoiBackgroundPF +
+                                    process.PFTowers +
+                                    process.hiReRecoCaloJets +
+                                    process.hiReRecoPFJets +
+
+                                    process.akPu2CaloJetSequence +
+                                    process.akVs2CaloJetSequence +
+                                    process.akVs2PFJetSequence +
+                                    process.akPu2PFJetSequence +
+                                    process.ak2PFJetSequence +
+                                    process.ak2CaloJetSequence +
+
+                                    process.akPu3CaloJetSequence +
+                                    process.akVs3CaloJetSequence +
+                                    process.akVs3PFJetSequence +
+                                    process.akPu3PFJetSequence +
+                                    process.ak3PFJetSequence +
+                                    process.ak3CaloJetSequence +
+
+                                    process.akPu4CaloJetSequence +
+                                    process.akVs4CaloJetSequence +
+                                    process.akVs4PFJetSequence +
+                                    process.akPu4PFJetSequence +
+                                    process.ak4PFJetSequence +
+                                    process.ak4CaloJetSequence +
+
+                                    process.akPu5CaloJetSequence +
+                                    process.akVs5CaloJetSequence +
+                                    process.akVs5PFJetSequence +
+                                    process.akPu5PFJetSequence +
+                                    process.ak5PFJetSequence +
+                                    process.ak5CaloJetSequence
+
+                                    )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
+
+process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVerticesWithBS")
 
 #####################################################################################
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
-process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
-process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_cfi')
+process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_pp_cfi")
+process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_pp_cfi')
 process.rechitAna = cms.Sequence(process.rechitanalyzer+process.pfTowers)
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
@@ -114,45 +186,19 @@ process.pfcandAnalyzer.pfPtMin = 0
 #########################
 # Track Analyzer
 #########################
-process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
-process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 process.hiTracks.cut = cms.string('quality("highPurity")')
-
-# set track collection to iterative tracking
-process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
 
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 
 #####################
 # photons
-process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
-process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraEGammaReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
-process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGsfElectrons")
-process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
-process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
-process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
-process.photonStep.remove(process.seldigis)
-process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
-    reducedHitsCollection = cms.string('')
-)
-process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
-    reducedHitsCollection = cms.string('')
-)
+process.hiGoodTracks.src = cms.InputTag("generalTracks")
+process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.photonMatch.matched = cms.InputTag("genParticles")
-process.patPhotons.addPhotonID = cms.bool(False)
-process.extrapatstep = cms.Path(process.selectedPatPhotons)
-process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
-process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -162,12 +208,16 @@ process.load("HeavyIonsAnalysis.MuonAnalysis.hltMuTree_cfi")
 process.hltMuTree.doGen = cms.untracked.bool(True)
 process.load("RecoHI.HiMuonAlgos.HiRecoMuon_cff")
 process.muons.JetExtractorPSet.JetCollectionLabel = cms.InputTag("akVs3PFJets")
-process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
-process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
-process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
+process.globalMuons.TrackerCollectionLabel = "generalTracks"
+process.muons.TrackExtractorPSet.inputTrackCollection = "generalTracks"
+process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
-process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJets
+process.ppTrack.doSimTrack = cms.untracked.bool(False)
+
+process.temp_step = cms.Path(process.hiGenParticles *
+                             process.hiGenParticlesForJets
                              *
+                             process.ak1HiGenJets +
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
@@ -175,38 +225,35 @@ process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJ
                              process.ak6HiGenJets +
                              process.ak7HiGenJets)
 
-process.ana_step = cms.Path(process.heavyIon*
+process.ana_step = cms.Path(process.hiCentrality +
+                            process.centralityBin +
+                            process.hiEvtPlane +
+                            process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            #process.hiGenJetsCleaned*
-                            process.jetSequences +                            
-                            process.multiPhotonAnalyzer +
+                            process.hiGenJetsCleaned*
+                            process.jetSequences +
+                            process.photonStep +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
                             process.HiForest +
-                            process.cutsTPForFak +
-                            process.cutsTPForEff +
-                            process.anaTrack)
+                            #process.cutsTPForFak +
+                            #process.cutsTPForEff +
+                            process.ppTrack)
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
-process.hltJetHI.TriggerResultsTag = cms.InputTag("TriggerResults","","RECO")
 process.phltJetHI = cms.Path( process.hltJetHI )
-process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
+#process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
 process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
 process.phfCoincFilter = cms.Path(process.hfCoincFilter )
 process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3 )
-process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
+#process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter )
 process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hltPixelClusterShapeFilter )
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
-process.hltanalysis.hltresults = cms.InputTag("TriggerResults","","RECO")
-process.hltanalysis.HLTProcessName = cms.string("RECO")
 
 process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)

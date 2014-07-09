@@ -56,7 +56,6 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_53_LV6::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
-overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowers"),
@@ -99,12 +98,12 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.akPu3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    
+
                                     process.akVs4CaloJetSequence +
                                     process.akPu4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
-                                    
+
                                     process.akVs5CaloJetSequence +
                                     process.akPu5CaloJetSequence +
                                     process.akVs5PFJetSequence +
@@ -112,13 +111,12 @@ process.jetSequences = cms.Sequence(process.akVs3CaloJetSequence +
                                     process.recoJPTJetsHIC +
                                     process.akPu5JPTJetSequence
                                     )
-                                    
+
 
 #####################################################################################
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
@@ -144,19 +142,9 @@ process.anaTrack.doPFMatching = False
 
 #####################
 # photons
-process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
-process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
-process.load('HeavyIonsAnalysis.JetAnalysis.ExtraEGammaReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
-process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGsfElectrons")
-process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
-process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
-process.photonMatch.matched = cms.InputTag("hiGenParticles")
-process.patPhotons.addPhotonID = cms.bool(False)
-process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
-process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -181,28 +169,21 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
 
 #Filtering
+#############################################################
+# To filter on an HLT trigger path, uncomment the lines below, add the
+# HLT path you would like to filter on to 'HLTPaths' and also
+# uncomment the snippet at the end of the configuration.
+#############################################################
 # Minimum bias trigger selection (later runs)
-process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
-process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
-process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
-process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
+#process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+#process.skimFilter = process.hltHighLevel.clone()
+#process.skimFilter.HLTPaths = ["HLT_HIMinBiasHfOrBSC_v1"]
 
-process.skimanalysis.superFilters = cms.vstring("ana_step")
+#process.superFilterSequence = cms.Sequence(process.skimFilter)
+#process.superFilterPath = cms.Path(process.superFilterSequence)
+#process.skimanalysis.superFilters = cms.vstring("superFilterPath")
+################################################################
 
-process.photonStep = cms.Sequence(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons * process.selectedPatPhotons)
-process.photonStep.remove(process.interestingTrackEcalDetIds)
-process.photonStep.remove(process.photonMatch)
-process.photonStep.remove(process.seldigis)
-process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
-    reducedHitsCollection = cms.string('')
-)
-process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
-    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
-    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
-    reducedHitsCollection = cms.string('')
-)
 
 process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
 process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
@@ -213,20 +194,20 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 
-process.ana_step = cms.Path(process.photonStep *
-                            process.hltanalysis *
+process.ana_step = cms.Path(process.hltanalysis *
                             process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
-                            process.multiPhotonAnalyzer +
+                            process.photonStep_withReco +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
-                            process.HiForest +                            
+                            process.HiForest +
                             process.anaTrack
                             )
 
 process.pAna = cms.EndPath(process.skimanalysis)
 
-
-
+#Filtering
+#for path in process.paths:
+#    getattr(process,path)._seq = process.superFilterSequence*getattr(process,path)._seq

@@ -80,7 +80,8 @@ VertexAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
       // Get Leading jet energy 
       double leadJetEt_=0.0, leadJetEta_=0.0, leadJetPhi_=0.0;
-      double sleadJetEt_=0.0, sleadJetEta_=0.0, sleadJetPhi_=0.0;
+      //double sleadJetEt_=0.0,
+      double sleadJetEta_=0.0, sleadJetPhi_=0.0;
 
       unsigned index = 0;
 
@@ -88,7 +89,7 @@ VertexAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 leadJetEt_ = 0,leadJetEta_ = 100, leadJetPhi_ = 0; // so that dr > 10 for events with no pat jet
       }else{
 	 leadJetEt_ = sortedJets[index]->et(), leadJetEta_ = sortedJets[index]->eta(), leadJetPhi_ = sortedJets[index]->phi();
-	 if(sortedJets.size()>1) sleadJetEt_ = sortedJets[1]->et(), sleadJetEta_ = sortedJets[1]->eta(), sleadJetPhi_ = sortedJets[1]->phi();
+	 if(sortedJets.size()>1) /*sleadJetEt_ = sortedJets[1]->et(),*/ sleadJetEta_ = sortedJets[1]->eta(), sleadJetPhi_ = sortedJets[1]->phi();
       }
 	 
 
@@ -134,8 +135,8 @@ VertexAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       }
 
       unsigned int nthleading = 0.0;
-      double zPV=vtxs[0].z(), zSV=vtxs[1].z();
-      double trkSizePV=vtxs[0].tracksSize(), trkSizeSV=vtxs[1].tracksSize();
+      //double zPV=vtxs[0].z(), zSV=vtxs[1].z();
+      //double trkSizePV=vtxs[0].tracksSize(), trkSizeSV=vtxs[1].tracksSize();
       double dzPV_mostCorr=0, dzSV_mostCorr=0;
       double ptSum_PV=0, ptSum_SV=0;
       double least_dr_corr = 999.;
