@@ -484,7 +484,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
      if(jet.pt() < jetPtMin_) continue;
      if (useJEC_ && usePat_){
        jets_.rawpt[jets_.nref]=(*patjets)[j].correctedJet("Uncorrected").pt();
-     }
+	}
      
      if(doLifeTimeTagging_){
        
@@ -848,6 +848,7 @@ HiJPTJetAnalyzer::analyze(const Event& iEvent,
      jets_.jtm[jets_.nref] = jet.mass();
 
      // Fill JPT specific using dynamic_cast
+
 
      jets_.ntrack = 0;
     
