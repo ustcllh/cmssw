@@ -284,6 +284,12 @@ def overrideJEC_PbPb2760(process):
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                  label = cms.untracked.string("IC5Calo_2760GeV")
              ),
+         cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                # tag = cms.string("JetCorrectorParametersCollection_Summer13_V4_MC_AK5JPT"),
+                 tag = cms.string("JetCorrectorParametersCollection_Fall12_V5_MC_AK5JPT"),
+                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 label = cms.untracked.string("AK5JPT")
+                 ),
     ])
     return process
 
