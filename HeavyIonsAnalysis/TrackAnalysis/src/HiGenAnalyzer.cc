@@ -331,7 +331,7 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByLabel(genParticleSrc_,parts);
     for(UInt_t i = 0; i < parts->size(); ++i){
       const reco::GenParticle& p = (*parts)[i];
-      //      if (stableOnly_ && p.status()!=1) continue;
+      if (stableOnly_ && p.status()!=1) continue;
 
       if (p.numberOfDaughters() != 0) continue;
 
