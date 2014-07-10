@@ -5,7 +5,7 @@
 
 hiTrackQuality = "highPurity"              # iterative tracks
 #hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-hltProcess="HLT" #some embedding has this as HISIGNAL instead
+hltProcess="HISIGNAL" #some embedding has this as HISIGNAL instead
 
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
@@ -33,8 +33,9 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                    "/store/user/kjung/Hijing_PPb502_MinimumBias/pPb_BFilterSampleRECO_pthat15/5dc89fb1319c58a400229c5d020a3799/RecoPythiaBJet_Apr14Prod_15_22_1_7MC.root"
-                                ))
+                                    #"/store/user/kjung/Hijing_PPb502_MinimumBias/pPb_BFilterSampleRECO_pthat15/5dc89fb1319c58a400229c5d020a3799/RecoPythiaBJet_Apr14Prod_15_22_1_7MC.root"
+                                    "file:/home/jung68/MCProjects/CMSSW_5_3_19/src/testRECO.root"
+                                    ))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
