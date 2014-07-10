@@ -12,7 +12,7 @@ akVs3Calomatch = patJetGenJetMatch.clone(
     )
 
 akVs3Caloparton = patJetPartonMatch.clone(src = cms.InputTag("akVs3CaloJets"),
-                                                        matched = cms.InputTag("hiGenParticles")
+                                                        matched = cms.InputTag("genPartons")
                                                         )
 
 akVs3Calocorr = patJetCorrFactors.clone(
