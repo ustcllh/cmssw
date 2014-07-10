@@ -2,14 +2,14 @@
 //
 // Package:    HiGenAnalyzer
 // Class:      HiGenAnalyzer
-// 
+//
 /**\class HiGenAnalyzer HiGenAnalyzer.cc
 
-Description: Analyzer that studies (HI) gen event info
+   Description: Analyzer that studies (HI) gen event info
 
-Implementation:
-<Notes on implementation>
- */
+   Implementation:
+   <Notes on implementation>
+*/
 //
 // Original Author:  Yetkin Yilmaz, Frank Ma
 //         Created:  Tue Dec 18 09:44:41 EST 2007
@@ -86,7 +86,7 @@ struct HydjetEvent{
   Int_t pdg[MAXPARTICLES];
   Int_t chg[MAXPARTICLES];
   Int_t sube[MAXPARTICLES];
-   Int_t sta[MAXPARTICLES];
+  Int_t sta[MAXPARTICLES];
 
   Float_t vx;
   Float_t vy;
@@ -96,55 +96,55 @@ struct HydjetEvent{
 };
 
 class HiGenAnalyzer : public edm::EDAnalyzer {
-  public:
-    explicit HiGenAnalyzer(const edm::ParameterSet&);
-    ~HiGenAnalyzer();
+public:
+  explicit HiGenAnalyzer(const edm::ParameterSet&);
+  ~HiGenAnalyzer();
 
 
-  private:
-    virtual void beginRun(const edm::Run&, const edm::EventSetup&) ;
-    virtual void beginJob() ;
-    virtual void analyze(const edm::Event&, const edm::EventSetup&);
-    virtual void endJob() ;
+private:
+  virtual void beginRun(const edm::Run&, const edm::EventSetup&) ;
+  virtual void beginJob() ;
+  virtual void analyze(const edm::Event&, const edm::EventSetup&);
+  virtual void endJob() ;
 
-    // ----------member data ---------------------------
+  // ----------member data ---------------------------
 
-    std::ofstream out_b;
-    std::string fBFileName;
+  std::ofstream out_b;
+  std::string fBFileName;
 
-    std::ofstream out_n;
-    std::string fNFileName;
+  std::ofstream out_n;
+  std::string fNFileName;
 
-    std::ofstream out_m;
-    std::string fMFileName;
+  std::ofstream out_m;
+  std::string fMFileName;
 
 
-    TTree* hydjetTree_;
-    HydjetEvent hev_;
+  TTree* hydjetTree_;
+  HydjetEvent hev_;
 
-    TNtuple *nt;
+  TNtuple *nt;
 
-    std::string output;           // Output filename
+  std::string output;           // Output filename
 
-    Bool_t doAnalysis_;
-    Bool_t printLists_;
-    Bool_t doCF_;
-    Bool_t doVertex_;
-    Bool_t useHepMCProduct_;
-    Bool_t doHI_;
-    Bool_t doParticles_;
+  Bool_t doAnalysis_;
+  Bool_t printLists_;
+  Bool_t doCF_;
+  Bool_t doVertex_;
+  Bool_t useHepMCProduct_;
+  Bool_t doHI_;
+  Bool_t doParticles_;
 
-    Double_t etaMax_;
-    Double_t ptMin_;
-    Bool_t chargedOnly_;
+  Double_t etaMax_;
+  Double_t ptMin_;
+  Bool_t chargedOnly_;
   Bool_t stableOnly_;
 
-    edm::InputTag src_;
-    edm::InputTag genParticleSrc_;
-    edm::InputTag genHIsrc_;
+  edm::InputTag src_;
+  edm::InputTag genParticleSrc_;
+  edm::InputTag genHIsrc_;
 
-    edm::ESHandle < ParticleDataTable > pdt;
-    edm::Service<TFileService> f;
+  edm::ESHandle < ParticleDataTable > pdt;
+  edm::Service<TFileService> f;
 };
 //
 //
@@ -174,7 +174,7 @@ HiGenAnalyzer::HiGenAnalyzer(const edm::ParameterSet& iConfig)
   etaMax_ = iConfig.getUntrackedParameter<Double_t>("etaMax", 2);
   ptMin_ = iConfig.getUntrackedParameter<Double_t>("ptMin", 0);
   chargedOnly_ = iConfig.getUntrackedParameter<Bool_t>("chargedOnly", false);
-  stableOnly_ = iConfig.getUntrackedParameter<Bool_t>("stableOnly", true);
+  stableOnly_ = iConfig.getUntrackedParameter<Bool_t>("stableOnly", false);
   src_ = iConfig.getUntrackedParameter<edm::InputTag>("src",edm::InputTag("generator"));
   genParticleSrc_ = iConfig.getUntrackedParameter<edm::InputTag>("genpSrc",edm::InputTag("hiGenParticles"));
   genHIsrc_ = iConfig.getUntrackedParameter<edm::InputTag>("genHiSrc",edm::InputTag("heavyIon"));
@@ -195,7 +195,7 @@ HiGenAnalyzer::~HiGenAnalyzer()
 //
 
 // ------------ method called to for each event  ------------
-  void
+void
 HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   using namespace edm;
@@ -245,30 +245,30 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	for(HepMC::GenEvent::particle_const_iterator it = begin; it != end; ++it){
 	  if ((*it)->momentum().perp()<ptMin_) continue;
 	  //	  if((*it)->status() == 1){
-	    Int_t pdg_id = (*it)->pdg_id();
-	    Float_t eta = (*it)->momentum().eta();
-	    Float_t phi = (*it)->momentum().phi();
-	    Float_t pt = (*it)->momentum().perp();
-	    const ParticleData * part = pdt->particle(pdg_id );
-	    Int_t charge = static_cast<Int_t>(part->charge());
-	    if (chargedOnly_&&charge==0) continue;
+	  Int_t pdg_id = (*it)->pdg_id();
+	  Float_t eta = (*it)->momentum().eta();
+	  Float_t phi = (*it)->momentum().phi();
+	  Float_t pt = (*it)->momentum().perp();
+	  const ParticleData * part = pdt->particle(pdg_id );
+	  Int_t charge = static_cast<Int_t>(part->charge());
+	  if (chargedOnly_&&charge==0) continue;
 
-	    hev_.pt[hev_.mult] = pt;
-	    hev_.eta[hev_.mult] = eta;
-	    hev_.phi[hev_.mult] = phi;
-	    hev_.pdg[hev_.mult] = pdg_id;
-	    hev_.chg[hev_.mult] = charge;
-	    hev_.sta[hev_.mult] = (*it)->status();
-	    eta = fabs(eta);
-	    Int_t etabin = 0;
-	    if(eta > 0.5) etabin = 1;
-	    if(eta > 1.) etabin = 2;
-	    if(eta < 2.){
-	      hev_.ptav[etabin] += pt;
-	      ++(hev_.n[etabin]);
-	    }
-	    ++(hev_.mult);
-	    //	  }
+	  hev_.pt[hev_.mult] = pt;
+	  hev_.eta[hev_.mult] = eta;
+	  hev_.phi[hev_.mult] = phi;
+	  hev_.pdg[hev_.mult] = pdg_id;
+	  hev_.chg[hev_.mult] = charge;
+	  hev_.sta[hev_.mult] = (*it)->status();
+	  eta = fabs(eta);
+	  Int_t etabin = 0;
+	  if(eta > 0.5) etabin = 1;
+	  if(eta > 1.) etabin = 2;
+	  if(eta < 2.){
+	    hev_.ptav[etabin] += pt;
+	    ++(hev_.n[etabin]);
+	  }
+	  ++(hev_.mult);
+	  //	  }
 	}
       }
     }else{
@@ -299,31 +299,31 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       for(HepMC::GenEvent::particle_const_iterator it = begin; it != end; ++it){
 	if ((*it)->momentum().perp()<ptMin_) continue;
 	//	if((*it)->status() == 1){
-	  Int_t pdg_id = (*it)->pdg_id();
-	  Float_t eta = (*it)->momentum().eta();
-	  Float_t phi = (*it)->momentum().phi();
-	  Float_t pt = (*it)->momentum().perp();
-	  const ParticleData * part = pdt->particle(pdg_id );
-	  Int_t charge = static_cast<Int_t>(part->charge());
-	  if (chargedOnly_&&charge==0) continue;
+	Int_t pdg_id = (*it)->pdg_id();
+	Float_t eta = (*it)->momentum().eta();
+	Float_t phi = (*it)->momentum().phi();
+	Float_t pt = (*it)->momentum().perp();
+	const ParticleData * part = pdt->particle(pdg_id );
+	Int_t charge = static_cast<Int_t>(part->charge());
+	if (chargedOnly_&&charge==0) continue;
 
-	  hev_.pt[hev_.mult] = pt;
-	  hev_.eta[hev_.mult] = eta;
-	  hev_.phi[hev_.mult] = phi;
-	  hev_.pdg[hev_.mult] = pdg_id;
-	  hev_.chg[hev_.mult] = charge;
-	  hev_.sta[hev_.mult] = (*it)->status();
+	hev_.pt[hev_.mult] = pt;
+	hev_.eta[hev_.mult] = eta;
+	hev_.phi[hev_.mult] = phi;
+	hev_.pdg[hev_.mult] = pdg_id;
+	hev_.chg[hev_.mult] = charge;
+	hev_.sta[hev_.mult] = (*it)->status();
 
-	  eta = fabs(eta);
-	  Int_t etabin = 0;
-	  if(eta > 0.5) etabin = 1; 
-	  if(eta > 1.) etabin = 2;
-	  if(eta < 2.){
-	    hev_.ptav[etabin] += pt;
-	    ++(hev_.n[etabin]);
-	  }
-	  ++(hev_.mult);
-	  //	}
+	eta = fabs(eta);
+	Int_t etabin = 0;
+	if(eta > 0.5) etabin = 1;
+	if(eta > 1.) etabin = 2;
+	if(eta < 2.){
+	  hev_.ptav[etabin] += pt;
+	  ++(hev_.n[etabin]);
+	}
+	++(hev_.mult);
+	//	}
       }
     }
   }else{
@@ -378,12 +378,12 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     edm::SimVertexContainer::const_iterator it=simVertices->begin();
     if(it != simVertices->end()){
-       SimVertex vertex = (*it);
-       cout<<" Vertex position "<< inum <<" " << vertex.position().rho()<<" "<<vertex.position().z()<<endl;
-       vx = vertex.position().x();
-       vy = vertex.position().y();
-       vz = vertex.position().z();
-       vr = vertex.position().rho();
+      SimVertex vertex = (*it);
+      cout<<" Vertex position "<< inum <<" " << vertex.position().rho()<<" "<<vertex.position().z()<<endl;
+      vx = vertex.position().x();
+      vy = vertex.position().y();
+      vz = vertex.position().z();
+      vr = vertex.position().rho();
     }
   }
 
@@ -410,13 +410,13 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
 // ------------ method called once each job just before starting event loop  ------------
-  void
-HiGenAnalyzer::beginRun(const edm::Run&, const edm::EventSetup& iSetup) 
+void
+HiGenAnalyzer::beginRun(const edm::Run&, const edm::EventSetup& iSetup)
 {
   iSetup.getData(pdt);
 }
 
-  void 
+void
 HiGenAnalyzer::beginJob()
 {
 
@@ -430,7 +430,7 @@ HiGenAnalyzer::beginJob()
     out_m.open(fMFileName.c_str());
     if(out_m.good() == false)
       throw cms::Exception("BadFile") << "Can\'t open file " << fMFileName;
-  }   
+  }
 
   if(doAnalysis_){
     nt = f->make<TNtuple>("nt","Mixing Analysis","mix:np:src:sig");
@@ -470,7 +470,7 @@ HiGenAnalyzer::beginJob()
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
+void
 HiGenAnalyzer::endJob() {
 }
 

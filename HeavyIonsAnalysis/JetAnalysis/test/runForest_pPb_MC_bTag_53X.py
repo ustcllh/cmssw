@@ -5,7 +5,10 @@
 
 hiTrackQuality = "highPurity"              # iterative tracks
 #hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-hltProcess="HISIGNAL" #some embedding has this as HISIGNAL instead
+hltProcess="HISIGNAL" #some embedding has this as HLT instead
+
+# change this to true to switch to the Pbp JEC
+secondHalfpPbJEC = False
 
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
@@ -66,6 +69,8 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_pPb5020(process)
+if secondHalfpPbJEC:
+    overrideJEC_Pbp5020(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowersTrunc"),
@@ -103,22 +108,22 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.bTaggers_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_pPb_mc_bTag_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_pPb_mc_bTag_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_pPb_mc_bTag_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3CaloJetSequence_pPb_mc_bTag_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs3PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak3PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak3CaloJetSequence_pPb_mc_bTag_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4CaloJetSequence_pPb_mc_bTag_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_pPb_mc_bTag_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_pPb_mc_bTag_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4CaloJetSequence_pPb_mc_bTag_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs4PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pPb_mc_bTag_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_pPb_mc_bTag_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_pPb_mc_bTag_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_pPb_mc_bTag_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5CaloJetSequence_pPb_mc_bTag_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_pPb_mc_bTag_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5CaloJetSequence_pPb_mc_bTag_cff')
@@ -137,22 +142,22 @@ process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
                                     process.hiReRecoPFJets +
 
                                     process.akPu3CaloJetSequence +
-                                    process.akVs3CaloJetSequence +
-                                    process.akVs3PFJetSequence +
+                                    #process.akVs3CaloJetSequence +
+                                    #process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
                                     process.ak3PFJetSequence +
                                     process.ak3CaloJetSequence +
 
                                     process.akPu4CaloJetSequence +
-                                    process.akVs4CaloJetSequence +
-                                    process.akVs4PFJetSequence +
+                                    #process.akVs4CaloJetSequence +
+                                    #process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
                                     process.ak4PFJetSequence +
                                     process.ak4CaloJetSequence +
 
                                     process.akPu5CaloJetSequence +
-                                    process.akVs5CaloJetSequence +
-                                    process.akVs5PFJetSequence +
+                                    #process.akVs5CaloJetSequence +
+                                    #process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence +
                                     process.ak5PFJetSequence +
                                     process.ak5CaloJetSequence
@@ -168,7 +173,6 @@ process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_pp_cfi")
@@ -202,7 +206,6 @@ process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
-process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -257,9 +260,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltanalysis.hltresults = cms.InputTag("TriggerResults","",hltProcess)

@@ -3,9 +3,6 @@
 # Author: Alex Barbieri
 # Date: 2013-10-15
 
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(
@@ -176,7 +173,6 @@ process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVerticesWithBS")
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_pp_cfi")
@@ -195,6 +191,7 @@ process.hiTracks.cut = cms.string('quality("highPurity")')
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 process.ppTrack.doPFMatching = False
+process.ppTrack.doSimTrack = False
 
 #####################
 # photons
@@ -202,7 +199,6 @@ process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.photonStep.remove(process.photonMatch)
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
-process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -255,9 +251,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)

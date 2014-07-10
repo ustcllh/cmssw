@@ -24,13 +24,12 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            #fileNames = cms.untracked.vstring("/store/user/istaslis/HIHighPt/hiReco_Jet55or65_GR_R_53_LV6_03Mar2014_1600CET_CMSSW_5_3_16/70ebb2338cb5ddcd109662d27c72d4cd/hiReco_RAW2DIGI_L1Reco_RECO_1001_2_8Ow.root")
-                            fileNames = cms.untracked.vstring("/store/user/belt/HIMinBiasUPC/HIMinBias2011_GR_R_53_LV6_CMSSW_5_3_16_lumi1/b2348a520dfed9de660746b8b860598e/MinBiasData_step3_RAW2DIGI_RECO_101_1_sHA.root")
+                            fileNames = cms.untracked.vstring("/store/hidata/HIRun2011/HIHighPt/RECO/14Mar2014-v2/00000/005F3FBC-D9B8-E311-998A-FA163E271614.root")
                             )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100))
+    input = cms.untracked.int32(10))
 
 
 #####################################################################################
@@ -99,19 +98,19 @@ process.jetSequences = cms.Sequence(process.akPu3CaloJetSequence +
                                     process.akVs3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    
+
                                     process.akPu4CaloJetSequence +
                                     process.akVs4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
-                                    
+
                                     process.akPu5CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence
-                                                                        
+
                                     )
-                                    
+
 
 #####################################################################################
 # Rechits/PFcands
@@ -133,16 +132,13 @@ process.anaTrack.qualityStrings = cms.untracked.vstring('highPurity','highPurity
 process.pixelTrack.qualityStrings = cms.untracked.vstring('highPurity','highPuritySetWithPV')
 process.hiTracks.cut = cms.string('quality("highPurity")')
 
-# set track collection to iterative tracking
-process.anaTrack.trackSrc = cms.InputTag("hiGeneralTracks")
-
 # clusters missing in recodebug - to be resolved
 process.anaTrack.doPFMatching = False
 
 #####################
 # photons
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
-process.photonStep.remove(process.photonMatch)
+process.photonStep_withReco.remove(process.photonMatch)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -196,11 +192,11 @@ process.ana_step = cms.Path(process.hltanalysis *
                             process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
-                            process.photonStep *
+                            process.photonStep_withReco *
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
-                            process.HiForest +                            
+                            process.HiForest +
                             process.anaTrack
                             )
 
@@ -209,5 +205,3 @@ process.pAna = cms.EndPath(process.skimanalysis)
 #Filtering
 #for path in process.paths:
 #    getattr(process,path)._seq = process.superFilterSequence*getattr(process,path)._seq
-
-

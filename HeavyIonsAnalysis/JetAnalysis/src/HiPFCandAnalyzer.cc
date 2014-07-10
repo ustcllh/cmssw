@@ -92,7 +92,7 @@ HiPFCandAnalyzer::~HiPFCandAnalyzer()
 //
 
 // ------------ method called to for each event  ------------
-  void
+void
 HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
 
@@ -101,8 +101,8 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   // Fill PF info
 
   edm::Handle<reco::PFCandidateCollection> pfCandidates;
-  iEvent.getByLabel(pfCandidateLabel_,pfCandidates);  
-  iEvent.getByLabel(pfCandidateLabel_,candidates_);  
+  iEvent.getByLabel(pfCandidateLabel_,pfCandidates);
+  iEvent.getByLabel(pfCandidateLabel_,candidates_);
   const reco::PFCandidateCollection *pfCandidateColl = pfCandidates.product();
 
   iEvent.getByLabel(srcVor_,backgrounds_);
@@ -124,135 +124,135 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   }
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
-      const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);      
-      reco::CandidateViewRef ref(candidates_,icand);
-      
-      double vsPtInitial=-999, vsPt=-999, vsArea = -999;
+    const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);
+    reco::CandidateViewRef ref(candidates_,icand);
 
-      if (doVS_) {
-         const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
-         vsPt = voronoi.pt();
-         vsPtInitial = voronoi.pt_subtracted();
-	 vsArea = voronoi.area();
-      }
+    double vsPtInitial=-999, vsPt=-999, vsArea = -999;
 
-      double pt =  pfCandidate.pt();
-      if(pt<pfPtMin_) continue;
+    if (doVS_) {
+      const reco::VoronoiBackground& voronoi = (*backgrounds_)[ref];
+      vsPt = voronoi.pt();
+      vsPtInitial = voronoi.pt_subtracted();
+      vsArea = voronoi.area();
+    }
 
-      int id = pfCandidate.particleId();
-      if(skipCharged_ && (abs(id) == 1 || abs(id) == 3)) continue;
+    double pt =  pfCandidate.pt();
+    if(pt<pfPtMin_) continue;
 
-      pfEvt_.pfId_[pfEvt_.nPFpart_] = id;      
-      pfEvt_.pfPt_[pfEvt_.nPFpart_] = pt;      
-      pfEvt_.pfVsPt_[pfEvt_.nPFpart_] = vsPt;      
-      pfEvt_.pfVsPtInitial_[pfEvt_.nPFpart_] = vsPtInitial;      
-      pfEvt_.pfArea_[pfEvt_.nPFpart_] = vsArea;
-      pfEvt_.pfEta_[pfEvt_.nPFpart_] = pfCandidate.eta();      
-      pfEvt_.pfPhi_[pfEvt_.nPFpart_] = pfCandidate.phi();      
-      pfEvt_.nPFpart_++;
-      
+    int id = pfCandidate.particleId();
+    if(skipCharged_ && (abs(id) == 1 || abs(id) == 3)) continue;
+
+    pfEvt_.pfId_[pfEvt_.nPFpart_] = id;
+    pfEvt_.pfPt_[pfEvt_.nPFpart_] = pt;
+    pfEvt_.pfVsPt_[pfEvt_.nPFpart_] = vsPt;
+    pfEvt_.pfVsPtInitial_[pfEvt_.nPFpart_] = vsPtInitial;
+    pfEvt_.pfArea_[pfEvt_.nPFpart_] = vsArea;
+    pfEvt_.pfEta_[pfEvt_.nPFpart_] = pfCandidate.eta();
+    pfEvt_.pfPhi_[pfEvt_.nPFpart_] = pfCandidate.phi();
+    pfEvt_.nPFpart_++;
+
   }
-	
+
 
   // Fill GEN info
   if(doMC_){
-  edm::Handle<reco::GenParticleCollection> genParticles;
-  iEvent.getByLabel(genLabel_,genParticles);     
-  const reco::GenParticleCollection* genColl= &(*genParticles);
+    edm::Handle<reco::GenParticleCollection> genParticles;
+    iEvent.getByLabel(genLabel_,genParticles);
+    const reco::GenParticleCollection* genColl= &(*genParticles);
 
-  for(unsigned igen=0;igen<genColl->size(); igen++) {    
+    for(unsigned igen=0;igen<genColl->size(); igen++) {
 
-    const reco::GenParticle gen = genColl->at(igen);    
-    double eta = gen.eta();      
-    double pt = gen.pt();      
+      const reco::GenParticle gen = genColl->at(igen);
+      double eta = gen.eta();
+      double pt = gen.pt();
 
-    if(gen.status()==1 && fabs(eta)<3.0 && pt> genPtMin_){      
-      pfEvt_.genPDGId_[pfEvt_.nGENpart_] = gen.pdgId();      
-      pfEvt_.genPt_[pfEvt_.nGENpart_] = pt;      
-      pfEvt_.genEta_[pfEvt_.nGENpart_] = eta;      
-      pfEvt_.genPhi_[pfEvt_.nGENpart_] = gen.phi();      
-      pfEvt_.nGENpart_++;
+      if(gen.status()==1 && fabs(eta)<3.0 && pt> genPtMin_){
+	pfEvt_.genPDGId_[pfEvt_.nGENpart_] = gen.pdgId();
+	pfEvt_.genPt_[pfEvt_.nGENpart_] = pt;
+	pfEvt_.genEta_[pfEvt_.nGENpart_] = eta;
+	pfEvt_.genPhi_[pfEvt_.nGENpart_] = gen.phi();
+	pfEvt_.nGENpart_++;
+      }
     }
   }
-  }
 
-    // Fill Jet info
+  // Fill Jet info
   if(doJets_){
-  edm::Handle<pat::JetCollection> jets;
-  iEvent.getByLabel(jetLabel_,jets);  
-  const pat::JetCollection *jetColl = &(*jets);
+    edm::Handle<pat::JetCollection> jets;
+    iEvent.getByLabel(jetLabel_,jets);
+    const pat::JetCollection *jetColl = &(*jets);
 
 
-  for(unsigned ijet=0;ijet<jetColl->size(); ijet++) {
+    for(unsigned ijet=0;ijet<jetColl->size(); ijet++) {
       const pat::Jet jet = jetColl->at(ijet);
-      
+
       double pt =  jet.pt();
-      
+
       if(pt>jetPtMin_){
-	pfEvt_.jetPt_[pfEvt_.njets_] = pt;      
-	pfEvt_.jetEta_[pfEvt_.njets_] = jet.eta();      
-	pfEvt_.jetPhi_[pfEvt_.njets_] = jet.phi();      
+	pfEvt_.jetPt_[pfEvt_.njets_] = pt;
+	pfEvt_.jetEta_[pfEvt_.njets_] = jet.eta();
+	pfEvt_.jetPhi_[pfEvt_.njets_] = jet.phi();
 	pfEvt_.njets_++;
       }
+    }
   }
-  }	
 
   // All done
   pfTree_->Fill();
 }
 
 /*
-void HiPFCandAnalyzer::FillEventInfo(const edm::Event& iEvent, const edm::EventSetup& iSetup, TreePFCandEventData & tr)
-{
+  void HiPFCandAnalyzer::FillEventInfo(const edm::Event& iEvent, const edm::EventSetup& iSetup, TreePFCandEventData & tr)
+  {
   // General Info
   tr.run_	  = iEvent.id().run();
   tr.evt_	  = iEvent.id().event();
   tr.lumi_	  = iEvent.luminosityBlock();
 
   if(!genOnly_&&sampleType_<10){
-    // HI Event info
-    edm::Handle<reco::Centrality> cent;
-    iEvent.getByLabel(edm::InputTag("hiCentrality"),cent);
-    Double_t hf	  = cent->EtHFhitSum();
-    // Get Centrality bin
-    cbins_ = getCentralityBinsFromDB(iSetup);
-    tr.cent_ = cbins_->getBin(hf)*(100./cbins_->getNbins());
+  // HI Event info
+  edm::Handle<reco::Centrality> cent;
+  iEvent.getByLabel(edm::InputTag("hiCentrality"),cent);
+  Double_t hf	  = cent->EtHFhitSum();
+  // Get Centrality bin
+  cbins_ = getCentralityBinsFromDB(iSetup);
+  tr.cent_ = cbins_->getBin(hf)*(100./cbins_->getNbins());
   }
 
   if (isMC_&&sampleType_<10) {
-    edm::Handle<edm::GenHIEvent> mchievt;
-    iEvent.getByLabel(edm::InputTag("heavyIon"),mchievt);
-    tr.b_	  = mchievt->b();
-    tr.npart_	  = mchievt->Npart();
-    tr.ncoll_	  = mchievt->Ncoll();
+  edm::Handle<edm::GenHIEvent> mchievt;
+  iEvent.getByLabel(edm::InputTag("heavyIon"),mchievt);
+  tr.b_	  = mchievt->b();
+  tr.npart_	  = mchievt->Npart();
+  tr.ncoll_	  = mchievt->Ncoll();
   }
-}
+  }
 */
 void HiPFCandAnalyzer::beginJob()
 {
 
-  // -- trees --                                                                                                                                                                                                                        
-    pfTree_ = fs->make<TTree>("pfTree","dijet tree");
-    pfEvt_.SetTree(pfTree_);
-    pfEvt_.doMC = doMC_;
-    pfEvt_.doJets = doJets_;
+  // -- trees --
+  pfTree_ = fs->make<TTree>("pfTree","dijet tree");
+  pfEvt_.SetTree(pfTree_);
+  pfEvt_.doMC = doMC_;
+  pfEvt_.doJets = doJets_;
 
-    pfEvt_.SetBranches(etaBins_, fourierOrder_, doUEraw_);
+  pfEvt_.SetBranches(etaBins_, fourierOrder_, doUEraw_);
 }
 
-// ------------ method called once each job just after ending the event loop  ------------                                                                                                                                              
+// ------------ method called once each job just after ending the event loop  ------------
 void
 HiPFCandAnalyzer::endJob() {
-  // ===== Done =====                                                                                                                                                                                                                   
+  // ===== Done =====
   /*  if (verbosity_>=1) {
-    cout << endl << "================ Ana Process Summaries =============" << endl;
-    cout << " AnaJet: " << jetsrc_ << endl;
-    if (refJetType_>=0) cout << " RefJet: " << refjetsrc_ << endl;
-    cout << " AnaTrk: " << trksrc_ << endl;
-    cout << "# HI Events : "<< numHiEvtSel_<< endl;
-    cout << "# Base Events: "<< numEvtSel_ << endl;
-    cout << "# Jet Events: "<< numJetEvtSel_<< endl;
-  }
+      cout << endl << "================ Ana Process Summaries =============" << endl;
+      cout << " AnaJet: " << jetsrc_ << endl;
+      if (refJetType_>=0) cout << " RefJet: " << refjetsrc_ << endl;
+      cout << " AnaTrk: " << trksrc_ << endl;
+      cout << "# HI Events : "<< numHiEvtSel_<< endl;
+      cout << "# Base Events: "<< numEvtSel_ << endl;
+      cout << "# Jet Events: "<< numJetEvtSel_<< endl;
+      }
   */
 }
 
@@ -280,10 +280,10 @@ void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder, bool doUEra
 
   // -- jet info --
   if(doJets){
-  tree_->Branch("njets",&(this->njets_),"njets/I");
-  tree_->Branch("jetPt",this->jetPt_,"jetPt[njets]/F");
-  tree_->Branch("jetEta",this->jetEta_,"jetEta[njets]/F");
-  tree_->Branch("jetPhi",this->jetPhi_,"jetPhi[njets]/F");
+    tree_->Branch("njets",&(this->njets_),"njets/I");
+    tree_->Branch("jetPt",this->jetPt_,"jetPt[njets]/F");
+    tree_->Branch("jetEta",this->jetEta_,"jetEta[njets]/F");
+    tree_->Branch("jetPhi",this->jetPhi_,"jetPhi[njets]/F");
   }
 
   tree_->Branch("vn",this->vn,Form("vn[%d][%d]/F",fourierOrder,etaBins));
@@ -295,11 +295,11 @@ void TreePFCandEventData::SetBranches(int etaBins, int fourierOrder, bool doUEra
 
   // -- gen info --
   if(doMC){
-  tree_->Branch("nGENpart",&(this->nGENpart_),"nGENpart/I");
-  tree_->Branch("genPDGId",this->genPDGId_,"genPDGId[nGENpart]/I");
-  tree_->Branch("genPt",this->genPt_,"genPt[nGENpart]/F");
-  tree_->Branch("genEta",this->genEta_,"genEta[nGENpart]/F");
-  tree_->Branch("genPhi",this->genPhi_,"genPhi[nGENpart]/F");
+    tree_->Branch("nGENpart",&(this->nGENpart_),"nGENpart/I");
+    tree_->Branch("genPDGId",this->genPDGId_,"genPDGId[nGENpart]/I");
+    tree_->Branch("genPt",this->genPt_,"genPt[nGENpart]/F");
+    tree_->Branch("genEta",this->genEta_,"genEta[nGENpart]/F");
+    tree_->Branch("genPhi",this->genPhi_,"genPhi[nGENpart]/F");
   }
 
 }

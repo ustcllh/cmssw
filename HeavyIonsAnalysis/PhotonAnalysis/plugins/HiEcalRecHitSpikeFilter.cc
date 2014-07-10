@@ -2,13 +2,13 @@
 //
 // Package:    HiEcalRecHitSpikeFilter
 // Class:      HiEcalRecHitSpikeFilter
-// 
+//
 /**\class HiEcalRecHitSpikeFilter HiEcalRecHitSpikeFilter.cc RecoHI/HiEgammaAlgos/plugins/HiEcalRecHitSpikeFilter.cc
 
- Description: [one line class summary]
+   Description: [one line class summary]
 
- Implementation:
-     [Notes on implementation]
+   Implementation:
+   [Notes on implementation]
 */
 //
 // Original Author:  Yong Kim,32 4-A08,+41227673039,
@@ -22,8 +22,8 @@
 
 // system include files
 /*
-#include <memory>
-#include <string>
+  #include <memory>
+  #include <string>
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -69,23 +69,23 @@ using namespace reco;
 
 
 class HiEcalRecHitSpikeFilter : public edm::EDFilter {
-   public:
-      explicit HiEcalRecHitSpikeFilter(const edm::ParameterSet&);
-      ~HiEcalRecHitSpikeFilter();
+public:
+  explicit HiEcalRecHitSpikeFilter(const edm::ParameterSet&);
+  ~HiEcalRecHitSpikeFilter();
 
-   private:
-      virtual void beginJob() ;
-      virtual bool filter(edm::Event&, const edm::EventSetup&);
-      virtual void endJob() ;
-      
-   edm::InputTag ebReducedRecHitCollection_;
-   double minEt_;
-   double swissThreshold_;
-   double timeThreshold_;
-   bool avoidIeta85_;
+private:
+  virtual void beginJob() ;
+  virtual bool filter(edm::Event&, const edm::EventSetup&);
+  virtual void endJob() ;
 
-   
-      // ----------member data ---------------------------
+  edm::InputTag ebReducedRecHitCollection_;
+  double minEt_;
+  double swissThreshold_;
+  double timeThreshold_;
+  bool avoidIeta85_;
+
+
+  // ----------member data ---------------------------
 };
 
 //
@@ -101,20 +101,20 @@ class HiEcalRecHitSpikeFilter : public edm::EDFilter {
 //
 HiEcalRecHitSpikeFilter::HiEcalRecHitSpikeFilter(const edm::ParameterSet& iConfig)
 {
-   //now do what ever initialization is needed
-   ebReducedRecHitCollection_       = iConfig.getParameter<edm::InputTag>("ebReducedRecHitCollection"); //,"reducedEcalRecHitsEB");
-    minEt_                          = iConfig.getParameter<double>("minEt");
-    swissThreshold_                 = iConfig.getParameter<double>("swissThreshold");
-    timeThreshold_                 = iConfig.getParameter<double>("timeThreshold");
-    avoidIeta85_                    = iConfig.getParameter<bool>("avoidIeta85");
+  //now do what ever initialization is needed
+  ebReducedRecHitCollection_       = iConfig.getParameter<edm::InputTag>("ebReducedRecHitCollection"); //,"reducedEcalRecHitsEB");
+  minEt_                          = iConfig.getParameter<double>("minEt");
+  swissThreshold_                 = iConfig.getParameter<double>("swissThreshold");
+  timeThreshold_                 = iConfig.getParameter<double>("timeThreshold");
+  avoidIeta85_                    = iConfig.getParameter<bool>("avoidIeta85");
 }
 
 
 HiEcalRecHitSpikeFilter::~HiEcalRecHitSpikeFilter()
 {
- 
-   // do anything here that needs to be done at desctruction time
-   // (e.g. close files, deallocate resources etc.)
+
+  // do anything here that needs to be done at desctruction time
+  // (e.g. close files, deallocate resources etc.)
 
 }
 
@@ -127,43 +127,43 @@ HiEcalRecHitSpikeFilter::~HiEcalRecHitSpikeFilter()
 bool
 HiEcalRecHitSpikeFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
-   //using namespace edm;
-   //using namespace std;
-   //using namespace reco;
+  //using namespace edm;
+  //using namespace std;
+  //using namespace reco;
 
-   //grab rechits
-   edm::Handle<EcalRecHitCollection> EBReducedRecHits;
-   iEvent.getByLabel(ebReducedRecHitCollection_, EBReducedRecHits);
-   const EcalRecHitCollection *rechits = EBReducedRecHits.product();
+  //grab rechits
+  edm::Handle<EcalRecHitCollection> EBReducedRecHits;
+  iEvent.getByLabel(ebReducedRecHitCollection_, EBReducedRecHits);
+  const EcalRecHitCollection *rechits = EBReducedRecHits.product();
 
-   //get the rechit geometry
-   edm::ESHandle<CaloGeometry> theCaloGeom;
-   iSetup.get<CaloGeometryRecord>().get(theCaloGeom);
-   const CaloGeometry* caloGeom = theCaloGeom.product();
+  //get the rechit geometry
+  edm::ESHandle<CaloGeometry> theCaloGeom;
+  iSetup.get<CaloGeometryRecord>().get(theCaloGeom);
+  const CaloGeometry* caloGeom = theCaloGeom.product();
 
-   double rhEt;
-   if(rechits) {
-     for(EcalRecHitCollection::const_iterator it=rechits->begin(); it!=rechits->end(); it++) {
-       const GlobalPoint &position = caloGeom->getPosition(it->id());
-       rhEt = it->energy()/cosh(position.eta());
-       double  swissCrx = EcalTools::swissCross  (it->id(), *rechits, 0.,avoidIeta85_);
-       if(   (rhEt > minEt_) &&  (    (swissCrx > swissThreshold_)     ||     ( abs(it->time()) > timeThreshold_) )     )
-	 {
-	   return false;
-	 }
-     }
-   }
-   return true;
+  double rhEt;
+  if(rechits) {
+    for(EcalRecHitCollection::const_iterator it=rechits->begin(); it!=rechits->end(); it++) {
+      const GlobalPoint &position = caloGeom->getPosition(it->id());
+      rhEt = it->energy()/cosh(position.eta());
+      double  swissCrx = EcalTools::swissCross  (it->id(), *rechits, 0.,avoidIeta85_);
+      if(   (rhEt > minEt_) &&  (    (swissCrx > swissThreshold_)     ||     ( abs(it->time()) > timeThreshold_) )     )
+      {
+	return false;
+      }
+    }
+  }
+  return true;
 }
 
 // ------------ method called once each job just before starting event loop  ------------
-void 
+void
 HiEcalRecHitSpikeFilter::beginJob()
 {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
+void
 HiEcalRecHitSpikeFilter::endJob() {
 }
 

@@ -31,7 +31,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
-                            fileNames = cms.untracked.vstring("file:/data/richard/MC_TESTS/PbPb_RECO.root"))
+                            fileNames = cms.untracked.vstring("/store/himc/HiFall13DR53X/Pyquen_DiJet_Pt120_TuneZ2_Unquenched_Hydjet1p8_2760GeV/GEN-SIM-RECO/NoPileUp_STARTHI53_LV1-v3/00000/0010470D-A6DD-E311-99E2-00266CF9AE10.root"))
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
@@ -146,21 +146,21 @@ process.jetSequences = cms.Sequence(process.hiReRecoCaloJets +
                                     process.akVs1CaloJetSequence +
                                     process.akVs1PFJetSequence +
                                     process.akPu1PFJetSequence +
-                                    process.ak1PFJetSequence +                                    
+                                    process.ak1PFJetSequence +
                                     process.ak1CaloJetSequence +
 
                                     process.akPu2CaloJetSequence +
                                     process.akVs2CaloJetSequence +
                                     process.akVs2PFJetSequence +
                                     process.akPu2PFJetSequence +
-                                    process.ak2PFJetSequence +                                    
+                                    process.ak2PFJetSequence +
                                     process.ak2CaloJetSequence +
 
                                     process.akPu3CaloJetSequence +
                                     process.akVs3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    process.ak3PFJetSequence +                                    
+                                    process.ak3PFJetSequence +
                                     process.ak3CaloJetSequence +
 
                                     process.akPu4CaloJetSequence +
@@ -169,7 +169,7 @@ process.jetSequences = cms.Sequence(process.hiReRecoCaloJets +
                                     process.akPu4PFJetSequence +
                                     process.ak4PFJetSequence +
                                     process.ak4CaloJetSequence +
-                                    
+
                                     process.akPu5CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
@@ -181,15 +181,15 @@ process.jetSequences = cms.Sequence(process.hiReRecoCaloJets +
                                     process.akVs6CaloJetSequence +
                                     process.akVs6PFJetSequence +
                                     process.akPu6PFJetSequence +
-                                    process.ak6PFJetSequence +                                    
+                                    process.ak6PFJetSequence +
                                     process.ak6CaloJetSequence +
-                                    
+
                                     process.akPu7CaloJetSequence +
                                     process.akVs7CaloJetSequence +
                                     process.akVs7PFJetSequence +
                                     process.akPu7PFJetSequence +
-                                    process.ak7PFJetSequence +                                    
-                                    process.ak7CaloJetSequence                                     
+                                    process.ak7PFJetSequence +
+                                    process.ak7CaloJetSequence
                                     )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
@@ -199,9 +199,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
-process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_cfi')
 process.rechitAna = cms.Sequence(process.rechitanalyzer+process.pfTowers)
@@ -228,7 +226,6 @@ process.anaTrack.doPFMatching = False
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
-#process.photonMatch.matched = cms.InputTag("genParticles")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -248,7 +245,7 @@ process.temp_step = cms.Path(process.hiGenParticles * process.hiGenParticlesForJ
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
-                             process.ak5HiGenJets + 
+                             process.ak5HiGenJets +
                              process.ak6HiGenJets +
                              process.ak7HiGenJets)
 
@@ -256,8 +253,8 @@ process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
-                            process.jetSequences +                            
-                            process.photonStep +
+                            process.jetSequences +
+                            process.photonStep_withReco +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
@@ -277,9 +274,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)

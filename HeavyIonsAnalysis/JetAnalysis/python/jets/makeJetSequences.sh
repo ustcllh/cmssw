@@ -79,30 +79,29 @@ do
                                 eventinfotag="hiSignal"
                             fi
 
-                            if [ $sub == "Vs" ] && [ $object == "Calo" ]; then
-                                domatch="True"
-                                match="${algo}Pu${radius}Calo"
-                            fi
+                            # if [ $sub == "Vs" ] && [ $object == "Calo" ]; then
+                            #     domatch="False"
+                            #     match="${algo}Pu${radius}Calo"
+                            # fi
 
-                            if [ $sub == "Vs" ] && [ $object == "PF" ]; then
-                                domatch="True"
-                                match="${algo}Vs${radius}Calo"
-                            fi
+                            # if [ $sub == "Vs" ] && [ $object == "PF" ]; then
+                            #     domatch="False"
+                            #     match="${algo}Vs${radius}Calo"
+                            # fi
 
-                            if [ $sub == "Pu" ] && [ $object == "Calo" ]; then
-                                domatch="False" # this will be running first
-                                match="${algo}Pu${radius}PF"
-                            fi
+                            # if [ $sub == "Pu" ] && [ $object == "Calo" ]; then
+                            #     domatch="False" # this will be running first
+                            #     match="${algo}Pu${radius}PF"
+                            # fi
 
-                            if [ $sub == "Pu" ] && [ $object == "PF" ]; then
-                                domatch="True"
-                                match="${algo}Vs${radius}PF"
-                            fi
+                            # if [ $sub == "Pu" ] && [ $object == "PF" ]; then
+                            #     domatch="False"
+                            #     match="${algo}${radius}PF"
+                            # fi
 
-                            if [ $sub == "NONE" ]; then
-                                domatch="True"
-                                match="${algo}Vs${radius}${object}"
-                            fi
+                            # if [ $sub == "NONE" ]; then
+                            #     domatch="False"
+                            # fi
 
                             if [ $object == "Calo" ]; then
                                 corrlabel="_HI"
@@ -196,7 +195,7 @@ for algo in ak
     else
 	echo ")" >> HiGenJetsCleaned_cff.py
     fi
-    
+
   done
 done
 
@@ -209,10 +208,10 @@ echo "hiReRecoPFJets = cms.Sequence(" >> HiReRecoJets_cff.py
 for sub in NONE Pu Vs
 do
     subt=$sub
-    if [ $sub == "NONE" ]; then 
+    if [ $sub == "NONE" ]; then
 	subt=""
     fi
-    for radius in 1 2 3 4 5 6 7 
+    for radius in 1 2 3 4 5 6 7
     do
 	echo "${algo}${subt}${radius}PFJets" >> HiReRecoJets_cff.py
 	if [ $radius -eq 7 ] && [ $sub == "Vs" ]; then
@@ -231,10 +230,10 @@ echo "hiReRecoCaloJets = cms.Sequence(" >> HiReRecoJets_cff.py
 for sub in NONE Pu Vs
 do
     subt=$sub
-    if [ $sub == "NONE" ]; then 
+    if [ $sub == "NONE" ]; then
 	subt=""
     fi
-    for radius in 1 2 3 4 5 6 7 
+    for radius in 1 2 3 4 5 6 7
     do
 	echo "${algo}${subt}${radius}CaloJets" >> HiReRecoJets_cff.py
 	if [ $radius -eq 7 ] && [ $sub == "Vs" ]; then
@@ -247,4 +246,3 @@ done
 
 cat HiReRecoJets_cff.py | sed "s/particleFlowTmp/particleFlow/g" > HiReRecoJets_pp_cff.py
 mv HiReRecoJets_cff.py HiReRecoJets_HI_cff.py
-

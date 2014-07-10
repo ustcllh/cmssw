@@ -3,9 +3,6 @@
 # Author: Alex Barbieri
 # Date: 2013-10-15
 
-hiTrackQuality = "highPurity"              # iterative tracks
-#hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(
@@ -132,7 +129,7 @@ process.voronoiBackgroundPF.src = cms.InputTag("particleFlow")
 process.PFTowers.src = cms.InputTag("particleFlow")
 
 process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
-                                    process.voronoiBackgroundPF +                                    
+                                    process.voronoiBackgroundPF +
                                     process.PFTowers +
                                     process.hiReRecoCaloJets +
                                     process.hiReRecoPFJets +
@@ -141,14 +138,14 @@ process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
                                     process.akVs2CaloJetSequence +
                                     process.akVs2PFJetSequence +
                                     process.akPu2PFJetSequence +
-                                    process.ak2PFJetSequence +                                    
+                                    process.ak2PFJetSequence +
                                     process.ak2CaloJetSequence +
 
                                     process.akPu3CaloJetSequence +
                                     process.akVs3CaloJetSequence +
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
-                                    process.ak3PFJetSequence +                                    
+                                    process.ak3PFJetSequence +
                                     process.ak3CaloJetSequence +
 
                                     process.akPu4CaloJetSequence +
@@ -157,14 +154,14 @@ process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
                                     process.akPu4PFJetSequence +
                                     process.ak4PFJetSequence +
                                     process.ak4CaloJetSequence +
-                                    
+
                                     process.akPu5CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence +
                                     process.ak5PFJetSequence +
                                     process.ak5CaloJetSequence
-                                    
+
                                     )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
@@ -176,7 +173,6 @@ process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVerticesWithBS")
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
-#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_pp_cfi")
@@ -202,7 +198,6 @@ process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
-process.cleanPhotons.primaryVertexProducer = cms.string("offlinePrimaryVerticesWithBS")
 process.photonMatch.matched = cms.InputTag("genParticles")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
@@ -226,7 +221,7 @@ process.temp_step = cms.Path(process.hiGenParticles *
                              process.ak2HiGenJets +
                              process.ak3HiGenJets +
                              process.ak4HiGenJets +
-                             process.ak5HiGenJets + 
+                             process.ak5HiGenJets +
                              process.ak6HiGenJets +
                              process.ak7HiGenJets)
 
@@ -237,7 +232,7 @@ process.ana_step = cms.Path(process.hiCentrality +
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
-                            process.jetSequences +                            
+                            process.jetSequences +
                             process.photonStep +
                             process.pfcandAnalyzer +
                             process.rechitAna +
@@ -258,11 +253,7 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
-setPhotonObject(process,"cleanPhotons")
-
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)
 process.pAna = cms.EndPath(process.skimanalysis)
-

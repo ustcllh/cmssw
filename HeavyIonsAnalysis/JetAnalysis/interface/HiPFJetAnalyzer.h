@@ -27,22 +27,22 @@
 
 //
 
-/**\class HiPFJetAnalyzer 
+/**\class HiPFJetAnalyzer
 
-\author Matt Nguyen
-\date   November 2010
+   \author Matt Nguyen
+   \date   November 2010
 */
 
 
 
 
 class HiPFJetAnalyzer : public edm::EDAnalyzer {
- public:
+public:
 
   explicit HiPFJetAnalyzer(const edm::ParameterSet&);
 
   ~HiPFJetAnalyzer();
-  
+
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
 
   virtual void beginRun(const edm::Run & r, const edm::EventSetup & c);
@@ -57,21 +57,21 @@ class HiPFJetAnalyzer : public edm::EDAnalyzer {
   void fillHLTBits(const edm::Event &iEvent);
 
   template <typename TYPE>
-    void                          getProduct(const std::string name, edm::Handle<TYPE> &prod,
-					     const edm::Event &event) const;    
+    void getProduct(const std::string name, edm::Handle<TYPE> &prod,
+		    const edm::Event &event) const;
   template <typename TYPE>
-    bool                          getProductSafe(const std::string name, edm::Handle<TYPE> &prod,
-						 const edm::Event &event) const;
+    bool getProductSafe(const std::string name, edm::Handle<TYPE> &prod,
+			const edm::Event &event) const;
 
- private:
-  
+private:
+
 
 
   edm::InputTag  pfCandidatesTag_, trackTag_, vertexTag_, simTracksTag_, genParticleTag_, eventInfoTag_;
   edm::InputTag jetTag1_, jetTag2_, jetTag3_, jetTag4_;
   edm::InputTag recoJetTag1_, recoJetTag2_, recoJetTag3_, recoJetTag4_;
   edm::InputTag genJetTag1_, genJetTag2_, genJetTag3_, genJetTag4_;
-  edm::InputTag L1gtReadout_; 
+  edm::InputTag L1gtReadout_;
 
   /// verbose ?
   bool   verbose_;
@@ -106,7 +106,7 @@ class HiPFJetAnalyzer : public edm::EDAnalyzer {
   static const int MAXHLTBITS = 500000;
 
   struct JRA{
-    
+
     int nj1;
     int nj2;
     int nj3;
