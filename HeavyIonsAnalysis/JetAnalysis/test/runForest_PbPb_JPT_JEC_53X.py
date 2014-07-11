@@ -59,7 +59,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
-overrideJEC_NULL(process)
+overrideJEC_pp2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowers"),
@@ -102,7 +102,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5CaloJetSequence_PbPb_jec_c
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5CaloJetSequence_PbPb_jec_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu5JPTJetSequence_PbPb_jec_cff')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiReRecoJets_HI_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiReRecoJets_cff')
 
 process.jetSequences = cms.Sequence(
 				    process.hiReRecoCaloJets +
@@ -114,14 +114,14 @@ process.jetSequences = cms.Sequence(
                                     process.akVs3PFJetSequence +
                                     process.akPu3PFJetSequence +
                                     process.ak3PFJetSequence +
-
+                                    
                                     process.akVs4CaloJetSequence +
                                     process.akPu4CaloJetSequence +
                                     process.ak4CaloJetSequence +
                                     process.akVs4PFJetSequence +
                                     process.akPu4PFJetSequence +
                                     process.ak4PFJetSequence +
-
+                                    
                                     process.akVs5CaloJetSequence +
                                     process.akPu5CaloJetSequence +
                                     process.ak5CaloJetSequence +
@@ -130,7 +130,6 @@ process.jetSequences = cms.Sequence(
                                     process.ak5PFJetSequence +
                                     process.recoJPTJetsHIC +
                                     process.akPu5JPTJetSequence
-
 
                                     )
 
@@ -141,6 +140,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
 # To be cleaned
 
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.ExtraPfReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_MC_cff')
 process.load("HeavyIonsAnalysis.TrackAnalysis.METAnalyzer_cff")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
@@ -166,9 +166,33 @@ process.anaTrack.doPFMatching = False
 
 #####################
 # photons
+process.interestingTrackEcalDetIds.TrackCollection = cms.InputTag("hiGeneralTracks")
+process.load("RecoEcal.EgammaCoreTools.EcalNextToDeadChannelESProducer_cff")
+process.load('HeavyIonsAnalysis.JetAnalysis.ExtraEGammaReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
+process.multiPhotonAnalyzer.gsfElectronCollection = cms.untracked.InputTag("ecalDrivenGsfElectrons")
+process.load("edwenger.HiTrkEffAnalyzer.TrackSelections_cff")
+process.hiGoodTracks.src = cms.InputTag("hiGeneralTracks")
+process.photonStep = cms.Path(process.hiGoodTracks * process.photon_extra_reco * process.makeHeavyIonPhotons)
+process.photonStep.remove(process.interestingTrackEcalDetIds)
+process.photonStep.remove(process.seldigis)
+process.reducedEcalRecHitsEB = cms.EDProducer("ReducedRecHitCollectionProducer",
+    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEB"), cms.InputTag("interestingEcalDetIdEBU")),
+    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
+    reducedHitsCollection = cms.string('')
+)
+process.reducedEcalRecHitsEE = cms.EDProducer("ReducedRecHitCollectionProducer",
+    interestingDetIdCollections = cms.VInputTag(cms.InputTag("interestingEcalDetIdEE")),
+    recHitsLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
+    reducedHitsCollection = cms.string('')
+)
+process.photonMatch.matched = cms.InputTag("hiGenParticles")
+process.patPhotons.addPhotonID = cms.bool(False)
+process.extrapatstep = cms.Path(process.selectedPatPhotons)
+process.multiPhotonAnalyzer.GammaEtaMax = cms.untracked.double(100)
+process.multiPhotonAnalyzer.GammaPtMin = cms.untracked.double(10)
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
 
 #####################
@@ -186,8 +210,8 @@ process.ana_step = cms.Path(process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
                             process.hiGenJetsCleaned*
-                            process.jetSequences +
-                            process.photonStep_withReco +
+                            process.jetSequences +                            
+                            process.multiPhotonAnalyzer +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
@@ -207,6 +231,9 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
+from HeavyIonsAnalysis.JetAnalysis.customise_cfi import *
+setPhotonObject(process,"cleanPhotons")
+
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 process.hltAna = cms.Path(process.hltanalysis)
