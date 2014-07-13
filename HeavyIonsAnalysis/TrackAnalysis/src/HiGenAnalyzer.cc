@@ -333,7 +333,7 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       const reco::GenParticle& p = (*parts)[i];
       if (stableOnly_ && p.status()!=1) continue;
 
-      if (p.numberOfDaughters() != 0) continue;
+      //      if (p.numberOfDaughters() != 0) continue;
 
       if (p.pt()<ptMin_) continue;
       if (chargedOnly_&&p.charge()==0) continue;
