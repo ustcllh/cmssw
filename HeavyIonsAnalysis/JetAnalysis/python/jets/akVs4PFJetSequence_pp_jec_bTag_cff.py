@@ -176,7 +176,7 @@ akVs4PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs4PFpa
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("genParticles"),
-							     eventInfoTag = cms.InputTag("hiSignal"),
+							     eventInfoTag = cms.InputTag("generator"),
                                                              doLifeTimeTagging = cms.untracked.bool(True),
                                                              doLifeTimeTaggingExtras = cms.untracked.bool(True),
                                                              bTagJetName = cms.untracked.string("akVs4PF"),

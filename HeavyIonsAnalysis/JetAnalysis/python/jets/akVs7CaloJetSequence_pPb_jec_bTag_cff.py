@@ -176,7 +176,7 @@ akVs7CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs7Ca
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles"),
-							     eventInfoTag = cms.InputTag("hiSignal"),
+							     eventInfoTag = cms.InputTag("generator"),
                                                              doLifeTimeTagging = cms.untracked.bool(True),
                                                              doLifeTimeTaggingExtras = cms.untracked.bool(True),
                                                              bTagJetName = cms.untracked.string("akVs7Calo"),

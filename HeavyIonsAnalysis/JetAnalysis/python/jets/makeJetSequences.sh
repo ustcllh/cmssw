@@ -68,7 +68,7 @@ do
                                 genjets="HiGenJets"
                             fi
 
-                            if [ $sample == "mix" ] || [ $sample == "jec" ]; then
+                            if [ $sample == "mix" ]; then
                                 eventinfotag="hiSignal"
                             fi
 

@@ -51,7 +51,7 @@ akPu3PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu3PFpa
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("genParticles"),
-							     eventInfoTag = cms.InputTag("hiSignal")
+							     eventInfoTag = cms.InputTag("generator")
                                                              )
 
 akPu3PFJetSequence_mc = cms.Sequence(
