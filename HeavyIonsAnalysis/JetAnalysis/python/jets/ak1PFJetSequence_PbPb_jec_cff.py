@@ -18,7 +18,7 @@ ak1PFcorr = patJetCorrFactors.clone(
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("ak1PFJets"),
-    payload = "AK1PF_generalTracks"
+    payload = "AK1PF_hiIterativeTracks"
     )
 
 ak1PFpatJets = patJets.clone(jetSource = cms.InputTag("ak1PFJets"),
@@ -51,7 +51,7 @@ ak1PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("ak1PFpatJet
                                                              fillGenJets = True,
                                                              isMC = True,
                                                              genParticles = cms.untracked.InputTag("hiGenParticles"),
-							     eventInfoTag = cms.InputTag("generator")
+							     eventInfoTag = cms.InputTag("hiSignal")
                                                              )
 
 ak1PFJetSequence_mc = cms.Sequence(

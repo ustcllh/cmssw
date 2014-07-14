@@ -60,13 +60,6 @@ do
                                 pflow="particleFlow"
                             fi
 
-                            if [ $system == "PbPb" ] && [ $sample == "jec" ]; then
-                                if [ $sub == "NONE" ]; then
-                                    corrlabel="_generalTracks" #placeholder
-                                fi
-                                #genparticles="genParticles"
-                            fi
-
                             if [ $sample == "mc" ] || [ $sample == "jec" ] || [ $sample == "mix" ]; then
                                 ismc="True"
                             fi
@@ -75,33 +68,9 @@ do
                                 genjets="HiGenJets"
                             fi
 
-                            if [ $sample == "mix" ]; then
+                            if [ $sample == "mix" ] || [ $sample == "jec" ]; then
                                 eventinfotag="hiSignal"
                             fi
-
-                            # if [ $sub == "Vs" ] && [ $object == "Calo" ]; then
-                            #     domatch="False"
-                            #     match="${algo}Pu${radius}Calo"
-                            # fi
-
-                            # if [ $sub == "Vs" ] && [ $object == "PF" ]; then
-                            #     domatch="False"
-                            #     match="${algo}Vs${radius}Calo"
-                            # fi
-
-                            # if [ $sub == "Pu" ] && [ $object == "Calo" ]; then
-                            #     domatch="False" # this will be running first
-                            #     match="${algo}Pu${radius}PF"
-                            # fi
-
-                            # if [ $sub == "Pu" ] && [ $object == "PF" ]; then
-                            #     domatch="False"
-                            #     match="${algo}${radius}PF"
-                            # fi
-
-                            # if [ $sub == "NONE" ]; then
-                            #     domatch="False"
-                            # fi
 
                             if [ $object == "Calo" ]; then
                                 corrlabel="_HI"

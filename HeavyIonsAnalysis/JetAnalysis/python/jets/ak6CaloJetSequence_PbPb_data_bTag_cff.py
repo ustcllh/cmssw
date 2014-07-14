@@ -18,7 +18,7 @@ ak6Caloparton = patJetPartonMatch.clone(src = cms.InputTag("ak6CaloJets"),
 ak6Calocorr = patJetCorrFactors.clone(
     useNPV = False,
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
-    levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
+    levels   = cms.vstring('L2Relative','L3Absolute'),
     src = cms.InputTag("ak6CaloJets"),
     payload = "AK6Calo_HI"
     )
@@ -152,7 +152,7 @@ ak6CalopatJetsWithBtagging = patJets.clone(jetSource = cms.InputTag("ak6CaloJets
             ),
         jetIDMap = cms.InputTag("ak6CaloJetID"),
         addBTagInfo = True,
-        addTagInfos = True,                                                                
+        addTagInfos = True,
         addDiscriminators = True,
         addAssociatedTracks = True,
         addJetCharge = False,

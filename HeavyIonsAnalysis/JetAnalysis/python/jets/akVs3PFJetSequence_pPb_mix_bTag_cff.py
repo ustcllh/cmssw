@@ -18,7 +18,7 @@ akVs3PFparton = patJetPartonMatch.clone(src = cms.InputTag("akVs3PFJets"),
 akVs3PFcorr = patJetCorrFactors.clone(
     useNPV = False,
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
-    levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
+    levels   = cms.vstring('L2Relative','L3Absolute'),
     src = cms.InputTag("akVs3PFJets"),
     payload = "AKVs3PF_generalTracks"
     )
@@ -152,7 +152,7 @@ akVs3PFpatJetsWithBtagging = patJets.clone(jetSource = cms.InputTag("akVs3PFJets
             ),
         jetIDMap = cms.InputTag("akVs3PFJetID"),
         addBTagInfo = True,
-        addTagInfos = True,                                                                
+        addTagInfos = True,
         addDiscriminators = True,
         addAssociatedTracks = True,
         addJetCharge = False,
