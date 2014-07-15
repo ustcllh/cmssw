@@ -323,7 +323,8 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  ++(hev_.n[etabin]);
 	}
 	++(hev_.mult);
-	//	}
+	if(hev_.mult >= MAXPARTICLES)
+	  edm::LogError("Number of genparticles exceeds array bounds.");
       }
     }
   }else{
@@ -355,6 +356,8 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	++(hev_.n[etabin]);
       }
       ++(hev_.mult);
+      if(hev_.mult >= MAXPARTICLES)
+	edm::LogError("Number of genparticles exceeds array bounds.");
     }
     if(doHI_){
       edm::Handle<GenHIEvent> higen;
