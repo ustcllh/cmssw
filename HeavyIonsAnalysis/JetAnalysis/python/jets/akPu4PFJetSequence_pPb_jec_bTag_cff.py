@@ -18,7 +18,7 @@ akPu4PFparton = patJetPartonMatch.clone(src = cms.InputTag("akPu4PFJets"),
 akPu4PFcorr = patJetCorrFactors.clone(
     useNPV = False,
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
-    levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
+    levels   = cms.vstring('L2Relative','L3Absolute'),
     src = cms.InputTag("akPu4PFJets"),
     payload = "AKPu4PF_generalTracks"
     )
@@ -152,7 +152,7 @@ akPu4PFpatJetsWithBtagging = patJets.clone(jetSource = cms.InputTag("akPu4PFJets
             ),
         jetIDMap = cms.InputTag("akPu4PFJetID"),
         addBTagInfo = True,
-        addTagInfos = True,                                                                
+        addTagInfos = True,
         addDiscriminators = True,
         addAssociatedTracks = True,
         addJetCharge = False,

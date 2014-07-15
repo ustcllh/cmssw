@@ -18,7 +18,7 @@ ak7PFcorr = patJetCorrFactors.clone(
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
     levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
     src = cms.InputTag("ak7PFJets"),
-    payload = "AK7PF_generalTracks"
+    payload = "AK7PF_hiIterativeTracks"
     )
 
 ak7PFpatJets = patJets.clone(jetSource = cms.InputTag("ak7PFJets"),
