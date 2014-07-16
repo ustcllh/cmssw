@@ -15,7 +15,7 @@ process = cms.Process('HiForest')
 process.options = cms.untracked.PSet(
     # wantSummary = cms.untracked.bool(True)
     #SkipEvent = cms.untracked.vstring('ProductNotFound')
-)
+    )
 
 #####################################################################################
 # HiForest labelling info
@@ -37,7 +37,8 @@ process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
                                     #"/store/user/kjung/Hijing_PPb502_MinimumBias/pPb_BFilterSampleRECO_pthat15/5dc89fb1319c58a400229c5d020a3799/RecoPythiaBJet_Apr14Prod_15_22_1_7MC.root"
-                                    "file:/home/jung68/MCProjects/CMSSW_5_3_19/src/testRECO.root"
+                                    #"file:/home/jung68/MCProjects/CMSSW_5_3_19/src/testRECO.root"
+                                    "file:/home/jung68/CMSSW_5_3_15/src/step3_RAW2DIGI_L1Reco_RECO.root"
                                     ))
 
 # Number of events we want to process, -1 = all events
@@ -95,7 +96,7 @@ process.TFileService = cms.Service("TFileService",
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('RecoJets.Configuration.GenJetParticles_cff')
 
-process.hiGenParticles.srcVector = cms.vstring('generator')
+process.hiGenParticles.srcVector = cms.vstring('hiSignal')
 
 #process.hiCentrality.producePixelhits = False
 #process.hiCentrality.producePixelTracks = False
@@ -104,7 +105,7 @@ process.hiGenParticles.srcVector = cms.vstring('generator')
 process.hiEvtPlane.vtxCollection_ = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.hiEvtPlane.trackCollection_ = cms.InputTag("generalTracks")
 
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
+#process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiGenJetsCleaned_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.bTaggers_cff')
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu3CaloJetSequence_pPb_mc_bTag_cff')
@@ -195,9 +196,9 @@ process.ppTrack.pfCandSrc = cms.InputTag("particleFlow")
 
 # Disable this for now, causes problems.
 process.ppTrack.doPFMatching = cms.untracked.bool(False)
-process.ppTrack.doSimVertex = False
-process.ppTrack.doSimTrack = False
-process.ppTrack.fillSimTrack = False
+process.ppTrack.doSimVertex = True
+process.ppTrack.doSimTrack = True
+process.ppTrack.fillSimTrack = True
 
 #####################
 # photons
@@ -219,9 +220,11 @@ process.globalMuons.TrackerCollectionLabel = "generalTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "generalTracks"
 process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
+process.hiPartons.ptCut = cms.double(10)
 process.genStep = cms.Path(process.hiGenParticles *
                            process.hiGenParticlesForJets *
-                           process.genPartons)
+                           process.genPartons *
+                           process.hiPartons)
 
 process.temp_step = cms.Path(
                              process.ak1HiGenJets +
@@ -238,15 +241,15 @@ process.ana_step = cms.Path(process.pACentrality +
                             process.heavyIon*
                             process.hiEvtAnalyzer*
                             process.HiGenParticleAna*
-                            process.hiGenJetsCleaned*
+#                            process.hiGenJetsCleaned*
                             process.jetSequences +
                             process.photonStep +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
                             process.HiForest +
-                            #process.cutsTPForFak +
-                            #process.cutsTPForEff +
+                            process.cutsTPForFak +
+                            process.cutsTPForEff +
                             process.ppTrack)
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
@@ -266,6 +269,12 @@ process.hltanalysis.hltresults = cms.InputTag("TriggerResults","",hltProcess)
 process.hltanalysis.HLTProcessName = hltProcess
 process.hltanalysis.dummyBranches = []
 process.hltanalysis.l1GtObjectMapRecord = cms.InputTag("hltL1GtObjectMap","",hltProcess)
+process.hltanalysis.mctruth = cms.InputTag("hiGenParticles","",hltProcess)
 
-process.hltAna = cms.Path(process.hltanalysis)
+process.hltobject.processName = cms.string(hltProcess)
+process.hltobject.triggerNames = cms.vstring("HLT_PAJet20_NoJetID_v1","HLT_PAJet40_NoJetID_v1","HLT_PAJet60_NoJetID_v1","HLT_PAJet80_NoJetID_v1","HLT_PAJet100_NoJetID_v1")
+process.hltobject.triggerResults = process.hltanalysis.hltresults
+process.hltobject.triggerEvent = cms.InputTag("hltTriggerSummaryAOD","",hltProcess)
+
+process.hltAna = cms.Path(process.hltanalysis*process.hltobject)
 process.pAna = cms.EndPath(process.skimanalysis)
