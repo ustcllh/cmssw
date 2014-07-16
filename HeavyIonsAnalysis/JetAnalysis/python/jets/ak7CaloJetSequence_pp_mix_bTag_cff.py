@@ -11,8 +11,7 @@ ak7Calomatch = patJetGenJetMatch.clone(
     matched = cms.InputTag("ak7HiGenJets")
     )
 
-ak7Caloparton = patJetPartonMatch.clone(src = cms.InputTag("ak7CaloJets"),
-                                                        matched = cms.InputTag("genPartons")
+ak7Caloparton = patJetPartonMatch.clone(src = cms.InputTag("ak7CaloJets")
                                                         )
 
 ak7Calocorr = patJetCorrFactors.clone(

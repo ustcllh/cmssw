@@ -8,11 +8,10 @@ from RecoJets.JetProducers.JetIDParams_cfi import *
 
 akPu1PFmatch = patJetGenJetMatch.clone(
     src = cms.InputTag("akPu1PFJets"),
-    matched = cms.InputTag("ak1HiGenJetsCleaned")
+    matched = cms.InputTag("ak1HiGenJets")
     )
 
-akPu1PFparton = patJetPartonMatch.clone(src = cms.InputTag("akPu1PFJets"),
-                                                        matched = cms.InputTag("genPartons")
+akPu1PFparton = patJetPartonMatch.clone(src = cms.InputTag("akPu1PFJets")
                                                         )
 
 akPu1PFcorr = patJetCorrFactors.clone(
@@ -25,7 +24,7 @@ akPu1PFcorr = patJetCorrFactors.clone(
 
 akPu1PFJetID= cms.EDProducer('JetIDProducer', JetIDParams, src = cms.InputTag('akPu1CaloJets'))
 
-akPu1PFclean   = heavyIonCleanedGenJets.clone(src = cms.InputTag('ak1HiGenJetsCleaned'))
+akPu1PFclean   = heavyIonCleanedGenJets.clone(src = cms.InputTag('ak1HiGenJets'))
 
 akPu1PFbTagger = bTaggers("akPu1PF")
 
@@ -167,7 +166,7 @@ akPu1PFpatJetsWithBtagging = patJets.clone(jetSource = cms.InputTag("akPu1PFJets
         )
 
 akPu1PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPu1PFpatJetsWithBtagging"),
-                                                             genjetTag = 'ak1HiGenJetsCleaned',
+                                                             genjetTag = 'ak1HiGenJets',
                                                              rParam = 0.1,
                                                              matchJets = cms.untracked.bool(False),
                                                              matchTag = 'patJetsWithBtagging',

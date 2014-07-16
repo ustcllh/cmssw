@@ -11,8 +11,7 @@ ak1PFmatch = patJetGenJetMatch.clone(
     matched = cms.InputTag("ak1HiGenJets")
     )
 
-ak1PFparton = patJetPartonMatch.clone(src = cms.InputTag("ak1PFJets"),
-                                                        matched = cms.InputTag("genPartons")
+ak1PFparton = patJetPartonMatch.clone(src = cms.InputTag("ak1PFJets")
                                                         )
 
 ak1PFcorr = patJetCorrFactors.clone(

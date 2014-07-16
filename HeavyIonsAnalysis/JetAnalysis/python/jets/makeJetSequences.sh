@@ -30,14 +30,18 @@ do
 
                             if [ $btaggers == "NONE" ]; then
                                 btag=""
+                                genjets="HiGenJetsCleaned"
+                            elif [ $system == "pPb" ]; then
+                                btag=$btaggers
+                                genjets="HiGenJets"
                             else
                                 btag=$btaggers
+                                genjets="HiGenJetsCleaned"
                             fi
 
                             ismc="False"
                             corrlabel="_hiIterativeTracks"
                             domatch="True"
-                            genjets="HiGenJetsCleaned"
                             genparticles="hiGenParticles"
                             tracks="hiGeneralTracks"
                             pflow="particleFlowTmp"

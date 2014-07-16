@@ -11,8 +11,7 @@ akPu3PFmatch = patJetGenJetMatch.clone(
     matched = cms.InputTag("ak3HiGenJetsCleaned")
     )
 
-akPu3PFparton = patJetPartonMatch.clone(src = cms.InputTag("akPu3PFJets"),
-                                                        matched = cms.InputTag("genPartons")
+akPu3PFparton = patJetPartonMatch.clone(src = cms.InputTag("akPu3PFJets")
                                                         )
 
 akPu3PFcorr = patJetCorrFactors.clone(
