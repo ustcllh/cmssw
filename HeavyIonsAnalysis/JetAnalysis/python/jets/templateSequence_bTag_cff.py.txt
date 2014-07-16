@@ -16,7 +16,7 @@ ALGO_SUB_RADIUS_OBJECT_parton = patJetPartonMatch.clone(src = cms.InputTag("ALGO
 ALGO_SUB_RADIUS_OBJECT_corr = patJetCorrFactors.clone(
     useNPV = False,
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
-    levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
+    levels   = cms.vstring('L2Relative','L3Absolute'),
     src = cms.InputTag("ALGO_SUB_RADIUS_OBJECT_Jets"),
     payload = "CORRNAME_"
     )
@@ -150,7 +150,7 @@ ALGO_SUB_RADIUS_OBJECT_patJetsWithBtagging = patJets.clone(jetSource = cms.Input
             ),
         jetIDMap = cms.InputTag("ALGO_SUB_RADIUS_OBJECT_JetID"),
         addBTagInfo = True,
-        addTagInfos = True,                                                                
+        addTagInfos = True,
         addDiscriminators = True,
         addAssociatedTracks = True,
         addJetCharge = False,

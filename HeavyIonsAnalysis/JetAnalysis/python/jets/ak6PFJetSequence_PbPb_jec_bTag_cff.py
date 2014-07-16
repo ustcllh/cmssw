@@ -17,9 +17,9 @@ ak6PFparton = patJetPartonMatch.clone(src = cms.InputTag("ak6PFJets")
 ak6PFcorr = patJetCorrFactors.clone(
     useNPV = False,
 #    primaryVertices = cms.InputTag("hiSelectedVertex"),
-    levels   = cms.vstring('L2Relative','L3Absolute'),                                                                
+    levels   = cms.vstring('L2Relative','L3Absolute'),
     src = cms.InputTag("ak6PFJets"),
-    payload = "AK6PF_generalTracks"
+    payload = "AK6PF_hiIterativeTracks"
     )
 
 ak6PFJetID= cms.EDProducer('JetIDProducer', JetIDParams, src = cms.InputTag('ak6CaloJets'))
@@ -151,7 +151,7 @@ ak6PFpatJetsWithBtagging = patJets.clone(jetSource = cms.InputTag("ak6PFJets"),
             ),
         jetIDMap = cms.InputTag("ak6PFJetID"),
         addBTagInfo = True,
-        addTagInfos = True,                                                                
+        addTagInfos = True,
         addDiscriminators = True,
         addAssociatedTracks = True,
         addJetCharge = False,
