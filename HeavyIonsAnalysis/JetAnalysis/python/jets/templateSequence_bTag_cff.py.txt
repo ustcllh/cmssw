@@ -10,8 +10,7 @@ ALGO_SUB_RADIUS_OBJECT_match = patJetGenJetMatch.clone(
     matched = cms.InputTag("ALGO_RADIUS_GENJETS")
     )
 
-ALGO_SUB_RADIUS_OBJECT_parton = patJetPartonMatch.clone(src = cms.InputTag("ALGO_SUB_RADIUS_OBJECT_Jets"),
-                                                        matched = cms.InputTag("genPartons")
+ALGO_SUB_RADIUS_OBJECT_parton = patJetPartonMatch.clone(src = cms.InputTag("ALGO_SUB_RADIUS_OBJECT_Jets")
                                                         )
 
 ALGO_SUB_RADIUS_OBJECT_corr = patJetCorrFactors.clone(

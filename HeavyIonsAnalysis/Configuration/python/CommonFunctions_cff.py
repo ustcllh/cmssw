@@ -842,10 +842,12 @@ def overrideJEC_NULL(process):
 
 #======  Final default common functions including centrality
 
-def overrideGT_pPb5020(process):
-    overrideCentrality(process)
-    overrideJEC_pPb5020(process)
-    return process
+# Do not use the combo function for pPb, it causes too much confusion
+# for users
+#def overrideGT_pPb5020(process):
+#    overrideCentrality(process)
+#    overrideJEC_pPb5020(process)
+#    return process
 
 def overrideGT_pp2760(process):
     overrideCentrality(process)
