@@ -68,10 +68,14 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
 
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
-overrideGT_pPb5020(process)
+from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideCentrality
+from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pPb5020
+from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_Pbp5020
+overrideCentrality(process)
 if secondHalfpPbJEC:
     overrideJEC_Pbp5020(process)
+else :
+    overrideJEC_pPb5020(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowersTrunc"),
