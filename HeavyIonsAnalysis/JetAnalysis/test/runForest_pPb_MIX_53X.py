@@ -60,7 +60,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # PbPb 53X MC
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V28::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_V27::All', '')
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideCentrality
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pPb5020
