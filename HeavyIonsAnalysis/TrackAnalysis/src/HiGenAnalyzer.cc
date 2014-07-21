@@ -330,6 +330,9 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   }else{
     edm::Handle<reco::GenParticleCollection> parts;
     iEvent.getByLabel(genParticleSrc_,parts);
+
+    if(! parts.isValid() ) throw cms::Exception("FatalError") << "genparticle collection not found\n";
+
     for(UInt_t i = 0; i < parts->size(); ++i){
       const reco::GenParticle& p = (*parts)[i];
       if (stableOnly_ && p.status()!=1) continue;
@@ -362,6 +365,8 @@ HiGenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if(doHI_){
       edm::Handle<GenHIEvent> higen;
       iEvent.getByLabel(genHIsrc_,higen);
+
+      if(! higen.isValid() ) throw cms::Exception("FatalError") << "HI event info not found\n";
 
       b = higen->b();
       npart = higen->Npart();
