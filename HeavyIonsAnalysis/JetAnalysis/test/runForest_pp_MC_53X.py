@@ -244,7 +244,7 @@ process.ana_step = cms.Path(process.hiCentrality +
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
 process.phltJetHI = cms.Path( process.hltJetHI )
-#process.pcollisionEventSelection = cms.Path(process.collisionEventSelection)
+process.pPAcollisionEventSelectionPA = cms.Path(process.PAcollisionEventSelection)
 process.pHBHENoiseFilter = cms.Path( process.HBHENoiseFilter )
 process.phfCoincFilter = cms.Path(process.hfCoincFilter )
 process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3 )
