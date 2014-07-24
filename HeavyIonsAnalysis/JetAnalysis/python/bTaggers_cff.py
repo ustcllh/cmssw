@@ -160,7 +160,7 @@ class bTaggers:
                 partons = cms.InputTag("genPartons"),
                 coneSizeToAssociate = cms.double(0.4))
 
-        self.PatJetFlavourAssociation      = patJetFlavourAssociation.clone(srcByReference = cms.InputTag(jetname+"PatJetPartonAssociation"))
+        self.PatJetFlavourAssociation      = patJetFlavourAssociationLegacy.clone(srcByReference = cms.InputTag(jetname+"PatJetPartonAssociation"))
 
         self.PatJetFlavourId               = cms.Sequence(self.PatJetPartonAssociation*self.PatJetFlavourAssociation)
         self.match   = patJetGenJetMatch.clone(src      = cms.InputTag(jetname+"Jets"),
