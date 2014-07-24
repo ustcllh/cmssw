@@ -21,7 +21,6 @@ from RecoBTag.SecondaryVertex.combinedSecondaryVertexNegativeBJetTags_cfi import
 from RecoBTag.SecondaryVertex.combinedSecondaryVertexPositiveES_cfi import *
 from RecoBTag.SecondaryVertex.combinedSecondaryVertexPositiveBJetTags_cfi import *
 
-
 from RecoJets.JetAssociationProducers.ak5JTA_cff import *
 from RecoBTag.Configuration.RecoBTag_cff import *
 
@@ -157,7 +156,7 @@ class bTaggers:
                 *self.JetBtaggingMu
                 )
 
-        self.PatJetPartonAssociation       = patJetPartonAssociation.clone(jets = cms.InputTag(jetname+"Jets"),
+        self.PatJetPartonAssociation       = patJetPartonAssociationLegacy.clone(jets = cms.InputTag(jetname+"Jets"),
                 partons = cms.InputTag("genPartons"),
                 coneSizeToAssociate = cms.double(0.4))
 
