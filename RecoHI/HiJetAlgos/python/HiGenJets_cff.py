@@ -28,6 +28,7 @@ ak5HiGenJets.doAreaFastjet = cms.bool(True)
 ak5HiGenJets.doRhoFastjet  = cms.bool(False)
 ak5HiGenJets.src = cms.InputTag("hiGenParticlesForJets")
 
+ak1HiGenJets = ak5HiGenJets.clone(rParam = 0.1)
 ak2HiGenJets = ak5HiGenJets.clone(rParam = 0.2)
 ak3HiGenJets = ak5HiGenJets.clone(rParam = 0.3)
 ak4HiGenJets = ak5HiGenJets.clone(rParam = 0.4)
@@ -53,6 +54,7 @@ hiRecoGenJets = cms.Sequence(
     iterativeCone5HiGenJets +
     kt4HiGenJets +
     kt6HiGenJets +
+    ak1HiGenJets +
     ak2HiGenJets +
     ak3HiGenJets +
     ak4HiGenJets +
