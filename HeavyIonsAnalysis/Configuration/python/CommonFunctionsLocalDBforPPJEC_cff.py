@@ -458,12 +458,12 @@ def overrideJEC_pp2760(process):
 
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK1Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK1Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK2Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK2Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -473,34 +473,34 @@ def overrideJEC_pp2760(process):
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK4Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK4Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK5Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK5Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK6Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK6Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK7Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK7Calo_HI")
             ),
 
 
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK1Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKPu1Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK2Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKPu2Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -510,59 +510,59 @@ def overrideJEC_pp2760(process):
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK4Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKPu4Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK5Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKPu5Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK6Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKPu6Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK6Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKPu7Calo_HI")
             ),
 
 
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs1Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs1Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs2Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs2Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs3Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs3Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs4Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs4Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs5Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs5Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs6Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs6Calo_HI")
             ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AKVs7Calo"),
-                 connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dgulhan/workDir/jobSubmission/crabPPData_v2/JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AKVs7Calo_HI")
             ),
 
