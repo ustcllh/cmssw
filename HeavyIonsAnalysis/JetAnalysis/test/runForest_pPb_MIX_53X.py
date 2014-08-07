@@ -67,7 +67,8 @@ from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pPb5
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_Pbp5020
 overrideCentrality(process)
 if secondHalfpPbJEC:
-    overrideJEC_Pbp5020(process)
+    overrideJEC_MC_Pbp5020(process)
+    #overrideJEC_Pbp5020(process)
 else :
     overrideJEC_pPb5020(process)
 
