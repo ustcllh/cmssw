@@ -121,17 +121,17 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiReRecoJets_HI_MatchEqR_cff')
 
 process.jetSequences = cms.Sequence(
                                     process.hiReRecoCaloJetsMatchEqR +
-                                    process.hiReRecoPFJetsMatchEqR +
+                                    # process.hiReRecoPFJetsMatchEqR +
 
                                     process.akPu1CaloJetSequence +
                                     process.akVs1CaloJetSequence +
-                                    process.akVs1PFJetSequence +
-                                    process.akPu1PFJetSequence +
+                                    # process.akVs1PFJetSequence +
+                                    # process.akPu1PFJetSequence +
 
                                     process.akPu2CaloJetSequence +
                                     process.akVs2CaloJetSequence +
-                                    process.akVs2PFJetSequence +
-                                    process.akPu2PFJetSequence +
+                                    # process.akVs2PFJetSequence +
+                                    # process.akPu2PFJetSequence +
 
                                     process.akPu3CaloJetSequence +
                                     process.akVs3CaloJetSequence +
@@ -140,23 +140,23 @@ process.jetSequences = cms.Sequence(
 
                                     process.akPu4CaloJetSequence +
                                     process.akVs4CaloJetSequence +
-                                    process.akVs4PFJetSequence +
-                                    process.akPu4PFJetSequence +
+                                    # process.akVs4PFJetSequence +
+                                    # process.akPu4PFJetSequence +
 
                                     process.akPu5CaloJetSequence +
-                                    process.akVs5CaloJetSequence +
-                                    process.akVs5PFJetSequence +
-                                    process.akPu5PFJetSequence +
+                                    process.akVs5CaloJetSequence 
+                                    # process.akVs5PFJetSequence +
+                                    # process.akPu5PFJetSequence +
                                     
-                                    process.akPu6CaloJetSequence +
-                                    process.akVs6CaloJetSequence +
-                                    process.akVs6PFJetSequence +
-                                    process.akPu6PFJetSequence +
+                                    # process.akPu6CaloJetSequence +
+                                    # process.akVs6CaloJetSequence +
+                                    # process.akVs6PFJetSequence +
+                                    # process.akPu6PFJetSequence +
 
-                                    process.akPu7CaloJetSequence +
-                                    process.akVs7CaloJetSequence +
-                                    process.akVs7PFJetSequence +
-                                    process.akPu7PFJetSequence
+                                    # process.akPu7CaloJetSequence +
+                                    # process.akVs7CaloJetSequence +
+                                    # process.akVs7PFJetSequence +
+                                    # process.akPu7PFJetSequence
 
                                     )
 
