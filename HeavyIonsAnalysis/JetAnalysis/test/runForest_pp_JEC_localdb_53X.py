@@ -190,21 +190,21 @@ process.jetSequences = cms.Sequence(
                                     process.akPu5PFJetSequence +
                                     process.ak5PFJetSequence +
                                     process.ak5CaloJetSequence +
-									
+
                                     process.akPu6CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu6PFJetSequence +
                                     process.ak6PFJetSequence +
                                     process.ak6CaloJetSequence +
- 
+
                                     process.akPu7CaloJetSequence +
                                     process.akVs5CaloJetSequence +
                                     process.akVs5PFJetSequence +
                                     process.akPu7PFJetSequence +
                                     process.ak7PFJetSequence +
-                                    process.ak7CaloJetSequence 
- 
+                                    process.ak7CaloJetSequence
+
                                     )
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
@@ -280,10 +280,10 @@ process.ana_step = cms.Path(process.hiCentrality +
                             process.pfcandAnalyzer +
                             process.rechitAna +
 #temp                            process.hltMuTree +
-                            process.HiForest 
-                            # process.cutsTPForFak +
-                            # process.cutsTPForEff +
-                            # process.ppTrack
+                            process.HiForest +
+                            process.cutsTPForFak +
+                            process.cutsTPForEff +
+                            process.ppTrack
 							)
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
