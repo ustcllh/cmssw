@@ -196,18 +196,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AK2Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK3Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK3Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AK3Calo_HI")
              ),
          cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK4Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK4Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AK4Calo_HI")
              ),     
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK5Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK5Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AK5Calo_HI")
              ),             
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -232,18 +232,18 @@ def overrideJEC_PbPb2760(process):
                                              label = cms.untracked.string("AK2PF_hiIterativeTracks")
                                              ),
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK3PF"),
-                                             connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK3PF_offline"),
+                                             connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                                              label = cms.untracked.string("AK3PF_hiIterativeTracks")
                                              ),
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK4PF"),
-                                             connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK4PF_offline"),
+                                             connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                                              label = cms.untracked.string("AK4PF_hiIterativeTracks")
                                              ),
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK5PF"),
-                                             connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK5PF_offline"),
+                                             connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                                              label = cms.untracked.string("AK5PF_hiIterativeTracks")
                                              ),
                                     cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -268,18 +268,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AKPu2Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK3Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu3Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu3Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK4Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu4Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu4Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK5Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK5Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu5Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -303,18 +303,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AKPu2PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK3PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu3PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu3PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK4PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu4PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu4PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK5PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu5PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu5PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -339,18 +339,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AKVs2Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs3Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs3Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs3Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs4Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs4Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs4Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs5Calo"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs5Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs5Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -374,18 +374,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AKVs2PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs3PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs3PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs3PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs4PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs4PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs4PF_hiIterativeTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs5PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs5PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs5PF_hiIterativeTracks")
                                              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -411,18 +411,18 @@ def overrideJEC_PbPb2760(process):
                                              label = cms.untracked.string("AK2PF_generalTracks")
                                              ),                               
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK3PF"),
-                                             connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK3PF_offline"),
+                                             connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                                              label = cms.untracked.string("AK3PF_generalTracks")
                                              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK4PF"),
-                                             connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK4PF_offline"),
+                                             connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                                              label = cms.untracked.string("AK4PF_generalTracks")
                                              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK5PF"),
-                                             connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AK5PF_offline"),
+                                             connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                                              label = cms.untracked.string("AK5PF_generalTracks")
                                              ),                                                                                 
      	cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -447,18 +447,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AKPu2PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK3PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu3PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu3PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK4PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu4PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu4PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AK5PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKPu5PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKPu5PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -483,18 +483,18 @@ def overrideJEC_PbPb2760(process):
                  label = cms.untracked.string("AKVs2PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs3PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs3PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs3PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs4PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs4PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs4PF_generalTracks")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v15_AKVs5PF"),
-                 connect = cms.untracked.string("sqlite_file:JEC_2011RECO_STARTHI53_Track8_Jet29_LV1_HI_PythiaZ2_2760GeV_5316_v15_HI.db"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v16_HI_AKVs5PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:JEC_HI_PythiaZ2_2760GeV_5316_v16_HI.db"),
                  label = cms.untracked.string("AKVs5PF_generalTracks")
                                              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
