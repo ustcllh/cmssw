@@ -240,7 +240,7 @@ process.jetSequences = cms.Sequence(process.voronoiBackgroundCalo +
                                     process.akVs5PFJetSequence +
                                     process.akPu5PFJetSequence +
                                     process.ak5PFJetSequence +
-                                    process.ak5CaloJetSequence 
+                                    process.ak5CaloJetSequence
 
                                     # process.akPu6CaloJetSequence +
                                     # process.akVs6CaloJetSequence +
@@ -309,6 +309,8 @@ process.globalMuons.TrackerCollectionLabel = "hiGeneralTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "hiGeneralTracks"
 process.muons.inputCollectionLabels = ["hiGeneralTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
+process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+
 #Filtering
 #############################################################
 # To filter on an HLT trigger path, uncomment the lines below, add the
@@ -339,7 +341,6 @@ process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hl
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
 # Customization
-process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 process.hltobject.triggerNames = cms.vstring("HLT_PAJet80_NoJetID_v1","HLT_PAJet60_NoJetID_v1","HLT_PAJet40_NoJetID_v1")
 
 process.ana_step = cms.Path(process.hltanalysis +
