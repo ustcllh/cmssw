@@ -120,8 +120,8 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.akVs5PFJetSequence_PbPb_data_cf
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiReRecoJets_HI_MatchEqR_cff')
 
 process.jetSequences = cms.Sequence(
-                                    process.hiReRecoCaloJetsMatchEqR +
-                                    process.hiReRecoPFJetsMatchEqR +
+#                                    process.hiReRecoCaloJetsMatchEqR +
+                                    process.hiReRecoPFJetsMatchEqRJetRAA +
 
 #                                    process.akPu1CaloJetSequence +
 #                                    process.akVs1CaloJetSequence +
@@ -228,7 +228,7 @@ process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 ################################################################
 process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
 process.hltMinBiasHFOrBSC = process.hltHighLevel.clone()
-process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIJet55_*","HLT_HIJet65_*"]
+process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIJet55_*","HLT_HIJet65_*","HLT_HIJet80_*"]
 #process.hltMinBiasHFOrBSC.HLTPaths = ["HLT_HIJet80_*"]
 process.load("HeavyIonsAnalysis.Configuration.collisionEventSelection_cff")
 process.filterSequence = cms.Sequence(process.hltMinBiasHFOrBSC*process.collisionEventSelection)
