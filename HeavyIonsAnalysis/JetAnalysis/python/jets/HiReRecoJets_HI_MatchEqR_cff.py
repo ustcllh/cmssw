@@ -124,9 +124,13 @@ akPu2PFJets
 +
 akPu3PFJets
 +
+akPu3CaloJets
++
 akPu4PFJets
 +
 akVs2PFJets
++
+akVs3CaloJets
 +
 akVs3PFJets
 +
