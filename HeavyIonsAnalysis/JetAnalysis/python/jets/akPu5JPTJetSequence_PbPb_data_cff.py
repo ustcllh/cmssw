@@ -17,7 +17,11 @@ JPTAntiKtPu5JetTracksAssociatorAtVertex.tracks = cms.InputTag("hiGeneralTracks")
 
 from RecoJets.JetPlusTracks.JetPlusTrackCorrectionsAA_cff import *
 JetPlusTrackZSPCorJetAntiKtPu5.tracks = cms.InputTag("hiGeneralTracks")
-JetPlusTrackZSPCorJetAntiKtPu5.EfficiencyMap = cms.string("HeavyIonsAnalysis/JetAnalysis/python/jets/CMSSW_538HI_TrackNonEff.txt")
+JetPlusTrackZSPCorJetAntiKtPu5.UseElectrons = cms.bool(False)
+JetPlusTrackZSPCorJetAntiKtPu5.EfficiencyMap = cms.string("HeavyIonsAnalysis/Configuration/data/CMSSW_538HI_TrackNonEff.txt")
+JetPlusTrackZSPCorJetAntiKtPu5.ResponseMap = cms.string("HeavyIonsAnalysis/Configuration/data/CMSSW_538HI_response.txt")
+JetPlusTrackZSPCorJetAntiKtPu5.LeakageMap = cms.string("HeavyIonsAnalysis/Configuration/data/CMSSW_538HI_TrackLeakage.txt")
+
 
 from RecoJets.JetAssociationProducers.ak5JTA_cff import*
 JPTAntiKtPu5JetTracksAssociatorAtVertex = ak5JetTracksAssociatorAtVertex.clone()
@@ -34,32 +38,41 @@ JPTAntiKtPu5JetExtender.jet2TracksAtVX = cms.InputTag("JPTAntiKtPu5JetTracksAsso
 
 from RecoJets.JetPlusTracks.JetPlusTrackCorrectionsAA_cff import *
 #define jetPlusTrackZSPCorJet sequences
-jetPlusTrackZSPCorJetIconePu5   = cms.Sequence(JetPlusTrackCorrectionsIconePu5)
-jetPlusTrackZSPCorJetSisconePu5 = cms.Sequence(JetPlusTrackCorrectionsSisConePu5)
 jetPlusTrackZSPCorJetAntiKtPu5  = cms.Sequence(JetPlusTrackCorrectionsAntiKtPu5)
 
-recoJPTJetsHIC=cms.Sequence(jetPlusTrackZSPCorJetAntiKtPu5)
+from JetMETCorrections.Configuration.JetCorrectionServices_cff import *
+ak5JPTJetsL1   = cms.EDProducer('JPTJetCorrectionProducer',
+    src         = cms.InputTag('JetPlusTrackZSPCorJetAntiKtPu5'),
+    correctors  = cms.vstring('ak5L1JPTOffset'),
+    vertexCollection = cms.string('hiSelectedVertex')
+    )
+
+ak5L1JPTOffset.offsetService = cms.string('')
+
+recoJPTJetsHIC=cms.Sequence(jetPlusTrackZSPCorJetAntiKtPu5*ak5JPTJetsL1)
 
 akPu5JPTmatch = patJetGenJetMatch.clone(
-    src = cms.InputTag("JetPlusTrackZSPCorJetAntiKtPu5"),
+    src = cms.InputTag("ak5JPTJetsL1"),
     matched = cms.InputTag("ak5HiGenJetsCleaned")
     )
 
-akPu5JPTparton = patJetPartonMatch.clone(src = cms.InputTag("JetPlusTrackZSPCorJetAntiKtPu5"),
+akPu5JPTparton = patJetPartonMatch.clone(
+                                                        src = cms.InputTag("ak5JPTJetsL1"),
                                                         matched = cms.InputTag("hiGenParticles")
                                                         )
 
 akPu5JPTcorr = patJetCorrFactors.clone(
     useNPV = True,
     primaryVertices = cms.InputTag("hiSelectedVertex"),
-    levels   = cms.vstring('L1Offset'),
-    src = cms.InputTag("JetPlusTrackZSPCorJetAntiKtPu5"),
+    levels   = cms.vstring('L2Relative','L3Absolute'),
+    src = cms.InputTag("ak5JPTJetsL1"),
     payload = "AK5JPT",
-#    extraJPTOffset = cms.string("L1Offset")
     )
 
+
+
 akPu5JPTpatJets = patJets.clone(
-                                               jetSource = cms.InputTag("JetPlusTrackZSPCorJetAntiKtPu5"),
+                                               jetSource = cms.InputTag("ak5JPTJetsL1"),
                                                jetCorrFactorsSource = cms.VInputTag(cms.InputTag("akPu5JPTcorr")),
                                                genJetMatch = cms.InputTag("akPu5JPTmatch"),
                                                genPartonMatch = cms.InputTag("akPu5JPTparton"),

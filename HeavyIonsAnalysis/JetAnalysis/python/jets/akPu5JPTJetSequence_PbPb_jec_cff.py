@@ -18,9 +18,9 @@ JPTAntiKtPu5JetTracksAssociatorAtVertex.tracks = cms.InputTag("hiGeneralTracks")
 from RecoJets.JetPlusTracks.JetPlusTrackCorrectionsAA_cff import *
 JetPlusTrackZSPCorJetAntiKtPu5.tracks = cms.InputTag("hiGeneralTracks")
 JetPlusTrackZSPCorJetAntiKtPu5.UseElectrons = cms.bool(False)
-JetPlusTrackZSPCorJetAntiKtPu5.EfficiencyMap = cms.string("HeavyIonsAnalysis/JetAnalysis/python/jets/CMSSW_538HI_TrackNonEff.txt")
-JetPlusTrackZSPCorJetAntiKtPu5.ResponseMap = cms.string("HeavyIonsAnalysis/JetAnalysis/python/jets/CMSSW_538HI_response.txt")
-JetPlusTrackZSPCorJetAntiKtPu5.LeakageMap = cms.string("HeavyIonsAnalysis/JetAnalysis/python/jets/CMSSW_538HI_TrackLeakage.txt")
+JetPlusTrackZSPCorJetAntiKtPu5.EfficiencyMap = cms.string("HeavyIonsAnalysis/Configuration/data/CMSSW_538HI_TrackNonEff.txt")
+JetPlusTrackZSPCorJetAntiKtPu5.ResponseMap = cms.string("HeavyIonsAnalysis/Configuration/data/CMSSW_538HI_response.txt")
+JetPlusTrackZSPCorJetAntiKtPu5.LeakageMap = cms.string("HeavyIonsAnalysis/Configuration/data/CMSSW_538HI_TrackLeakage.txt")
 
 from RecoJets.JetAssociationProducers.ak5JTA_cff import*
 JPTAntiKtPu5JetTracksAssociatorAtVertex = ak5JetTracksAssociatorAtVertex.clone()
