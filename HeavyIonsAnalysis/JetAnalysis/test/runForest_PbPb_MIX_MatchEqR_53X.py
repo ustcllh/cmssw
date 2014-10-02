@@ -59,7 +59,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'STARTHI53_LV1::All', '')
 
-from HeavyIonsAnalysis.Configuration.CommonFunctionsLocalDB_cff import *
+from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
 overrideGT_PbPb2760(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
