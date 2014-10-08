@@ -214,6 +214,7 @@ process.ppTrack.fillSimTrack = True
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
+process.multiPhotonAnalyzer.pfCandidateLabel = cms.InputTag("particleFlow")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()

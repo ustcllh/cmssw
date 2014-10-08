@@ -183,6 +183,7 @@ process.ppTrack.doSimTrack = False
 # photons
 process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.photonStep.remove(process.photonMatch)
+process.multiPhotonAnalyzer.pfCandidateLabel = cms.InputTag("particleFlow")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.RandomNumberGeneratorService.multiPhotonAnalyzer = process.RandomNumberGeneratorService.generator.clone()
