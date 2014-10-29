@@ -28,7 +28,7 @@ process.HiForest.HiForestVersion = cms.untracked.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-    "/store/himc/HiWinter13/Pythia_AllQCDPhotons_PtHat15_TuneZ2_cmssw53p14_2760GeV/GEN-SIM-RECO/STARTHI53_V28-v1/00000/0A4322D2-1B9A-E311-A881-848F69FD2904.root"
+    "file:/net/hisrv0001/home/luck/MC/CMSSW_5_3_18/src/pp_JEC_RECO.root"
     ))
 
 # Number of events we want to process, -1 = all events
@@ -239,6 +239,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.EGammaAnalyzers_cff')
 process.multiPhotonAnalyzer.GenEventScale = cms.InputTag("generator")
 process.multiPhotonAnalyzer.HepMCProducer = cms.InputTag("generator")
 process.multiPhotonAnalyzer.pfCandidateLabel = cms.InputTag("particleFlow")
+process.multiPhotonAnalyzer.VertexProducer = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.hiGoodTracks.src = cms.InputTag("generalTracks")
 process.hiGoodTracks.vertices = cms.InputTag("offlinePrimaryVerticesWithBS")
 process.photonMatch.matched = cms.InputTag("genParticles")
