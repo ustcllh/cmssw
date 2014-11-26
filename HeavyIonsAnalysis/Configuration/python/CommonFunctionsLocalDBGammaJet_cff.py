@@ -131,7 +131,7 @@ def overrideCentrality(process):
                                     ])
     return process
 
-def overrideJEC_pPb5020(process):
+def overrideJEC_localGammaJet_pPb5020(process):
     process.GlobalTag.toGet.extend([
 ## no Pu
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
@@ -197,6 +197,141 @@ def overrideJEC_pPb5020(process):
              ),
     ])
     return process
+
+def overrideJEC_localGammaJet_Pbp5020(process):
+    process.GlobalTag.toGet.extend([
+## no Pu
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK3Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK4Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK5Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK3PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK4PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK5PF_generalTracks")
+             ),
+## Pu
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu3Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu4Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu5Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu3PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu4PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_Pbp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu5PF_generalTracks")
+             ),
+    ])
+    return process
+
+def overrideJEC_localGammaJet_pp5020(process):
+    process.GlobalTag.toGet.extend([
+## no Pu
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK3Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK4Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK5Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK3PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK4PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AK5PF_generalTracks")
+             ),
+## Pu
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu3Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu4Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu5Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK3PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu3PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK4PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu4PF_generalTracks")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JEC_gammajet_HiWinter13_STARTHI53_LV1_5_3_20_AK5PF"),
+                 connect = cms.untracked.string("sqlite_file:JEC_GAMMAJET_pp_v1_STARTHI53_LV1.db"),
+                 label = cms.untracked.string("AKPu5PF_generalTracks")
+             ),
+    ])
+    return process
+
 
 #======  Final default common functions including centrality
 
