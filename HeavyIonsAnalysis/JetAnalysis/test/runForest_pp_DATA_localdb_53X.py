@@ -36,7 +36,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(1000))
 
 #####################################################################################
 # Load Global Tag, Geometry, etc.
@@ -51,7 +51,7 @@ process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
 process.load('Configuration.StandardSequences.RawToDigi_cff')
 process.load('Configuration.StandardSequences.ReconstructionHeavyIons_cff')
-process.load('RecoHI.HiCentralityAlgos.pACentrality_cfi')
+# process.load('RecoHI.HiCentralityAlgos.pACentrality_cfi')
 process.load('RecoHI.HiCentralityAlgos.CentralityBin_cfi')
 
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -67,7 +67,7 @@ overrideJEC_pp2760(process)
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowersTrunc"),
     nonDefaultGlauberModel = cms.string(""),
-    centralitySrc = cms.InputTag("pACentrality")
+    centralitySrc = cms.InputTag("hiCentrality")
     )
 
 #####################################################################################
@@ -258,7 +258,6 @@ process.globalMuons.TrackerCollectionLabel = "generalTracks"
 process.muons.TrackExtractorPSet.inputTrackCollection = "generalTracks"
 process.muons.inputCollectionLabels = ["generalTracks", "globalMuons", "standAloneMuons:UpdatedAtVtx", "tevMuons:firstHit", "tevMuons:picky", "tevMuons:dyt"]
 
-process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
 #Filtering
 #############################################################
@@ -277,6 +276,14 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 ################################################################
 
 process.load('HeavyIonsAnalysis.JetAnalysis.EventSelection_cff')
+process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+process.load("HLTrigger.HLTfilters.hltHighLevel_cfi")
+#process.skimFilter = process.hltHighLevel.clone()
+#only keep jet40 or jet60 or jet80 events:
+#process.skimFilter.HLTPaths = ["HLT_PAJet40_NoJetID_v*","HLT_PAJet60_NoJetID_v*","HLT_PAJet80_NoJetID_v*"]
+#process.superFilterSequence = cms.Sequence(process.skimFilter)
+#process.skimanalysis.superFilters = cms.vstring("superFilterPath")        
+
 process.load('HeavyIonsAnalysis.Configuration.collisionEventSelection_cff')
 process.phltJetHI = cms.Path( process.hltJetHI )
 process.pPAcollisionEventSelectionPA = cms.Path(process.PAcollisionEventSelection)
@@ -290,9 +297,11 @@ process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 # Customization
 process.hltobject.triggerNames = cms.vstring("HLT_PAJet80_NoJetID_v1","HLT_PAJet60_NoJetID_v1","HLT_PAJet40_NoJetID_v1")
 
-process.ana_step = cms.Path(process.hltanalysis +
+process.ana_step = cms.Path(
+# process.superFilterSequence + 
+							process.hltanalysis +
                             process.hltobject +
-                            process.pACentrality +
+                            process.hiCentrality +
                             process.centralityBin +
                             process.hiEvtPlane +
                             process.hiEvtAnalyzer*
@@ -303,10 +312,8 @@ process.ana_step = cms.Path(process.hltanalysis +
 #temp                            process.hltMuTree +
                             process.HiForest +
                             process.ppTrack)
-
-#process.hltAna = cms.Path(process.hltanalysis)
+                            
 process.pAna = cms.EndPath(process.skimanalysis)
-
 
 
 #Filtering
