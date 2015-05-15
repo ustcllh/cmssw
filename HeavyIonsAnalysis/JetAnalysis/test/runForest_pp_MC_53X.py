@@ -254,6 +254,16 @@ process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3 )
 process.phltPixelClusterShapeFilter = cms.Path(process.siPixelRecHits*process.hltPixelClusterShapeFilter )
 process.phiEcalRecHitSpikeFilter = cms.Path(process.hiEcalRecHitSpikeFilter )
 
+process.load("HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff")
+
+process.pVertexFilterCutG = cms.Path(process.pileupVertexFilterCutG)
+process.pVertexFilterCutGloose = cms.Path(process.pileupVertexFilterCutGloose)
+process.pVertexFilterCutGtight = cms.Path(process.pileupVertexFilterCutGtight)
+process.pVertexFilterCutGplus = cms.Path(process.pileupVertexFilterCutGplus)
+process.pVertexFilterCutE = cms.Path(process.pileupVertexFilterCutE)
+process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
+
+
 # Customization
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 
