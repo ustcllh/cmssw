@@ -6,11 +6,13 @@ from RecoHI.HiTracking.HIPixelVerticesPreSplitting_cff import *
 #Jet Core emulation to identify jet-tracks
 #modify the original hiAk4CaloJetsForTrkPreSplitting to hiAkPu4CaloJetsForTrkPreSplitting from HIJET reco
 from RecoHI.HiJetAlgos.hiCaloJetsForTrk_cff import *
-from RecoHI.HiTracking.hiJetCoreRegionalStep_cff import hiJetsForCoreTracking,akPu4CaloJetsCorrected
+from RecoHI.HiTracking.hiJetCoreRegionalStep_cff import hiJetsForCoreTracking
 hiCaloTowerForTrkPreSplitting = hiCaloTowerForTrk.clone()
 hiAkPu4CaloJetsForTrkPreSplitting = akPu4CaloJetsForTrk.clone(
     src = 'hiCaloTowerForTrkPreSplitting',
     srcPVs = 'hiSelectedVertexPreSplitting')
+hiAkPu4CaloJetsCorrectedPreSplitting = akPu4CaloJetsCorrected.clone(
+    src = 'hiAkPu4CaloJetsForTrkPreSplitting')
 hiJetsForCoreTrackingPreSplitting = hiJetsForCoreTracking.clone(
     src = 'hiAkPu4CaloJetsForTrkPreSplitting')
 
@@ -31,6 +33,7 @@ hiInitialJetCoreClusterSplitting = cms.Sequence(
                                 hiPixelVerticesPreSplitting
                                 * hiCaloTowerForTrkPreSplitting
                                 * hiAkPu4CaloJetsForTrkPreSplitting
+								* hiAkPu4CaloJetsCorrectedPreSplitting
                                 * hiJetsForCoreTrackingPreSplitting
 				* siPixelClusters
                                 * siPixelRecHits
