@@ -25,6 +25,7 @@ hiGeneralTracks = RecoTracker.FinalTrackSelectors.trackListMerger_cfi.trackListM
                       cms.InputTag('hiDetachedTripletStepTracks'),
                       cms.InputTag('hiLowPtTripletStepTracks'),
                       cms.InputTag('hiPixelPairGlobalPrimTracks'),
+                      cms.InputTag('hiJetCoreRegionalStepTracks'),
                       cms.InputTag('hiRegitMuInitialStepTracks'),
                       cms.InputTag('hiRegitMuPixelPairStepTracks'),
                       cms.InputTag('hiRegitMuMixedTripletStepTracks'),
