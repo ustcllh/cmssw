@@ -138,7 +138,7 @@ hiJetCoreRegionalStepTrackCandidates = RecoTracker.CkfPattern.CkfTrackCandidates
 # TRACK FITTING
 import RecoTracker.TrackProducer.TrackProducer_cfi
 hiJetCoreRegionalStepTracks = RecoTracker.TrackProducer.TrackProducer_cfi.TrackProducer.clone(
-    AlgorithmName = cms.string('hiJetCoreRegionalStep'),
+    AlgorithmName = cms.string('jetCoreRegionalStep'),
     src = 'hiJetCoreRegionalStepTrackCandidates',
     Fitter = cms.string('FlexibleKFFittingSmoother')
     )
