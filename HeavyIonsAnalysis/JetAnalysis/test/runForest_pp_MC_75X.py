@@ -44,7 +44,7 @@ process.maxEvents = cms.untracked.PSet(
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.Geometry.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 process.load('Configuration.StandardSequences.Digi_cff')
 process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
@@ -55,10 +55,9 @@ process.load('RecoHI.HiCentralityAlgos.CentralityBin_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 # pp 75X MC
-
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-# process.GlobalTag = GlobalTag(process.GlobalTag, 'MCRUN2_74_V8B', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_data', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '74X_mcRun2_asymptotic_v3', '')
+
 
 # process.GlobalTag.toGet = cms.VPSet(
 # cms.PSet(record = cms.string('PTrackerParametersRcd'),
@@ -67,9 +66,9 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_data', '')
               # ),
 # )
 
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import *
-overrideGT_pp2760(process)
-overrideJEC_pp2760(process)
+from HeavyIonsAnalysis.Configuration.CommonFunctionsLocalDB2015_cff import *
+# overrideGT_pp2760(process)
+overrideJEC_pp5020(process)
 
 process.HeavyIonGlobalParameters = cms.PSet(
     centralityVariable = cms.string("HFtowersTrunc"),
@@ -176,10 +175,10 @@ process.hiTracks.cut = cms.string('quality("highPurity")')
 
 # set track collection to iterative tracking
 process.ppTrack.trackSrc = cms.InputTag("generalTracks")
+process.ppTrack.mvaSrc = cms.string("generalTracks")
  
 process.ppTrack.doSimVertex = True
 process.ppTrack.doSimTrack = True
-process.ppTrack.pfCandSrc = cms.InputTag("particleFlow")
 
 process.load("SimTracker.TrackAssociation.trackingParticleRecoTrackAsssociation_cff")
 process.tpRecoAssocGeneralTracks = process.trackingParticleRecoTrackAsssociation.clone()
