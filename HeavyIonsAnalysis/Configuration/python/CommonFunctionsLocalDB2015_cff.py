@@ -1087,11 +1087,11 @@ def overrideJEC_pp5020(process):
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                  label = cms.untracked.string("AKPu3Calo_HI")
              ), 
-	    cms.PSet(record = cms.string("AK4Calo_offline"),
+	    cms.PSet(record = cms.string("JetCorrectionsRecord"),
 #                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_538_v07_AK4Calo_offline"),
 #                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
                   tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v1_AK4Calo_offline"),
-                  connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/j/jrobles/scratch0/newCMSSW_5_3_8_patch2/src/DB_JEC/v9/JEC_PP2760GEV_CMSSW538_2013.db"),
+                  connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v1.db"),
                   label = cms.untracked.string("AK4Calo_offline")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
