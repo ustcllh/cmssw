@@ -768,7 +768,6 @@ def overrideJEC_pp2760(process):
                  label = cms.untracked.string("AK5Calo_HI")
              ),
 
-
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_pp_PythiaZ2_2760GeV_538_v85_AK3Calo_offline"),
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
@@ -1066,22 +1065,40 @@ def overrideJEC_pp5020(process):
     process.GlobalTag.toGet.extend([
 
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_pp_PythiaZ2_2760GeV_538_v85_AK3Calo_offline"),
-                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK1Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 label = cms.untracked.string("AK1Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK2Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 label = cms.untracked.string("AK2Calo_HI")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK3Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK3Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v14_AK4Calo_offline"),
-                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v1.db"),
-                 label = cms.untracked.string("AK4Calo_offline")
-             ),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK4Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 label = cms.untracked.string("AK4Calo_HI")
+            ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v14_AK5Calo_offline"),
-                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK5Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
                  label = cms.untracked.string("AK5Calo_HI")
-             ),
-
-
+            ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK6Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 label = cms.untracked.string("AK6Calo_HI")
+            ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28_AK7Calo"),
+                 connect = cms.untracked.string("sqlite_file:JEC_2013RECO_STARTHI53_LV1_5_3_16_Track8_Jet28.db"),
+                 label = cms.untracked.string("AK7Calo_HI")
+            ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_pp_PythiaZ2_2760GeV_538_v85_AK3Calo_offline"),
                  connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
