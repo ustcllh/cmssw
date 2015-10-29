@@ -1107,9 +1107,9 @@ def overrideJEC_pp5020(process):
                  label = cms.untracked.string("AKVs3Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
-                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v14_AKVs4Calo_offline"),
-                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v1.db"),
-                 label = cms.untracked.string("AK4Calo_offline")
+                 tag = cms.string("JetCorrectorParametersCollection_pp_PythiaZ2_2760GeV_538_v85_AK4Calo_offline"),
+                 connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_PHYSICSTOOLS"),
+                 label = cms.untracked.string("AKVs4Calo_HI")
              ),
         cms.PSet(record = cms.string("JetCorrectionsRecord"),
                  tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v14_AKVs5Calo_offline"),
@@ -1369,7 +1369,52 @@ def overrideJEC_pp5020(process):
                  label = cms.untracked.string("AKPu7PF_hiIterativeTracks")
         ),
 
-###PLACEHOLDERS END###
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v14_AKVs4Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v1.db"),
+                 label = cms.untracked.string("AK4Calo_offline")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaZ2_2760GeV_5316_v14_AKVs4Calo_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v1.db"),
+                 label = cms.untracked.string("AK4Calo_offline")
+             ),
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v2_AK1PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v2.db"),
+                 label = cms.untracked.string("AK1PF_offline")
+             ),
+             
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v2_AK2PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v2.db"),
+                 label = cms.untracked.string("AK2PF_offline")
+             ),
+             
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v2_AK3PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v2.db"),
+                 label = cms.untracked.string("AK3PF_offline")
+             ),
+             
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v2_AK4PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v2.db"),
+                 label = cms.untracked.string("AK4PF_offline")
+             ),
+             
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v2_AK5PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v2.db"),
+                 label = cms.untracked.string("AK5PF_offline")
+             ),
+             
+        cms.PSet(record = cms.string("JetCorrectionsRecord"),
+                 tag = cms.string("JetCorrectorParametersCollection_HI_PythiaCUETP8M1_5020GeV_753p1_v2_AK6PF_offline"),
+                 connect = cms.untracked.string("sqlite_file:HI_PythiaCUETP8M1_5020GeV_753p1_v2.db"),
+                 label = cms.untracked.string("AK6PF_offline")
+             ),
+             ###PLACEHOLDERS END###
 
     ])
 
