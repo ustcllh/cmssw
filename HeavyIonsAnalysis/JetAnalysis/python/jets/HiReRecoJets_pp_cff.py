@@ -94,20 +94,20 @@ akPu5PFJets
 akPu6PFJets
 +
 akPu7PFJets
-+
-akVs1PFJets
-+
-akVs2PFJets
-+
-akVs3PFJets
-+
-akVs4PFJets
-+
-akVs5PFJets
-+
-akVs6PFJets
-+
-akVs7PFJets
+# +
+# akVs1PFJets
+# +
+# akVs2PFJets
+# +
+# akVs3PFJets
+# +
+# akVs4PFJets
+# +
+# akVs5PFJets
+# +
+# akVs6PFJets
+# +
+# akVs7PFJets
 )
 
 hiReRecoCaloJets = cms.Sequence(
@@ -138,18 +138,18 @@ akPu5CaloJets
 akPu6CaloJets
 +
 akPu7CaloJets
-+
-akVs1CaloJets
-+
-akVs2CaloJets
-+
-akVs3CaloJets
-+
-akVs4CaloJets
-+
-akVs5CaloJets
-+
-akVs6CaloJets
-+
-akVs7CaloJets
+# +
+# akVs1CaloJets
+# +
+# akVs2CaloJets
+# +
+# akVs3CaloJets
+# +
+# akVs4CaloJets
+# +
+# akVs5CaloJets
+# +
+# akVs6CaloJets
+# +
+# akVs7CaloJets
 )
