@@ -162,6 +162,7 @@ process.jetSequences = cms.Sequence(
 ############################
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_data_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+process.load('HeavyIonsAnalysis.EventAnalysis.hltobject_PbPb_cfi')
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
@@ -195,6 +196,7 @@ process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.Input
 #########################
 
 process.ana_step = cms.Path(process.hltanalysis *
+			    process.hltobject *
                             process.centralityBin *
                             process.hiEvtAnalyzer*
                             process.jetSequences +

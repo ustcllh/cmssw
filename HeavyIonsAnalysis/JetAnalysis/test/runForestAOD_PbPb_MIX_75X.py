@@ -103,6 +103,7 @@ process.HiGenParticleAna.doHI = False
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
 process.hiEvtAnalyzer.doMC = cms.bool(False) #the gen info dataformat has changed in 73X, we need to update hiEvtAnalyzer code
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+process.load('HeavyIonsAnalysis.EventAnalysis.hltobject_PbPb_cfi')
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0

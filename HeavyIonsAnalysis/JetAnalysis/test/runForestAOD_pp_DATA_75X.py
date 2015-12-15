@@ -108,6 +108,7 @@ process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVertices")
 process.hiEvtAnalyzer.doCentrality = cms.bool(False)
 process.hiEvtAnalyzer.doEvtPlane = cms.bool(False)
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
+process.load("HeavyIonsAnalysis.EventAnalysis.hltobject_cfi")
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
@@ -148,6 +149,7 @@ process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.Input
 
 
 process.ana_step = cms.Path(process.hltanalysis *
+			    process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
                             process.ggHiNtuplizer +
