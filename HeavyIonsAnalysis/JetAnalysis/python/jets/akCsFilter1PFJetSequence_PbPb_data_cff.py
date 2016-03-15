@@ -188,7 +188,8 @@ akCsFilter1PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akC
                                                              genPtMin = cms.untracked.double(15),
                                                              hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL'),
 							     doTower = cms.untracked.bool(True),
-							     doSubJets = cms.untracked.bool(True)
+							     doSubJets = cms.untracked.bool(True),
+                                                             doGenTaus = False
                                                              )
 
 akCsFilter1PFJetSequence_mc = cms.Sequence(

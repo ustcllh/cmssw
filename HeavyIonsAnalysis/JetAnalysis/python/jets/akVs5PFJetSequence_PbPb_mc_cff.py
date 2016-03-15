@@ -188,7 +188,8 @@ akVs5PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVs5PFpa
                                                              genPtMin = cms.untracked.double(15),
                                                              hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL'),
 							     doTower = cms.untracked.bool(True),
-							     doSubJets = cms.untracked.bool(False)
+							     doSubJets = cms.untracked.bool(False),
+                                                             doGenTaus = True
                                                              )
 
 akVs5PFJetSequence_mc = cms.Sequence(

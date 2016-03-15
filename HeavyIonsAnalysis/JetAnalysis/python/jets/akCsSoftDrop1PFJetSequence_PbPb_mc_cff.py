@@ -188,7 +188,8 @@ akCsSoftDrop1PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("a
                                                              genPtMin = cms.untracked.double(15),
                                                              hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL'),
 							     doTower = cms.untracked.bool(True),
-							     doSubJets = cms.untracked.bool(True)
+							     doSubJets = cms.untracked.bool(True),
+                                                             doGenTaus = True
                                                              )
 
 akCsSoftDrop1PFJetSequence_mc = cms.Sequence(
