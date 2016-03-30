@@ -176,7 +176,7 @@ void CSJetProducer::runAlgorithm( edm::Event & iEvent, edm::EventSetup const& iS
       fjJets_.push_back( subtracted_jet );
     
   }//jet loop
-  
+  fjJets_ = fastjet::sorted_by_pt(fjJets_); 
 }
 
 bool  CSJetProducer::function_used_for_sorting(std::pair<double,int> i,std::pair<double, int> j){
