@@ -150,6 +150,9 @@ akCs3PFJets.src = cms.InputTag('particleFlowTmpFiltered')
 akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
 akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
 
+kt2PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+kt4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+
 jetSequences = cms.Sequence(  
     particleFlowTmpFiltered +
     voronoiBackgroundPF +
