@@ -139,10 +139,21 @@ ak6PFJetAnalyzer.doSubEvent = True
 ak6CaloJetAnalyzer.doSubEvent = True
 
 
+particleFlowTmpFiltered = cms.EDFilter("PtMinCandViewSelector",
+    src = cms.InputTag("particleFlowTmp"),
+    ptMin = cms.double(0.5)
+  )
 
-jetSequences = cms.Sequence(
-    voronoiBackgroundPF+
-    voronoiBackgroundCalo+
+
+akCs2PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+akCs3PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+
+jetSequences = cms.Sequence(  
+    particleFlowTmpFiltered +
+    voronoiBackgroundPF +
+    voronoiBackgroundCalo +
     kt2PFJets +
     kt4PFJets +
     hiFJRhoProducer +

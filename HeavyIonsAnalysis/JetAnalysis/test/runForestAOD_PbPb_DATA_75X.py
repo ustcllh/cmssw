@@ -127,7 +127,20 @@ process.highPurityTracks = cms.EDFilter("TrackSelector",
 process.load("RecoVertex.PrimaryVertexProducer.OfflinePrimaryVertices_cfi")
 process.offlinePrimaryVertices.TrackLabel = 'highPurityTracks'
 
+process.particleFlowTmpFiltered = cms.EDFilter("PtMinCandViewSelector",
+    src = cms.InputTag("particleFlowTmp"),
+    ptMin = cms.double(0.5)
+  )
+
+process.akCs2PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+process.akCs3PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+process.akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+process.akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+
+process.kt4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+
 process.jetSequences = cms.Sequence(
+    process.particleFlowTmpFiltered +
     voronoiBackgroundPF+
     voronoiBackgroundCalo+
     process.kt4PFJets +

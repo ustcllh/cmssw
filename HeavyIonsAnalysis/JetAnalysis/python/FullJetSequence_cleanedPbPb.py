@@ -47,9 +47,24 @@ highPurityTracks = cms.EDFilter("TrackSelector",
 from RecoVertex.PrimaryVertexProducer.OfflinePrimaryVertices_cfi import *
 offlinePrimaryVertices.TrackLabel = 'highPurityTracks'
 
-jetSequences = cms.Sequence(
-    voronoiBackgroundPF+
-    voronoiBackgroundCalo+
+particleFlowTmpFiltered = cms.EDFilter("PtMinCandViewSelector",
+    src = cms.InputTag("particleFlowTmp"),
+    ptMin = cms.double(0.5)
+  )
+
+
+akCs2PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+akCs3PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+akCs4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+
+kt2PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+kt4PFJets.src = cms.InputTag('particleFlowTmpFiltered')
+
+jetSequences = cms.Sequence( 
+    particleFlowTmpFiltered +
+    voronoiBackgroundPF +
+    voronoiBackgroundCalo +
     kt2PFJets +
     kt4PFJets +
     hiFJRhoProducer +
