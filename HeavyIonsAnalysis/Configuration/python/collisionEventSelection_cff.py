@@ -17,23 +17,10 @@ primaryVertexFilterPA = cms.EDFilter("VertexSelector",
 )
 
 
-# Cluster-shape filter re-run offline
-from RecoLocalTracker.SiPixelRecHits.SiPixelRecHits_cfi import *
-from HLTrigger.special.hltPixelClusterShapeFilter_cfi import *
-hltPixelClusterShapeFilter.inputTag = "siPixelRecHits"
-
-# Cluster-shape filter re-run offline from ClusterCompatibility object
+# Cluster-shape filter re-run offline from ClusterCompatibility object for PbPb
 from HeavyIonsAnalysis.Configuration.HIClusterCompatibilityFilter_cfi import *
 
-# Reject BSC beam halo L1 technical bits
-from L1TriggerConfig.L1GtConfigProducers.L1GtTriggerMaskTechTrigConfig_cff import *
-from HLTrigger.HLTfilters.hltLevel1GTSeed_cfi import hltLevel1GTSeed
-noBSChalo = hltLevel1GTSeed.clone(
-    L1TechTriggerSeeding = cms.bool(True),
-    L1SeedsLogicalExpression = cms.string('NOT (36 OR 37 OR 38 OR 39)')
-)
-
-#Reject beam scraping events standard pp configuration
+#Reject beam scraping events standard pp and pA configuration
 NoScraping = cms.EDFilter("FilterOutScraping",
  applyfilter = cms.untracked.bool(True),
  debugOn = cms.untracked.bool(False),
@@ -41,16 +28,20 @@ NoScraping = cms.EDFilter("FilterOutScraping",
  thresh = cms.untracked.double(0.25)
 )
 
+
+#Reject events with pile-up, optionally
+from HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff import *
+
+
 collisionEventSelection = cms.Sequence(hfCoincFilter3 *
                                        primaryVertexFilter *
                                        clusterCompatibilityFilter)
-
-collisionEventSelection_HaloAndMonster = cms.Sequence(noBSChalo *
-                                                      siPixelRecHits *
-                                                      hltPixelClusterShapeFilter)
 
 collisionEventSelectionPA = cms.Sequence(hfCoincFilter *
                                          primaryVertexFilterPA *
                                          NoScraping
                                          )
+
+collisionEventSelectionPA_rejectPU = cms.Sequence(collisionEventSelectionPA *
+                                                  pileupVertexFilterCutGplus)
 
