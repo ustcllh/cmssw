@@ -23,7 +23,7 @@ from HLTrigger.special.hltPixelClusterShapeFilter_cfi import *
 hltPixelClusterShapeFilter.inputTag = "siPixelRecHits"
 
 # Cluster-shape filter re-run offline from ClusterCompatibility object
-from HeavyIonsAnalysis.EventAnalysis.HIClusterCompatibilityFilter_cfi import *
+from HeavyIonsAnalysis.Configuration.HIClusterCompatibilityFilter_cfi import *
 
 # Reject BSC beam halo L1 technical bits
 from L1TriggerConfig.L1GtConfigProducers.L1GtTriggerMaskTechTrigConfig_cff import *
