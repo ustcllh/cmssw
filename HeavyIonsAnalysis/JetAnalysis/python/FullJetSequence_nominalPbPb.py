@@ -5,6 +5,7 @@ from Configuration.StandardSequences.ReconstructionHeavyIons_cff import voronoiB
 from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
 from RecoHI.HiJetAlgos.hiFJRhoProducer import hiFJRhoProducer
 from RecoHI.HiJetAlgos.hiFJGridEmptyAreaCalculator_cff import hiFJGridEmptyAreaCalculator
+from RecoHI.HiJetAlgos.hiFJRhoFlowModulationProducer_cff import hiFJRhoFlowModulationProducer
 kt4PFJets.src = cms.InputTag('particleFlowTmp')
 kt4PFJets.doAreaFastjet = True
 kt4PFJets.jetPtMin      = cms.double(0.0)
@@ -51,6 +52,7 @@ jetSequences = cms.Sequence(
     kt4PFJets +
     hiFJRhoProducer +
     hiFJGridEmptyAreaCalculator +
+    hiFJRhoFlowModulationProducer +
 
     akPu2CaloJets +
     akPu2PFJets +

@@ -25,7 +25,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-                                "/store/group/phys_heavyions/velicanu/reco/HIPhysicsMinBiasUPC/v0/000/262/548/recoExpress_84.root"
+        "/store/group/phys_heavyions/velicanu/reco/HIPhysicsMinBiasUPC/v0/000/262/548/recoExpress_84.root"
                             )
 )
 
@@ -83,7 +83,9 @@ process.kt4PFJets.doAreaFastjet = True
 process.kt4PFJets.jetPtMin      = cms.double(0.0)
 process.kt4PFJets.GhostArea     = cms.double(0.005)
 from RecoHI.HiJetAlgos.hiFJGridEmptyAreaCalculator_cff import hiFJGridEmptyAreaCalculator
+from RecoHI.HiJetAlgos.hiFJRhoFlowModulationProducer_cff import hiFJRhoFlowModulationProducer
 process.hiFJGridEmptyAreaCalculator = hiFJGridEmptyAreaCalculator
+process.hiFJRhoFlowModulationProducer = hiFJRhoFlowModulationProducer
 
 process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzer_cff')
 
@@ -132,7 +134,8 @@ process.jetSequences = cms.Sequence(
     voronoiBackgroundCalo+
     process.kt4PFJets +
     process.hiFJRhoProducer +
-	process.hiFJGridEmptyAreaCalculator +
+    process.hiFJGridEmptyAreaCalculator +
+    process.hiFJRhoFlowModulationProducer +
     process.hiFJRhoAnalyzer +
     process.akPu2CaloJets +
     process.akPu2PFJets +
