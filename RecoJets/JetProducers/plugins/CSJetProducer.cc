@@ -12,15 +12,16 @@ CSJetProducer::CSJetProducer(edm::ParameterSet const& conf):
   VirtualJetProducer( conf ),
   csRho_EtaMax_(-1.0),
   csRParam_(-1.0),
-  csAlpha_(0.)
+  csAlpha_(0.),
+  useModulatedRho_(false)
 {
   //get eta range, rho and rhom map
   etaToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "etaMap" ));
   rhoToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "rho" ));
   rhomToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "rhom" ));
   rhoFlowFitParamsToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "rhoFlowFitParams" ));
-
   csAlpha_ = conf.getParameter<double>("csAlpha");
+  useModulatedRho_ = conf.getParameter<bool>("useModulatedRho");
 }
 
 void CSJetProducer::produce( edm::Event & iEvent, const edm::EventSetup & iSetup )
@@ -77,7 +78,7 @@ void CSJetProducer::runAlgorithm( edm::Event & iEvent, edm::EventSetup const& iS
   //Starting from here re-implementation of constituent subtraction
   //source: http://fastjet.hepforge.org/svn/contrib/contribs/ConstituentSubtractor/tags/1.0.0/ConstituentSubtractor.cc
   //some minor modifications with respect to original
-  //main change: eta-dependent rho within the jet
+  //main change: eta+phi-dependent rho within the jet
   for ( std::vector<fastjet::PseudoJet>::const_iterator ijet = tempJets.begin(), ijetEnd = tempJets.end(); ijet != ijetEnd; ++ijet ) {
   
     //----------------------------------------------------------------------
@@ -88,22 +89,81 @@ void CSJetProducer::runAlgorithm( edm::Event & iEvent, edm::EventSetup const& iS
     unsigned long nParticles=particles.size();
     if(nParticles==0) continue; //don't subtract ghost jets
     
-    //assign rho and rhom to ghosts according to local eta-dependent map
+    //assign rho and rhom to ghosts according to local eta-dependent map + modulation as function of phi
     std::vector<double> rho;
     std::vector<double> rhom;
     for (unsigned int j=0;j<nGhosts; j++) {
-
+      double ghostPhi = ghosts[j].phi_std();
       if(ghosts[j].eta()<=etaRanges->at(0)) {
-        rho.push_back(rhoRanges->at(0));
-        rhom.push_back(rhomRanges->at(0));
+        
+        if(useModulatedRho_) {
+          rho.push_back(getModulatedRho(ghostPhi,
+                                        rhoRanges->at(0),
+                                        rhoFlowFitParams->at(2),
+                                        rhoFlowFitParams->at(4),
+                                        rhoFlowFitParams->at(1),
+                                        rhoFlowFitParams->at(3)
+                                        ));
+          rhom.push_back(getModulatedRho(ghostPhi,
+                                         rhomRanges->at(0),
+                                         rhoFlowFitParams->at(2),
+                                         rhoFlowFitParams->at(4),
+                                         rhoFlowFitParams->at(1),
+                                         rhoFlowFitParams->at(3)
+                                         ));
+        } else {
+          rho.push_back(rhoRanges->at(0));
+          rhom.push_back(rhomRanges->at(0));
+        }
+        
       } else if(ghosts[j].eta()>=etaRanges->at(etaRanges->size()-1)) {
-        rho.push_back(rhoRanges->at(rhoRanges->size()-1));
-        rhom.push_back(rhomRanges->at(rhomRanges->size()-1));
+        
+        if(useModulatedRho_) {
+          rho.push_back(getModulatedRho(ghostPhi,
+                                        rhoRanges->at(rhoRanges->size()-1),
+                                        rhoFlowFitParams->at(2),
+                                        rhoFlowFitParams->at(4),
+                                        rhoFlowFitParams->at(1),
+                                        rhoFlowFitParams->at(3)
+                                        ));
+
+          rhom.push_back(getModulatedRho(ghostPhi,
+                                         rhomRanges->at(rhoRanges->size()-1),
+                                         rhoFlowFitParams->at(2),
+                                         rhoFlowFitParams->at(4),
+                                         rhoFlowFitParams->at(1),
+                                         rhoFlowFitParams->at(3)
+                                         ));
+        } else {
+          rho.push_back(rhoRanges->at(rhoRanges->size()-1));
+          rhom.push_back(rhomRanges->at(rhomRanges->size()-1));
+        }
+        
       } else {
         for(int ie = 0; ie<(int)(etaRanges->size()-1); ie++) {
           if(ghosts[j].eta()>=etaRanges->at(ie) && ghosts[j].eta()<etaRanges->at(ie+1)) {
-            rho.push_back(rhoRanges->at(ie));
-            rhom.push_back(rhomRanges->at(ie));
+            
+            if(useModulatedRho_) {
+              rho.push_back(getModulatedRho(ghostPhi,
+                                            rhoRanges->at(ie),
+                                            rhoFlowFitParams->at(2),
+                                            rhoFlowFitParams->at(4),
+                                            rhoFlowFitParams->at(1),
+                                            rhoFlowFitParams->at(3)
+                                            ));
+              
+              rhom.push_back(getModulatedRho(ghostPhi,
+                                             rhomRanges->at(ie),
+                                             rhoFlowFitParams->at(2),
+                                             rhoFlowFitParams->at(4),
+                                             rhoFlowFitParams->at(1),
+                                             rhoFlowFitParams->at(3)
+                                             ));
+            } else {
+              rho.push_back(rhoRanges->at(ie));
+              rhom.push_back(rhomRanges->at(ie));
+            }
+            
             break;
           }
         }
@@ -195,6 +255,19 @@ void CSJetProducer::runAlgorithm( edm::Event & iEvent, edm::EventSetup const& iS
 
 bool  CSJetProducer::function_used_for_sorting(std::pair<double,int> i,std::pair<double, int> j){
     return (i.first < j.first);
+}
+
+//______________________________________________________________________________
+double CSJetProducer::getModulatedRho(const double phi, const double rho, const double eventPlane2, const double eventPlane3, const double par1, const double par2) {
+
+  //get the rho modulation as function of phi
+  //flow modulation fit is done in HiJetBackground/HiFJRhoFlowModulationProducer
+  
+  //std::string flowFitForm = "[0]*(1 + 2*([1]*TMath::Cos(2*(x - " + std::to_string(eventPlane2) + ")) + [2]*TMath::Cos(3*(x - " + std::to_string(eventPlane3) + "))))";
+
+  double mod = rho*(1. + 2.*(par1*cos(2.*(phi - eventPlane2))) + par2*cos(3.*(phi - eventPlane3)));
+
+  return mod;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
