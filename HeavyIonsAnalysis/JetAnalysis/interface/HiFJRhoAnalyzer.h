@@ -56,6 +56,7 @@ class HiFJRhoAnalyzer : public edm::EDAnalyzer {
       edm::EDGetTokenT<std::vector<double>>                  ptJetsToken_;
       edm::EDGetTokenT<std::vector<double>>                  areaJetsToken_;
       edm::EDGetTokenT<std::vector<double>>                  etaJetsToken_;
+      edm::EDGetTokenT<std::vector<double>>                  rhoFlowFitParamsToken_;
 
       //output
       TTree *tree_;
@@ -79,6 +80,8 @@ class HiFJRhoAnalyzer : public edm::EDAnalyzer {
         std::vector<double>ptJets;
         std::vector<double>areaJets;
         std::vector<double>etaJets;
+
+        std::vector<double>rhoFlowFitParams;
       };
       
       RHO rhoObj_;

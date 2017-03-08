@@ -18,6 +18,8 @@ CSJetProducer::CSJetProducer(edm::ParameterSet const& conf):
   etaToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "etaMap" ));
   rhoToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "rho" ));
   rhomToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "rhom" ));
+  rhoFlowFitParamsToken_ = consumes<std::vector<double>>(conf.getParameter<edm::InputTag>( "rhoFlowFitParams" ));
+
   csAlpha_ = conf.getParameter<double>("csAlpha");
 }
 
@@ -55,10 +57,22 @@ void CSJetProducer::runAlgorithm( edm::Event & iEvent, edm::EventSetup const& iS
   edm::Handle<std::vector<double>> etaRanges;
   edm::Handle<std::vector<double>> rhoRanges;
   edm::Handle<std::vector<double>> rhomRanges;
+
+  edm::Handle<std::vector<double>> rhoFlowFitParams;
   
   iEvent.getByToken(etaToken_, etaRanges);
   iEvent.getByToken(rhoToken_, rhoRanges);
   iEvent.getByToken(rhomToken_, rhomRanges);
+  //Five params: rho from fit, v2, eventPlane2, v3, eventPlane3
+  iEvent.getByToken(rhoFlowFitParamsToken_, rhoFlowFitParams);
+
+  /*Print statement of rho fit param for local testing
+  std::cout << "Rho flow fit params for " << iEvent.id().event() << std::endl;
+  for(unsigned int iter = 0; iter < rhoFlowFitParams->size(); iter++){
+    std::cout << " " << rhoFlowFitParams->at(iter);
+  }
+  std::cout << std::endl;
+  */
 
   //Starting from here re-implementation of constituent subtraction
   //source: http://fastjet.hepforge.org/svn/contrib/contribs/ConstituentSubtractor/tags/1.0.0/ConstituentSubtractor.cc

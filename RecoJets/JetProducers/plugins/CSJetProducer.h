@@ -49,6 +49,7 @@ namespace cms
     edm::EDGetTokenT<std::vector<double>>                       etaToken_;
     edm::EDGetTokenT<std::vector<double>>                       rhoToken_;
     edm::EDGetTokenT<std::vector<double>>                       rhomToken_;
+    edm::EDGetTokenT<std::vector<double>>                       rhoFlowFitParamsToken_;
   };
 }
 #endif

@@ -67,6 +67,7 @@ HiFJRhoAnalyzer::HiFJRhoAnalyzer(const edm::ParameterSet& iConfig)
   ptJetsToken_ = consumes<std::vector<double>>(iConfig.getParameter<edm::InputTag>( "ptJets" ));
   areaJetsToken_ = consumes<std::vector<double>>(iConfig.getParameter<edm::InputTag>( "areaJets" ));
   etaJetsToken_ = consumes<std::vector<double>>(iConfig.getParameter<edm::InputTag>( "etaJets" ));
+  rhoFlowFitParamsToken_ = consumes<std::vector<double>>(iConfig.getParameter<edm::InputTag>( "rhoFlowFitParams" ));
 }
 
 
@@ -104,6 +105,7 @@ void HiFJRhoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   rhoObj_.ptJets.clear();
   rhoObj_.areaJets.clear();
   rhoObj_.etaJets.clear();
+  rhoObj_.rhoFlowFitParams.clear();
   
   // Get the vector of background densities
   edm::Handle<std::vector<double>> etaRanges;
@@ -122,6 +124,7 @@ void HiFJRhoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   edm::Handle<std::vector<double>> ptJets;
   edm::Handle<std::vector<double>> areaJets;
   edm::Handle<std::vector<double>> etaJets;
+  edm::Handle<std::vector<double>> rhoFlowFitParams;
   
   iEvent.getByToken(etaToken_, etaRanges);
   iEvent.getByToken(rhoToken_, rho);
@@ -138,6 +141,7 @@ void HiFJRhoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   iEvent.getByToken(ptJetsToken_, ptJets);
   iEvent.getByToken(areaJetsToken_, areaJets);
   iEvent.getByToken(etaJetsToken_, etaJets);
+  iEvent.getByToken(rhoFlowFitParamsToken_, rhoFlowFitParams);
   
   int neta = (int)etaRanges->size();
   for(int ieta = 0; ieta<(neta-1); ieta++) {
@@ -157,6 +161,13 @@ void HiFJRhoAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     rhoObj_.areaJets.push_back(areaJets->at(ijet));
     rhoObj_.etaJets.push_back(etaJets->at(ijet));
   }
+
+
+  int nParams = (int)rhoFlowFitParams->size();
+  for(int paramIter = 0; paramIter<nParams; paramIter++) {
+    rhoObj_.rhoFlowFitParams.push_back(rhoFlowFitParams->at(paramIter));
+  }
+
   
   // int netaGrid = (int)rhoGrid->size();
   // for(int igrid = 0; igrid<netaGrid; igrid++) {
@@ -192,6 +203,9 @@ HiFJRhoAnalyzer::beginJob()
   tree_->Branch("ptJets",&(rhoObj_.ptJets));
   tree_->Branch("etaJets",&(rhoObj_.etaJets));
   tree_->Branch("areaJets",&(rhoObj_.areaJets));
+
+  tree_->Branch("rhoFlowFitParams",&(rhoObj_.rhoFlowFitParams));
+
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
