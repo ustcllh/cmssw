@@ -45,7 +45,7 @@ process.load('Configuration.Geometry.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
-process.load("CondCore.DBCommon.CondDBCommon_cfi")
+process.load('CondCore.CondDB.CondDB_cfi')
  
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_v19', '')
@@ -86,7 +86,10 @@ process.TFileService = cms.Service("TFileService",
 # Jets
 #############################
 
-process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_DataPPb")
+#Pu v2 settings with minimum tower threshold
+process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_puLimitedDatapPb")
+#nominal (Pu v1 settings)
+#process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_DataPPb")
 
 #####################################################################################
 
@@ -156,8 +159,8 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 dataFormat = DataFormat.AOD
 switchOnVIDElectronIdProducer(process, dataFormat)
 
-# define which IDs we want to produce. Check here https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_7_4
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff']
+# define which IDs we want to produce. Check here https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Working_points_for_2016_data_for
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:

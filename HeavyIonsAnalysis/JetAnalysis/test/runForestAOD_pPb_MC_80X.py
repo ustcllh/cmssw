@@ -27,13 +27,14 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-				'file:/afs/cern.ch/user/k/kjung/run2Validation/HLTchecks/CMSSW_8_0_22/src/pPb_5TeVEpos_RECO.root'
+				#'file:/afs/cern.ch/user/k/kjung/run2Validation/HLTchecks/CMSSW_8_0_22/src/pPb_5TeVEpos_RECO.root'
+				'/store/user/gsfs/Pythia8_Dijet120_pPb816_DataBS/RECODEBUG_20170225/170225_141006/0000/step3_Debug_pPb_8TeV_RAW2DIGI_L1Reco_RECO_EI_VALIDATION_DQM_1.root'
 				)
 )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(500))
 
 
 #####################################################################################
@@ -45,7 +46,7 @@ process.load('Configuration.Geometry.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
-process.load("CondCore.DBCommon.CondDBCommon_cfi")
+process.load('CondCore.CondDB.CondDB_cfi')
  
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_miniAODv2_v1', '')
@@ -87,7 +88,10 @@ process.TFileService = cms.Service("TFileService",
 # Jets
 #############################
 
-process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPPb")
+#Pu v2 settings with minimum tower threshold
+process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_puLimitedpPb")
+#nominal (Pu v1 settings)
+#process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPPb")
 # Use this version for JEC
 #process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPP")
 
@@ -164,8 +168,8 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 dataFormat = DataFormat.AOD
 switchOnVIDElectronIdProducer(process, dataFormat)
 
-# define which IDs we want to produce. Check here https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_7_4
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff']
+# define which IDs we want to produce. Check here https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Working_points_for_2016_data_for
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:
