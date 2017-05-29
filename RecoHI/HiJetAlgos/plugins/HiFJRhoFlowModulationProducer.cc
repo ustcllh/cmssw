@@ -122,8 +122,8 @@ HiFJRhoFlowModulationProducer::produce(edm::Event& iEvent, const edm::EventSetup
       if(pfCandidate.eta() < -1.0) continue;
       if(pfCandidate.eta() > 1.0) continue;
 
-      if(pfCandidate.pt() < .2) continue;
-      if(pfCandidate.pt() > 10.) continue;
+      if(pfCandidate.pt() < .3) continue;
+      if(pfCandidate.pt() > 3.) continue;
 
       if(pfCandidate.particleId() != 1) continue;
 
@@ -146,6 +146,9 @@ HiFJRhoFlowModulationProducer::produce(edm::Event& iEvent, const edm::EventSetup
     flowFit_p->SetParameter(0, mapRho->at(4));
     flowFit_p->SetParameter(1, 0);
     flowFit_p->SetParameter(2, 0);
+
+    TF1* lineFit_p = new TF1("lineFit", "[0]", -TMath::Pi(), TMath::Pi());
+    lineFit_p->SetParameter(0, mapRho->at(4));
 
     std::string flowFitForm2 = std::to_string(mapRho->at(4)) + "*(1 + 2*([0]*TMath::Cos(2*(x - " + std::to_string(eventPlane2) + ")) + [1]*TMath::Cos(3*(x - " + std::to_string(eventPlane3) + "))))";
 
@@ -172,14 +175,17 @@ HiFJRhoFlowModulationProducer::produce(edm::Event& iEvent, const edm::EventSetup
     phiWeight_h->Fit(flowFit_p, "Q M E", "", -TMath::Pi(), TMath::Pi());
     phiWeight_h->Fit(flowFit2_p, "Q M E", "", -TMath::Pi(), TMath::Pi());
 
-    rhoFlowFitParamsOut->at(0) = flowFit_p->GetParameter(0);
-    rhoFlowFitParamsOut->at(1) = flowFit_p->GetParameter(1);
-    rhoFlowFitParamsOut->at(3) = flowFit_p->GetParameter(2);
+    if(flowFit_p->GetChisquare()/float(nPhiBins - 3) < 2. && lineFit_p->GetChisquare()/float(nPhiBins-1) > flowFit_p->GetChisquare()/float(nPhiBins - 3)){
+      rhoFlowFitParamsOut->at(0) = flowFit_p->GetParameter(0);
+      rhoFlowFitParamsOut->at(1) = flowFit_p->GetParameter(1);
+      rhoFlowFitParamsOut->at(3) = flowFit_p->GetParameter(2);
+    }
 
     delete phi_h;
     delete phiWeight_h;
 
     delete flowFit_p;
+    delete lineFit_p;
     delete flowFit2_p;
   }
 
