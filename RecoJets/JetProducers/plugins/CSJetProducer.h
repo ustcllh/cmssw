@@ -38,7 +38,7 @@ namespace cms
 
     static bool function_used_for_sorting(std::pair<double,int> i,std::pair<double, int> j);
 
-    double getModulatedRho(const double phi,const double rho, const double eventPlane2, const double eventPlane3, const double par1, const double par2);
+    double getModulatedRhoFactor(const double phi, const double eventPlane2, const double eventPlane3, const double par1, const double par2);
     
      // calls VirtualJetProducer::inputTowers
     //virtual void inputTowers();
@@ -48,6 +48,8 @@ namespace cms
     double csAlpha_;            /// for HI constituent subtraction : alpha (power of pt in metric)
 
     bool   useModulatedRho_;    /// flag to turn on/off flow-modulated rho and rhom
+    bool   doFlowFlatComp_;     /// flag for checking that flow-modulation fit is not more compatible with flat line
+    double minFlowChi2OverNDOF_;/// flowFit chi2/ndof minimum compatability requirement
     
     //input rho and rho_m + eta map
     edm::EDGetTokenT<std::vector<double>>                       etaToken_;
