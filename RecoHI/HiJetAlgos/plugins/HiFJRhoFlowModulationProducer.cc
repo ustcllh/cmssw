@@ -68,7 +68,7 @@ HiFJRhoFlowModulationProducer::produce(edm::Event& iEvent, const edm::EventSetup
   double eventPlane3CosWeight = 0;
   double eventPlane3SinWeight = 0;
 
-  std::auto_ptr<std::vector<double> > rhoFlowFitParamsOut(new std::vector<double>(5,1e-6));
+  std::auto_ptr<std::vector<double> > rhoFlowFitParamsOut(new std::vector<double>(7,1e-6));
 
   rhoFlowFitParamsOut->at(0) = mapRho->at(4);
   rhoFlowFitParamsOut->at(1) = 0;
@@ -174,12 +174,14 @@ HiFJRhoFlowModulationProducer::produce(edm::Event& iEvent, const edm::EventSetup
 
     phiWeight_h->Fit(flowFit_p, "Q M E", "", -TMath::Pi(), TMath::Pi());
     phiWeight_h->Fit(flowFit2_p, "Q M E", "", -TMath::Pi(), TMath::Pi());
+    phiWeight_h->Fit(lineFit_p, "Q M E", "", -TMath::Pi(), TMath::Pi());
 
-    if(flowFit_p->GetChisquare()/float(nPhiBins - 3) < 2. && lineFit_p->GetChisquare()/float(nPhiBins-1) > flowFit_p->GetChisquare()/float(nPhiBins - 3)){
-      rhoFlowFitParamsOut->at(0) = flowFit_p->GetParameter(0);
-      rhoFlowFitParamsOut->at(1) = flowFit_p->GetParameter(1);
-      rhoFlowFitParamsOut->at(3) = flowFit_p->GetParameter(2);
-    }
+    rhoFlowFitParamsOut->at(0) = flowFit_p->GetParameter(0);
+    rhoFlowFitParamsOut->at(1) = flowFit_p->GetParameter(1);
+    rhoFlowFitParamsOut->at(3) = flowFit_p->GetParameter(2);
+    
+    rhoFlowFitParamsOut->at(5) = flowFit_p->GetChisquare()/float(nPhiBins-3);
+    rhoFlowFitParamsOut->at(6) = lineFit_p->GetChisquare()/float(nPhiBins-1);
 
     delete phi_h;
     delete phiWeight_h;
