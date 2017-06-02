@@ -116,7 +116,7 @@ HiInclusiveJetAnalyzer::HiInclusiveJetAnalyzer(const edm::ParameterSet& iConfig)
   rParam = iConfig.getParameter<double>("rParam");
   hardPtMin_ = iConfig.getUntrackedParameter<double>("hardPtMin",4);
   jetPtMin_ = iConfig.getParameter<double>("jetPtMin");
-  jetAbsEtaMax_ = iConfig.getUntrackedParameter<double>("jetEtaMax", 5.1);
+  jetAbsEtaMax_ = iConfig.getUntrackedParameter<double>("jetAbsEtaMax", 5.1);
 
   if(isMC_){
     genjetTag_ = consumes<vector<reco::GenJet> > (iConfig.getParameter<InputTag>("genjetTag"));
@@ -1027,8 +1027,6 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
     jets_.genSDConstituentsPhi.clear();
     jets_.genSDConstituentsM.clear();
   }
-
-
 
   for(unsigned int j = 0; j < jets->size(); ++j){
     const reco::Jet& jet = (*jets)[j];
