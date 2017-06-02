@@ -169,6 +169,7 @@ private:
   double rParam;
   double hardPtMin_;
   double jetPtMin_;
+  double jetAbsEtaMax_;
   bool doGenTaus_;
   bool doSubJets_;
   bool doJetConstituents_;
