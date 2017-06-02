@@ -112,6 +112,7 @@ private:
 
   // cuts
   Double_t        pfPtMin_;
+  Double_t        pfAbsEtaMax_;
   Double_t        jetPtMin_;
   Double_t        genPtMin_;
 
