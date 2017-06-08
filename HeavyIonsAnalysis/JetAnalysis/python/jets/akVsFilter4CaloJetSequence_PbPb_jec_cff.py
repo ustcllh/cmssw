@@ -15,7 +15,7 @@ akVsFilter4Calomatch = patJetGenJetMatch.clone(
     )
 
 akVsFilter4CalomatchGroomed = patJetGenJetMatch.clone(
-    src = cms.InputTag("akFilter4HiGenJets"),
+    src = cms.InputTag("akFilter4HiSignalGenJets"),
     matched = cms.InputTag("ak4HiSignalGenJets"),
     resolveByMatchQuality = cms.bool(True),
     maxDeltaR = 0.4
@@ -177,7 +177,7 @@ akVsFilter4CaloNjettiness = Njettiness.clone(
 akVsFilter4CalopatJetsWithBtagging.userData.userFloats.src += ['akVsFilter4CaloNjettiness:tau1','akVsFilter4CaloNjettiness:tau2','akVsFilter4CaloNjettiness:tau3']
 
 akVsFilter4CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akVsFilter4CalopatJetsWithBtagging"),
-                                                             genjetTag = 'ak4HiGenJets',
+                                                             genjetTag = 'ak4HiSignalGenJets',
                                                              rParam = 0.4,
                                                              matchJets = cms.untracked.bool(False),
                                                              matchTag = 'patJetsWithBtagging',
@@ -199,7 +199,13 @@ akVsFilter4CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("a
 							     doSubJets = cms.untracked.bool(True),
                                                              doGenSubJets = cms.untracked.bool(False),     
                                                              subjetGenTag = cms.untracked.InputTag("akFilter4GenJets"),
-                                                             doGenTaus = True
+                                                             doGenTaus = cms.untracked.bool(False),
+                                                             genTau1 = cms.InputTag("akFilter4GenNjettiness","tau1"),
+                                                             genTau2 = cms.InputTag("akFilter4GenNjettiness","tau2"),
+                                                             genTau3 = cms.InputTag("akFilter4GenNjettiness","tau3"),
+                                                             doGenSym = cms.untracked.bool(False),
+                                                             genSym = cms.InputTag("akFilter4GenJets","sym"),
+                                                             genDroppedBranches = cms.InputTag("akFilter4GenJets","droppedBranches")
                                                              )
 
 akVsFilter4CaloJetSequence_mc = cms.Sequence(
@@ -223,7 +229,7 @@ akVsFilter4CaloJetSequence_mc = cms.Sequence(
                                                   *
                                                   akVsFilter4CaloJetBtagging
                                                   *
-                                                  akVsFilter4CaloNjettiness
+                                                  akVsFilter4CaloNjettiness #No constituents for calo jets in pp. Must be removed for pp calo jets but I'm not sure how to do this transparently (Marta)
                                                   *
                                                   akVsFilter4CalopatJetsWithBtagging
                                                   *
