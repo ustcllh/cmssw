@@ -15,7 +15,7 @@ akFilter2PFmatch = patJetGenJetMatch.clone(
     )
 
 akFilter2PFmatchGroomed = patJetGenJetMatch.clone(
-    src = cms.InputTag("akFilter2HiSignalGenJets"),
+    src = cms.InputTag("akFilter2HiGenJets"),
     matched = cms.InputTag("ak2HiCleanedGenJets"),
     resolveByMatchQuality = cms.bool(False),
     maxDeltaR = 0.2
@@ -177,7 +177,7 @@ akFilter2PFNjettiness = Njettiness.clone(
 akFilter2PFpatJetsWithBtagging.userData.userFloats.src += ['akFilter2PFNjettiness:tau1','akFilter2PFNjettiness:tau2','akFilter2PFNjettiness:tau3']
 
 akFilter2PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akFilter2PFpatJetsWithBtagging"),
-                                                             genjetTag = 'ak2HiSignalGenJets',
+                                                             genjetTag = 'ak2HiGenJets',
                                                              rParam = 0.2,
                                                              matchJets = cms.untracked.bool(False),
                                                              matchTag = 'patJetsWithBtagging',

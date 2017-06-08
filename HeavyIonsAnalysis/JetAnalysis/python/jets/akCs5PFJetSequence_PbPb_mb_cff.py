@@ -15,7 +15,7 @@ akCs5PFmatch = patJetGenJetMatch.clone(
     )
 
 akCs5PFmatchGroomed = patJetGenJetMatch.clone(
-    src = cms.InputTag("ak5HiSignalGenJets"),
+    src = cms.InputTag("ak5HiGenJets"),
     matched = cms.InputTag("ak5HiCleanedGenJets"),
     resolveByMatchQuality = cms.bool(True),
     maxDeltaR = 0.5
@@ -177,7 +177,7 @@ akCs5PFNjettiness = Njettiness.clone(
 akCs5PFpatJetsWithBtagging.userData.userFloats.src += ['akCs5PFNjettiness:tau1','akCs5PFNjettiness:tau2','akCs5PFNjettiness:tau3']
 
 akCs5PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akCs5PFpatJetsWithBtagging"),
-                                                             genjetTag = 'ak5HiSignalGenJets',
+                                                             genjetTag = 'ak5HiGenJets',
                                                              rParam = 0.5,
                                                              matchJets = cms.untracked.bool(False),
                                                              matchTag = 'patJetsWithBtagging',
@@ -199,7 +199,7 @@ akCs5PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akCs5PFpa
 							     doSubJets = cms.untracked.bool(False),
                                                              doGenSubJets = cms.untracked.bool(False),     
                                                              subjetGenTag = cms.untracked.InputTag("ak5GenJets"),
-                                                             doGenTaus = cms.untracked.bool(True),
+                                                             doGenTaus = cms.untracked.bool(False),
                                                              genTau1 = cms.InputTag("ak5GenNjettiness","tau1"),
                                                              genTau2 = cms.InputTag("ak5GenNjettiness","tau2"),
                                                              genTau3 = cms.InputTag("ak5GenNjettiness","tau3"),

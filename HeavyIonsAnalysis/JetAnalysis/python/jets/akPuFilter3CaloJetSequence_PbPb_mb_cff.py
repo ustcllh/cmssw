@@ -15,7 +15,7 @@ akPuFilter3Calomatch = patJetGenJetMatch.clone(
     )
 
 akPuFilter3CalomatchGroomed = patJetGenJetMatch.clone(
-    src = cms.InputTag("akFilter3HiSignalGenJets"),
+    src = cms.InputTag("akFilter3HiGenJets"),
     matched = cms.InputTag("ak3HiCleanedGenJets"),
     resolveByMatchQuality = cms.bool(False),
     maxDeltaR = 0.3
@@ -177,7 +177,7 @@ akPuFilter3CaloNjettiness = Njettiness.clone(
 akPuFilter3CalopatJetsWithBtagging.userData.userFloats.src += ['akPuFilter3CaloNjettiness:tau1','akPuFilter3CaloNjettiness:tau2','akPuFilter3CaloNjettiness:tau3']
 
 akPuFilter3CaloJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("akPuFilter3CalopatJetsWithBtagging"),
-                                                             genjetTag = 'ak3HiSignalGenJets',
+                                                             genjetTag = 'ak3HiGenJets',
                                                              rParam = 0.3,
                                                              matchJets = cms.untracked.bool(False),
                                                              matchTag = 'patJetsWithBtagging',
