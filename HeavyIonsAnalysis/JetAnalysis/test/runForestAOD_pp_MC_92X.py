@@ -49,6 +49,17 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '91X_mcRun2_asymptotic_v3', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
+## TEMPORARY Fix until a proper L1 menu with prescales is added to the GT
+process.GlobalTag.toGet.extend([
+	cms.PSet(record = cms.string("L1TUtmTriggerMenuRcd"),
+                tag = cms.string("L1Menu_HeavyIons2016_v3_m2_xml"),
+                connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                ),
+	cms.PSet(record = cms.string("L1TGlobalPrescalesVetosRcd"),
+                tag = cms.string("L1TGlobalPrescalesVetos_Stage2v0_hlt"),
+                connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                )
+])
 
 # Customization
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
@@ -149,7 +160,7 @@ for idmod in my_id_modules:
 # Main analysis list
 #########################
 process.ana_step = cms.Path(
-			    #process.hltanalysis *
+			    process.hltanalysis *
                             process.hiEvtAnalyzer *
                             process.HiGenParticleAna*
                             process.jetSequences +
