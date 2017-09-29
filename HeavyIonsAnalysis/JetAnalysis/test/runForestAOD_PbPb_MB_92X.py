@@ -26,7 +26,8 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                "file:samples/PbPb_MC_RECODEBUG.root"
+                                "file:/afs/cern.ch/user/m/mverweij/merge/xexe/step3_RAW2DIGI_L1Reco_RECO_1.root",
+#samples/PbPb_MC_RECODEBUG.root"
                                 )
                             )
 
@@ -96,6 +97,9 @@ process.load('HeavyIonsAnalysis.EventAnalysis.runanalyzer_cff')
 process.HiGenParticleAna.genParticleSrc = cms.untracked.InputTag("genParticles")
 # Temporary disactivation - until we have DIGI & RECO in CMSSW_7_5_7_patch4
 process.HiGenParticleAna.doHI = False
+#making cuts looser so that we can actually check dNdEta
+process.HiGenParticleAna.ptMin = cms.untracked.double(0.)  #default is 5
+process.HiGenParticleAna.etaMax = cms.untracked.double(5.) #default is 2
 
 
 #####################################################################################
@@ -110,9 +114,11 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
+process.pfcandAnalyzer.doVS = cms.untracked.bool(False)
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzerCS_cfi")
 process.pfcandAnalyzerCS.skipCharged = False
 process.pfcandAnalyzerCS.pfPtMin = 0
+process.pfcandAnalyzerCS.doVS = cms.untracked.bool(False)
 
 #####################################################################################
 
@@ -154,8 +160,8 @@ process.ana_step = cms.Path(
                             process.hiCleanedGenFilters + 
                             process.jetSequences +
                             process.hiFJRhoAnalyzer +
-                            process.ggHiNtuplizer +
-                            process.ggHiNtuplizerGED +
+                            #process.ggHiNtuplizer +
+                            #process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +
                             process.pfcandAnalyzerCS +
                             process.HiForest +

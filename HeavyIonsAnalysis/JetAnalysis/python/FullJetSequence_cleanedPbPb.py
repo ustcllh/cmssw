@@ -1,5 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 
+#these producers are running in reco with 93X but not in 92X
+from HeavyIonsAnalysis.JetAnalysis.jets.HiRecoJets_cff import *
+from HeavyIonsAnalysis.JetAnalysis.jets.HiRecoPFJets_cff import *
+
 #not in official reco yet
 from RecoHI.HiJetAlgos.hiFJGridEmptyAreaCalculator_cff import hiFJGridEmptyAreaCalculator
 
@@ -26,27 +30,24 @@ from RecoVertex.PrimaryVertexProducer.OfflinePrimaryVertices_cfi import *
 offlinePrimaryVertices.TrackLabel = 'highPurityTracks'
 
 jetSequences = cms.Sequence(
-    hiFJGridEmptyAreaCalculator +
-    
-    #jets already reconstructed in reco
-    #akPu3CaloJets +
-    #akPu3PFJets +
-    #akCs3PFJets +
-
-    #akPu4CaloJets +
-    #akPu4PFJets +
-    #akCs4PFJets +
-
-    #akPu5CaloJets +
-    #akPu5PFJets +
-
-    #to be added later
-    #akCsSoftDrop4PFJets +
-    #akCsSoftDrop5PFJets +
 
     highPurityTracks +
     offlinePrimaryVertices +
 
+    #these sequences are running in reco with 93X but not in 92X
+    PFTowers
+    *akPu3PFJets*akPu4PFJets*akPu5PFJets
+    *kt4PFJetsForRho
+    *hiFJRhoProducer
+    *hiFJGridEmptyAreaCalculator #not yet in 93X reco
+    *akCs3PFJets*akCs4PFJets
+
+    + akPu3CaloJets*akPu4CaloJets*akPu5CaloJets +
+
+    #to be added later
+    #akCsSoftDrop4PFJets +
+    #akCsSoftDrop5PFJets +
+    
     akPu3CaloJetSequence +
     akPu3PFJetSequence +
     akCs3PFJetSequence +
