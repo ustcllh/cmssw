@@ -118,7 +118,7 @@ process.pfcandAnalyzer.doVS = cms.untracked.bool(False)
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzerCS_cfi")
 process.pfcandAnalyzerCS.skipCharged = False
 process.pfcandAnalyzerCS.pfPtMin = 0
-process.pfcandAnalyzer.doVS = cms.untracked.bool(False)
+process.pfcandAnalyzerCS.doVS = cms.untracked.bool(False)
 
 #####################################################################################
 
