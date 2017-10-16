@@ -174,8 +174,8 @@ for idmod in my_id_modules:
 
 
 process.ana_step = cms.Path(
-			    #process.hltanalysis *
-    #			    process.hltobject *
+			    process.hltanalysisReco *
+    			    #process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
     #                        process.egmGsfElectronIDSequence + #Should be added in the path for VID module
