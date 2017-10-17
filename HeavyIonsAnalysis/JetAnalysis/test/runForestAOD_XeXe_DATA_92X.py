@@ -71,16 +71,29 @@ process.TFileService = cms.Service("TFileService",
 
 ### PP RECO does not include R=3 or R=5 jets.
 ### re-RECO is only possible for PF, RECO is missing calotowers
-from RecoJets.JetProducers.ak5PFJets_cfi import ak5PFJets
-ak5PFJets.doAreaFastjet = True
-process.ak5PFJets = ak5PFJets
-process.ak3PFJets = ak5PFJets.clone(rParam = 0.3)
+#from RecoJets.JetProducers.ak5PFJets_cfi import ak5PFJets
+#ak5PFJets.doAreaFastjet = True
+#process.ak5PFJets = ak5PFJets
+#process.ak3PFJets = ak5PFJets.clone(rParam = 0.3)
 
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pp_data_cff')
-
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak3PFJetSequence_pp_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pp_data_cff')
-process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_pp_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_pp_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.akCs4PFJetSequence_pp_data_cff')
+
+process.akPu4PFcorr.payload = "AK4PF_offline"
+
+process.load('RecoJets.JetProducers.kt4PFJets_cfi')
+process.load('RecoHI.HiJetAlgos.hiFJRhoProducer')
+process.load('RecoHI.HiJetAlgos.hiFJGridEmptyAreaCalculator_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.HiRecoPFJets_cff')
+process.kt4PFJetsForRho.src = cms.InputTag('particleFlow')
+process.kt4PFJetsForRho.doAreaFastjet = True
+process.kt4PFJetsForRho.jetPtMin      = cms.double(0.0)
+process.kt4PFJetsForRho.GhostArea     = cms.double(0.005)
+process.kt2PFJetsForRho = process.kt4PFJetsForRho.clone(rParam       = cms.double(0.2))
+
+process.PFTowers.src = cms.InputTag("particleFlow")
 
 process.highPurityTracks = cms.EDFilter("TrackSelector",
                                         src = cms.InputTag("generalTracks"),
@@ -90,13 +103,18 @@ process.highPurityTracks = cms.EDFilter("TrackSelector",
 
 
 process.jetSequences = cms.Sequence(
-    process.ak3PFJets +
-    process.ak5PFJets +
+#    process.kt2PFJetsForRho +
+#    process.kt4PFJetsForRho +
+#    process.hiFJRhoProducer +
+#    process.hiFJGridEmptyAreaCalculator +
+#    process.akCs4PFJets +
     process.highPurityTracks +
     process.ak4CaloJetSequence +
-    process.ak3PFJetSequence +
+    process.PFTowers +
+    process.akPu4PFJets +
     process.ak4PFJetSequence +
-    process.ak5PFJetSequence
+    process.akPu4PFJetSequence 
+#   +process.akCs4PFJetSequence 
     )
 
 #####################################################################################
@@ -168,6 +186,15 @@ for idmod in my_id_modules:
 
 #####################################################################################
 
+process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_pp_cfi')
+process.rechitanalyzer.doVS = cms.untracked.bool(False)
+process.rechitanalyzer.doEcal = cms.untracked.bool(False)
+process.rechitanalyzer.doHcal = cms.untracked.bool(False)
+process.rechitanalyzer.doHF = cms.untracked.bool(False)
+process.rechitanalyzer.JetSrc = cms.untracked.InputTag("ak4CaloJets")
+process.pfTowers.JetSrc = cms.untracked.InputTag("ak4CaloJets")
+
+
 #########################
 # Main analysis list
 #########################
@@ -182,6 +209,7 @@ process.ana_step = cms.Path(
     #                        process.ggHiNtuplizer +
     #                        process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +
+			    process.rechitanalyzer +
                             process.HiForest +
                             process.trackSequencesPP
                             )
