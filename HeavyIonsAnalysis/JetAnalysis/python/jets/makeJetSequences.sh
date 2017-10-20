@@ -22,7 +22,7 @@ do
                             if ( [ $system == "pPb" ] ) && ( ( [ $radius -ne 4 ] && [ $radius -ne 3 ] ) || ( [ $sub != "NONE" ] && [ $sub != "Pu" ] ) || [ $groom != "NONE" ] ) ; then 
                                 continue
                             fi
-                            if ( [ $object == "Calo" ] || [ $system == "pp" ] ) && ( [ $sub == "Cs" ] ) ; then
+                            if ( [ $object == "Calo" ] ) && ( [ $sub == "Cs" ] ) ; then
 			        continue
 			    fi
                             subt=$sub
