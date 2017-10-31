@@ -26,7 +26,8 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                               "/store/user/gsfs/Hydjet_Quenched_MinBias_Cymbal5Ev8_XeXe_9_2/ppRECO__201711004/171005_005307/0000/step3_MinBias_ppReco_XeXe_RAW2DIGI_L1Reco_RECO_1.root"
+                              "/store/user/gsfs/Hydjet_Quenched_MinBias_Cymbal5Ev8_XeXe_9_2/ppRECO__201711004/171005_005307/0000/step3_MinBias_ppReco_XeXe_RAW2DIGI_L1Reco_RECO_1.root"
+
                            #"file:step3_MinBias_ppReco_XeXe_RAW2DIGI_L1Reco_RECO_138.root" 
 			   )
 )
@@ -136,6 +137,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load('HeavyIonsAnalysis.PhotonAnalysis.ggHiNtuplizer_cfi')
 process.ggHiNtuplizer.gsfElectronLabel   = cms.InputTag("gedGsfElectrons")
 process.ggHiNtuplizer.recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerpp')
+process.ggHiNtuplizer.useValMapIso = cms.bool(True)
 process.ggHiNtuplizer.VtxLabel           = cms.InputTag("offlinePrimaryVertices")
 process.ggHiNtuplizer.particleFlowCollection = cms.InputTag("particleFlow")
 process.ggHiNtuplizer.doVsIso            = cms.bool(False)
@@ -171,8 +173,8 @@ process.ana_step = cms.Path(
                             process.HiGenParticleAna*
                             process.jetSequences +
                             #process.egmGsfElectronIDSequence + #Should be added in the path for VID module
-                            #process.ggHiNtuplizer +
-                            #process.ggHiNtuplizerGED +
+                            process.ggHiNtuplizer +
+                            process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +
                             process.pfcandAnalyzerCS +
 			    process.HiForest +
