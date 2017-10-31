@@ -33,6 +33,16 @@
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMap.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
+#include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
+#include "DataFormats/Common/interface/View.h"
+
+#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
+
+#include "SimDataFormats/JetMatching/interface/JetFlavourInfo.h"
+#include "SimDataFormats/JetMatching/interface/JetFlavourInfoMatching.h"
+#include "RecoBTag/SecondaryVertex/interface/V0Filter.h"
+#include "RecoBTag/SecondaryVertex/interface/TrackSelector.h"
+
 #include "fastjet/contrib/Njettiness.hh"
 #include "TMVA/Reader.h"
 //
@@ -42,9 +52,6 @@
    \author Matt Nguyen
    \date   November 2010
 */
-
-
-
 
 class HiInclusiveJetAnalyzer : public edm::EDAnalyzer {
 public:
@@ -84,7 +91,7 @@ private:
   math::XYZPoint getPosition(const DetId &id, reco::Vertex::Point vtx = reco::Vertex::Point(0,0,0));
   int TaggedJet(reco::Jet calojet, edm::Handle<reco::JetTagCollection > jetTags );
   float getTau(unsigned num, const reco::GenJet object) const;
-  void analyzeSubjets(const reco::Jet jet);
+  void analyzeSubjets(const reco::Jet jet, int idx, edm::Handle<reco::JetFlavourInfoMatchingCollection>, edm::Handle<edm::View<reco::Jet> >, edm::Handle<reco::JetTagCollection> jetTags_CombinedSvtxV2, edm::Handle<reco::JetTagCollection> jetTags_negCombinedSvtxV2, edm::Handle<reco::JetTagCollection> jetTags_JP, edm::Handle<std::vector<reco::TrackIPTagInfo> > subjetTagInfo, edm::Handle<std::vector<reco::SecondaryVertexTagInfo> > subjetSV, edm::Handle<std::vector<reco::SecondaryVertexTagInfo> > subjetTagInfoNegSVx);
   void fillNewJetVarsRecoJet(const reco::Jet jet);
   void fillNewJetVarsRefJet(const reco::GenJet jet);
   void fillNewJetVarsGenJet(const reco::GenJet jet);
@@ -92,7 +99,14 @@ private:
   void analyzeRefSubjets(const reco::GenJet jet);
   void analyzeGenSubjets(const reco::GenJet jet);
   float getAboveCharmThresh(reco::TrackRefVector& selTracks, const reco::TrackIPTagInfo& ipData, int sigOrVal);
- 
+
+  int findMatchedParton(float eta, float phi, float maxDr, edm::Handle<reco::GenParticleCollection > genparts, int partonFlavor);
+  int getFlavorProcess(int index, edm::Handle<reco::GenParticleCollection > genparts);
+
+  reco::TrackSelector                     trackSelector; 
+  reco::TrackSelector                     trackPseudoSelector;
+  reco::V0Filter                          pseudoVertexV0Filter;
+  reco::V0Filter                          trackPairV0Filter;
   std::auto_ptr<fastjet::contrib::Njettiness>   routine_;
 
   class ExtraInfo : public fastjet::PseudoJet::UserInfoBase {
@@ -155,6 +169,8 @@ private:
   bool useQuality_;
   std::string trackQuality_;
 
+  bool isPythia6_;
+
   bool doSubEvent_;
   double genPtMin_;
   bool doLifeTimeTagging_;
@@ -210,6 +226,18 @@ private:
   edm::EDGetTokenT<reco::JetTagCollection> PositiveCombinedSecondaryVertexV2BJetTags_;
   edm::EDGetTokenT<reco::JetTagCollection> NegativeSoftPFMuonByPtBJetTags_;
   edm::EDGetTokenT<reco::JetTagCollection> PositiveSoftPFMuonByPtBJetTags_;
+  edm::EDGetTokenT<reco::JetTagCollection> SubjetJetProbabilityBJetTags_;
+  edm::EDGetTokenT<std::vector<reco::TrackIPTagInfo> > svImpactParameterTagInfos_;
+  edm::EDGetTokenT<std::vector<reco::SecondaryVertexTagInfo> > svSubjetTagInfos_;
+  edm::EDGetTokenT<std::vector<reco::SecondaryVertexTagInfo> > svSubjetNegTagInfos_;
+  edm::EDGetTokenT<reco::JetTagCollection> CombinedSubjetSecondaryVertexBJetTags_;
+  edm::EDGetTokenT<reco::JetTagCollection> CombinedSubjetNegativeSecondaryVertexBJetTags_;
+
+  bool doExtendedFlavorTagging_;
+  edm::EDGetTokenT<reco::JetFlavourInfoMatchingCollection> jetFlavourInfosToken_;
+  edm::EDGetTokenT<reco::JetFlavourInfoMatchingCollection> subjetFlavourInfosToken_;
+  edm::EDGetTokenT<edm::View<reco::Jet> >                  groomedJetsToken_;
+  bool                                                     useSubjets_;
 
   static const int MAXJETS = 1000;
   static const int MAXTRACKS = 5000;
@@ -325,10 +353,38 @@ private:
     float jttau2[MAXJETS];
     float jttau3[MAXJETS];
 
+    float jtHadronFlavor[MAXJETS];
+    float jtPartonFlavor[MAXJETS];
+
     std::vector<std::vector<float>> jtSubJetPt;
     std::vector<std::vector<float>> jtSubJetEta;
     std::vector<std::vector<float>> jtSubJetPhi;
     std::vector<std::vector<float>> jtSubJetM;
+    std::vector<std::vector<float>> jtSubJetHadronFlavor;
+    std::vector<std::vector<float>> jtSubJetPartonFlavor; 
+    std::vector<std::vector<float>> jtSubJetcsvV2;
+    std::vector<std::vector<float>> jtSubJetNegCsvV2;
+    std::vector<std::vector<float>> jtSubJetJP;
+    std::vector<std::vector<int>> jtSubJetVtxType;
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxm;
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxpt;
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxeta;    
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxphi;
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxNtrk;
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxdl;
+    std::vector<std::vector<std::vector<float>>> jtSubJetSvtxdls;
+
+    std::vector<std::vector<std::vector<float>>> jtSubJetHadronDR;
+    std::vector<std::vector<std::vector<float>>> jtSubJetHadronPt;
+    std::vector<std::vector<std::vector<float>>> jtSubJetHadronEta;
+    std::vector<std::vector<std::vector<float>>> jtSubJetHadronPhi;
+    std::vector<std::vector<std::vector<float>>> jtSubJetHadronPdg;
+    std::vector<std::vector<std::vector<float>>> jtSubJetPartonDR;
+    std::vector<std::vector<std::vector<float>>> jtSubJetPartonPt;
+    std::vector<std::vector<std::vector<float>>> jtSubJetPartonEta;
+    std::vector<std::vector<std::vector<float>>> jtSubJetPartonPhi;
+    std::vector<std::vector<std::vector<float>>> jtSubJetPartonPdg;
+
 
     std::vector<std::vector<int>> jtConstituentsId;
     std::vector<std::vector<float>> jtConstituentsE;
@@ -442,16 +498,17 @@ private:
     float pdiscr_csvV2[MAXJETS];
 
     int nsvtx[MAXJETS];
-    int svtxntrk[MAXJETS];
-    float svtxdl[MAXJETS];
-    float svtxdls[MAXJETS];
-    float svtxdl2d[MAXJETS];
-    float svtxdls2d[MAXJETS];
-    float svtxm[MAXJETS];
-    float svtxpt[MAXJETS];
+    std::vector<std::vector<int> >svType;
+    std::vector<std::vector<int> >svtxntrk;
+    std::vector<std::vector<float> >svtxdl;
+    std::vector<std::vector<float> >svtxdls;
+    std::vector<std::vector<float> >svtxdl2d;
+    std::vector<std::vector<float> >svtxdls2d;
+    std::vector<std::vector<float> >svtxm;
+    std::vector<std::vector<float> >svtxpt;
     float svtxmcorr[MAXJETS];
     float svtxnormchi2[MAXJETS];
-    float svJetDeltaR[MAXJETS];
+    std::vector<std::vector<float> >svJetDeltaR;
     float svtxTrkSumChi2[MAXJETS];
     int svtxTrkNetCharge[MAXJETS];
     int svtxNtrkInCone[MAXJETS];
@@ -503,6 +560,23 @@ private:
     float discr_fr01[MAXJETS];
     float discr_jetID_cuts[MAXJETS];
     float discr_jetID_bdt[MAXJETS];
+
+    int refparton_flavorProcess[MAXJETS];
+    float	refGSP_gpt [MAXJETS];
+    float refGSP_geta [MAXJETS];
+    float refGSP_gphi [MAXJETS];
+    float refGSP_gidx [MAXJETS];
+    float refGSP_b1pt [MAXJETS];
+    float refGSP_b1eta [MAXJETS];
+    float refGSP_b1phi [MAXJETS];
+    float refGSP_b2pt [MAXJETS];
+    float refGSP_b2eta [MAXJETS];
+    float refGSP_b2phi [MAXJETS];
+    float refGSP_b1Match_jtdR [MAXJETS];
+    float refGSP_b2Match_jtdR [MAXJETS];
+    float refGSP_bbdR [MAXJETS];
+    float refGSP_bbzg [MAXJETS];
+    int refGSP_SubJtMatched [MAXJETS];
 
     float refpt[MAXJETS];
     float refeta[MAXJETS];

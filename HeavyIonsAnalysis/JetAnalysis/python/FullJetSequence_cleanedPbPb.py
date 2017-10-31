@@ -48,16 +48,16 @@ jetSequences = cms.Sequence(
     #akCsSoftDrop4PFJets +
     #akCsSoftDrop5PFJets +
     
-    akPu3CaloJetSequence +
-    akPu3PFJetSequence +
-    akCs3PFJetSequence +
+#    akPu3CaloJetSequence +
+#    akPu3PFJetSequence +
+#    akCs3PFJetSequence +
 
-    akPu4CaloJetSequence +
-    akPu4PFJetSequence +
-    akCs4PFJetSequence +
+#    akPu4CaloJetSequence +
+    akPu4PFJetSequence #+
+#    akCs4PFJetSequence +
 
-    akPu5CaloJetSequence +
-    akPu5PFJetSequence# +
+#    akPu5CaloJetSequence +
+#    akPu5PFJetSequence# +
 
     #to be added later
     #akCsSoftDrop4PFJetSequence +
