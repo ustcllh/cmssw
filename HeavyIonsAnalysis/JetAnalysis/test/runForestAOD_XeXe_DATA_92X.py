@@ -76,6 +76,8 @@ process.TFileService = cms.Service("TFileService",
 #process.ak5PFJets = ak5PFJets
 #process.ak3PFJets = ak5PFJets.clone(rParam = 0.3)
 
+from RecoHI.HiJetAlgos.HiRecoPFJets_cff import PFTowers, akPu4PFJets
+
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pp_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pp_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_pp_data_cff')
@@ -104,12 +106,27 @@ process.highPurityTracks = cms.EDFilter("TrackSelector",
                                         cut = cms.string('quality("highPurity")')
                                         )
 
+# add for PuwithNtuple
+#process.akPu4PFJetsNoLimits = akPu4PFJets.clone(
+#	    subtractorName = 'PuWithNtuple',
+#	    minimumTowersFraction = cms.double(0.)
+#)
+
+process.akPu4PFJets.subtractorName = 'PuWithNtuple'
+#process.akPu4PFJets.minimumTowersFraction = cms.double(0.5)
+## error    [1] Validating configuration of module: class=FastjetJetProducer label='akPu4PFJetsNoLimits'
+#Exception Message:
+#Illegal parameter found in configuration.  The parameter is named:
+# 'minimumTowersFraction'
+
+
 
 
 process.jetSequences = cms.Sequence(
     process.kt4PFJetsForRho +
     process.hiFJRhoProducer +
     process.hiFJGridEmptyAreaCalculator +
+#		process.akPu4PFJetsNoLimits+  # add puwithNtuple
     process.akCs4PFJets +
     process.highPurityTracks +
     process.ak4CaloJetSequence +
