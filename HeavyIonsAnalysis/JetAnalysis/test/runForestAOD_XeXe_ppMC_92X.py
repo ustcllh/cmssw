@@ -26,14 +26,15 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                           "root://cms-xrd-global.cern.ch//store/user/gsfs/Hydjet_Quenched_MinBias_Cymbal5Ev8_XeXe_9_2/ppRECO__201711004/171005_005307/0000/step3_MinBias_ppReco_XeXe_RAW2DIGI_L1Reco_RECO_138.root"
+                              "/store/user/gsfs/Hydjet_Quenched_MinBias_Cymbal5Ev8_XeXe_9_2/ppRECO__201711004/171005_005307/0000/step3_MinBias_ppReco_XeXe_RAW2DIGI_L1Reco_RECO_1.root"
+
                            #"file:step3_MinBias_ppReco_XeXe_RAW2DIGI_L1Reco_RECO_138.root" 
 			   )
 )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(100))
 
 
 #####################################################################################
@@ -63,8 +64,8 @@ process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 #])
 
 # Customization
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
-process = overrideJEC_pp5020(process)
+#from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
+#process = overrideJEC_pp5020(process)
 
 #####################################################################################
 # Define tree output
@@ -84,7 +85,9 @@ process.TFileService = cms.Service("TFileService",
 #############################
 
 process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_XeXe_mc")
-process.akPu4PFcorr.payload = "AK4PF_offline"
+process.akPu4PFcorr.payload = "AK4PF"
+process.akCs4PFcorr.payload = "AK4PF"
+process.ak4PFcorr.payload = "AK4PF"
 # Use this version for JEC
 #process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPP")
 
@@ -221,3 +224,15 @@ process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
+process.akPu4PFJetAnalyzer.doExtendedFlavorTagging = cms.untracked.bool(False)
+process.akPu4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.akPu4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+process.akCs4PFJetAnalyzer.doExtendedFlavorTagging = cms.untracked.bool(False)
+process.akCs4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.akCs4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+process.ak4CaloJetAnalyzer.doExtendedFlavorTagging = cms.untracked.bool(False)
+process.ak4CaloJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4CaloJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+process.ak4PFJetAnalyzer.doExtendedFlavorTagging = cms.untracked.bool(False)
+process.ak4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter

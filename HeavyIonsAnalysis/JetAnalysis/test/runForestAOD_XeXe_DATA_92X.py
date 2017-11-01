@@ -32,7 +32,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(100))
 
 
 #####################################################################################
@@ -49,8 +49,8 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '92X_dataRun2_Prompt_Candidate_forXeXe_v1', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
-process = overrideJEC_pp5020(process)
+#from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
+#process = overrideJEC_pp5020(process)
 
 #####################################################################################
 # Define tree output
@@ -81,7 +81,10 @@ process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pp_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akPu4PFJetSequence_pp_data_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.jets.akCs4PFJetSequence_pp_data_cff')
 
-process.akPu4PFcorr.payload = "AK4PF_offline"
+process.akPu4PFcorr.payload = "AK4PF"
+process.akCs4PFcorr.payload = "AK4PF"
+process.ak4PFcorr.payload = "AK4PF"
+process.ak4Calocorr.payload = "AK4PF"
 
 process.load('RecoJets.JetProducers.kt4PFJets_cfi')
 process.load('RecoHI.HiJetAlgos.hiFJRhoProducer')
@@ -259,3 +262,11 @@ process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
+process.akPu4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.akPu4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+process.akCs4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.akCs4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+process.ak4CaloJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4CaloJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+process.ak4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter

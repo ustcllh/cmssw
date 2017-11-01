@@ -26,7 +26,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                "file:/afs/cern.ch/user/k/kjung/eos/cms/store/cmst3/group/hintt/Pbp/8_0_26_patch2/PYQUEN_TTbar/PPb/Events_1.root"
+                                "/store/user/gsfs/Pythia8_Dijet80_pp_CUETP8M1_5020GeV/RECO__201711004/171004_122752/0000/step3_pp_RAW2DIGI_L1Reco_RECO_102.root"
                             )
 )
 
@@ -62,8 +62,8 @@ process.GlobalTag.toGet.extend([
 ])
 
 # Customization
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
-process = overrideJEC_pp5020(process)
+#from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
+#process = overrideJEC_pp5020(process)
 
 #####################################################################################
 # Define tree output
@@ -83,6 +83,7 @@ process.TFileService = cms.Service("TFileService",
 #############################
 
 process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_nominalPP")
+process.ak4PFcorr.payload = "AK4PF"
 # Use this version for JEC
 #process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPP")
 
@@ -164,9 +165,9 @@ process.ana_step = cms.Path(
                             process.hiEvtAnalyzer *
                             process.HiGenParticleAna*
                             process.jetSequences +
-                            process.egmGsfElectronIDSequence + #Should be added in the path for VID module
-                            process.ggHiNtuplizer +
-                            process.ggHiNtuplizerGED +
+                            #process.egmGsfElectronIDSequence + #Should be added in the path for VID module
+                            #process.ggHiNtuplizer +
+                            #process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +
                             process.HiForest +
 			    process.trackSequencesPP +
@@ -215,3 +216,5 @@ process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
+process.ak4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter

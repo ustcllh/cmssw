@@ -54,9 +54,9 @@ from HeavyIonsAnalysis.JetAnalysis.makePartons_cff import myPartons
 from HeavyIonsAnalysis.JetAnalysis.jets.ak3PFJetSequence_pp_mc_cff import *
 from HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pp_mc_cff import *
 from HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_pp_mc_cff import *
-from HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pp_mc_cff import *
-from HeavyIonsAnalysis.JetAnalysis.jets.akSoftDrop4PFJetSequence_pp_mc_cff import *
-from HeavyIonsAnalysis.JetAnalysis.jets.akSoftDrop5PFJetSequence_pp_mc_cff import *
+#from HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pp_mc_cff import *
+#from HeavyIonsAnalysis.JetAnalysis.jets.akSoftDrop4PFJetSequence_pp_mc_cff import *
+#from HeavyIonsAnalysis.JetAnalysis.jets.akSoftDrop5PFJetSequence_pp_mc_cff import *
 
 highPurityTracks = cms.EDFilter("TrackSelector",
                                 src = cms.InputTag("generalTracks"),
@@ -72,17 +72,17 @@ jetSequences = cms.Sequence(
     ak5GenJets +
     ak3PFJets +
     ak5PFJets +
-    akSoftDrop4PFJets +
-    akSoftDrop5PFJets +
-    akFilter4PFJets +
-    akFilter5PFJets +
-    akSoftDrop4GenJets +
-    akSoftDrop5GenJets +
+    #akSoftDrop4PFJets +
+    #akSoftDrop5PFJets +
+    #akFilter4PFJets +
+    #akFilter5PFJets +
+    #akSoftDrop4GenJets +
+    #akSoftDrop5GenJets +
     highPurityTracks +
-    ak3PFJetSequence +
-    ak4PFJetSequence +
-    ak5PFJetSequence +
-    ak4CaloJetSequence +
-    akSoftDrop4PFJetSequence +
-    akSoftDrop5PFJetSequence
+    #ak3PFJetSequence +
+    ak4PFJetSequence 
+    #ak5PFJetSequence +
+    #ak4CaloJetSequence +
+    #akSoftDrop4PFJetSequence +
+    #akSoftDrop5PFJetSequence
 )

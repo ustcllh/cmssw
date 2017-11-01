@@ -26,14 +26,14 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                "file:/afs/cern.ch/user/m/mverweij/merge/xexe/step3_RAW2DIGI_L1Reco_RECO_1.root",
+                                "file:/afs/cern.ch/user/k/kjung/gitForest/CMSSW_9_3_1/src/HeavyIonsAnalysis/JetAnalysis/test/step3_MinBias_XeXe_RAW2DIGI_L1Reco_RECO_MERGED.root"
 #samples/PbPb_MC_RECODEBUG.root"
                                 )
                             )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(2)
 )
 
 
@@ -48,11 +48,25 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '91X_mcRun2_HeavyIon_v3', '') #for now track GT manually, since centrality tables updated ex post facto
+process.GlobalTag = GlobalTag(process.GlobalTag, '93X_mcRun2_HeavyIon_v1', '') #for now track GT manually, since centrality tables updated ex post facto
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_PbPb5020
 process = overrideJEC_PbPb5020(process)
+
+from CondCore.DBCommon.CondDBSetup_cfi import *
+process.akPu4PFJECoverride = cms.ESSource("PoolDBESSource", CondDBSetup,
+                connect = cms.string('sqlite_file:testakPu4PF_JetCorrections_newFunction.db'),
+                toGet = cms.VPSet(         # overide Global Tag use EcalTBWeights_EBEE_offline
+                        cms.PSet(
+                                record = cms.string('JetCorrectionsRecord'),
+                                tag = cms.string('JetCorrectorParametersCollection_PbPb_92X_5020GeV_v0_AK4PF_offline'),
+				label = cms.untracked.string('AKPu4PF_offline')
+                                )
+                        )
+                )
+process.es_prefer_jpTagConds = cms.ESPrefer("PoolDBESSource","akPu4PFJECoverride")
+
 
 process.load("RecoHI.HiCentralityAlgos.CentralityBin_cfi")
 
@@ -84,6 +98,10 @@ process.load('HeavyIonsAnalysis.JetAnalysis.FullJetSequence_cleanedPbPb')
 
 #rho analyzer
 process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzer_cff')
+
+process.akPu4PFcorr.levels = cms.vstring('L2Relative','L3Absolute')
+#process.akCs4PFcorr.levels = cms.vstring('L1FastJet','L2Relative','L3Absolute','L2L3Residual')
+#process.akPu4PFcorr.rho = cms.InputTag('hiFJRhoProducer','mapToRho')
 
 ####################################################################################
 
