@@ -3,6 +3,9 @@
 
 #include "RecoJets/JetProducers/interface/PileUpSubtractor.h"
 
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+
 class MultipleAlgoIterator : public PileUpSubtractor {
  public:
 //  MultipleAlgoIterator(const edm::ParameterSet& iConfig, edm::ConsumesCollector && iC) : PileUpSubtractor(iConfig, std::move(iC)),

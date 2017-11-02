@@ -5,6 +5,8 @@
 
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 
+
+
 using namespace std;
 
 
@@ -27,6 +29,11 @@ void MultipleAlgoIterator::fillDescriptions(edm::ConfigurationDescriptions& desc
 
 	edm::ParameterSetDescription descMultipleAlgoIterator;
 	descMultipleAlgoIterator.add<double>("minimumTowersFraction", 0.0);
+
+//	descMultipleAlgoIterator.add<string>("jetCollInstanceName", ""	);
+//	VirtualJetProducer::fillDescriptionsFromVirtualJetProducer(descMultipleAlgoIterator);
+
+	descriptions.add("MultipleAlgoIterator",descMultipleAlgoIterator);
 
 
 }
