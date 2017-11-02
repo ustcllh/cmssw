@@ -32,7 +32,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5000))
+    input = cms.untracked.int32(500))
 
 
 #####################################################################################
@@ -112,7 +112,7 @@ process.highPurityTracks = cms.EDFilter("TrackSelector",
 #)
 
 process.akPu4PFJets.subtractorName = 'PuWithNtuple'
-#process.akPu4PFJets.minimumTowersFraction = cms.double(0.5)
+process.akPu4PFJets.minimumTowersFraction = cms.double(0.5)
 
 
 

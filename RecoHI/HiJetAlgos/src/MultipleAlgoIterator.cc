@@ -23,6 +23,15 @@ MultipleAlgoIterator::MultipleAlgoIterator(const edm::ParameterSet& iConfig, edm
 }
 
 
+void MultipleAlgoIterator::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+
+	edm::ParameterSetDescription descMultipleAlgoIterator;
+	descMultipleAlgoIterator.add<double>("minimumTowersFraction", 0.0);
+
+
+}
+
+
 
 void MultipleAlgoIterator::rescaleRMS(double s){
    for ( std::map<int, double>::iterator iter = esigma_.begin();

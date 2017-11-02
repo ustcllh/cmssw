@@ -18,6 +18,8 @@ class MultipleAlgoIterator : public PileUpSubtractor {
     virtual void subtractPedestal(std::vector<fastjet::PseudoJet> & coll);
     virtual void calculateOrphanInput(std::vector<fastjet::PseudoJet> & orphanInput);
 
+		static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+
 		double minimumTowersFraction_;
 
     bool sumRecHits_;
