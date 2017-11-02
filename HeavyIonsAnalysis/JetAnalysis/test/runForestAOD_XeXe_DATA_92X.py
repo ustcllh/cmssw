@@ -32,7 +32,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100))
+    input = cms.untracked.int32(5000))
 
 
 #####################################################################################
@@ -106,7 +106,6 @@ process.highPurityTracks = cms.EDFilter("TrackSelector",
                                         cut = cms.string('quality("highPurity")')
                                         )
 
-# add for PuwithNtuple
 #process.akPu4PFJetsNoLimits = akPu4PFJets.clone(
 #	    subtractorName = 'PuWithNtuple',
 #	    minimumTowersFraction = cms.double(0.)
@@ -114,10 +113,6 @@ process.highPurityTracks = cms.EDFilter("TrackSelector",
 
 process.akPu4PFJets.subtractorName = 'PuWithNtuple'
 #process.akPu4PFJets.minimumTowersFraction = cms.double(0.5)
-## error    [1] Validating configuration of module: class=FastjetJetProducer label='akPu4PFJetsNoLimits'
-#Exception Message:
-#Illegal parameter found in configuration.  The parameter is named:
-# 'minimumTowersFraction'
 
 
 
