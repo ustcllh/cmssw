@@ -128,7 +128,10 @@ do
 			    if [ $ispp == "True" ]; then
 			    	sed -i 's/\#ppDummy_//g' $algo$subt$groomt$radius${object}JetSequence_${system}_${sample}_cff.py
 			    fi 
-			    # skip no sub
+                            if [ $ispp != "True" ] || [ $sample != "data" ]; then
+			    	sed -i 's/\#ppDataDummy_//g' $algo$subt$groomt$radius${object}JetSequence_${system}_${sample}_cff.py
+			    fi			    
+                            # skip no sub
 			    if [ $sample == "jec" ]; then
                                 echo "${algo}${subt}${groomt}${radius}${object}JetAnalyzer.genPtMin = cms.untracked.double(1)" >> $algo$subt$groomt$radius${object}JetSequence_${system}_${sample}_cff.py
 			        echo "${algo}${subt}${groomt}${radius}${object}JetAnalyzer.jetPtMin = cms.double(1)" >> $algo$subt$groomt$radius${object}JetSequence_${system}_${sample}_cff.py
