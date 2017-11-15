@@ -7,15 +7,6 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet()
 
-#parse command line arguments
-from FWCore.ParameterSet.VarParsing import VarParsing
-options = VarParsing('analysis')
-options.register ('isPP',
-                  False,
-                  VarParsing.multiplicity.singleton,
-                  VarParsing.varType.bool,
-                  "Flag if this is a pp simulation")
-options.parseArguments()
 
 #####################################################################################
 # HiForest labelling info
@@ -35,8 +26,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-                                options.inputFiles[0]
-                                #'/store/data/Run2017F/JetHT/AOD/PromptReco-v1/000/305/040/00000/04C8A716-E9B1-E711-9998-02163E01A3EE.root'
+                                '/store/data/Run2017F/JetHT/AOD/PromptReco-v1/000/305/040/00000/04C8A716-E9B1-E711-9998-02163E01A3EE.root'
                                 #'/store/data/Run2015E/HighPtJet80/AOD/PromptReco-v1/000/262/272/00000/803A4255-7696-E511-B178-02163E0142DD.root'
                             )
 )
@@ -68,8 +58,7 @@ process = overrideJEC_pp5020(process)
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string(options.outputFile)
-                                   #fileName=cms.string("HiForestAOD.root")
+                                   fileName=cms.string("HiForestAOD.root")
                                   )
 
 #####################################################################################
@@ -188,8 +177,7 @@ for idmod in my_id_modules:
 
 
 process.ana_step = cms.Path(process.hltanalysisReco*
-                            #process.hltanalysis *
-			    process.hltobject *
+			    #process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
                             process.egmGsfElectronIDSequence + #Should be added in the path for VID module
