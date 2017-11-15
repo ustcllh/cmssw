@@ -7,6 +7,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet()
 
+
 #####################################################################################
 # HiForest labelling info
 #####################################################################################
@@ -32,7 +33,7 @@ process.source = cms.Source("PoolSource",
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5))
+    input = cms.untracked.int32(-1))
 
 
 #####################################################################################
@@ -46,7 +47,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '92X_dataRun2_Prompt_v11', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '92X_dataRun2_Express_v8', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
@@ -57,7 +58,8 @@ process = overrideJEC_pp5020(process)
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("HiForestAOD.root"))
+                                   fileName=cms.string("HiForestAOD.root")
+                                  )
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
@@ -174,8 +176,8 @@ for idmod in my_id_modules:
 #########################
 
 
-process.ana_step = cms.Path(process.hltanalysis *
-			    process.hltobject *
+process.ana_step = cms.Path(process.hltanalysisReco*
+			    #process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
                             process.egmGsfElectronIDSequence + #Should be added in the path for VID module
