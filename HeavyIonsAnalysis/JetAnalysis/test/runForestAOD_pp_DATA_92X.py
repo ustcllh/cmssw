@@ -26,14 +26,16 @@ process.HiForest.HiForestVersion = cms.string(version)
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-                                '/store/data/Run2017F/JetHT/AOD/PromptReco-v1/000/305/040/00000/04C8A716-E9B1-E711-9998-02163E01A3EE.root'
+                                '/store/data/Run2017G/ZeroBias/AOD/PromptReco-v1/000/306/553/00000/52144AF6-69C9-E711-901F-02163E0144F2.root'
+                                #'/store/data/Run2017G/HighEGJet/AOD/PromptReco-v1/000/306/563/00000/02297D5D-88C9-E711-AA36-02163E01A740.root'
+                                #'/store/data/Run2017F/JetHT/AOD/PromptReco-v1/000/305/040/00000/04C8A716-E9B1-E711-9998-02163E01A3EE.root'
                                 #'/store/data/Run2015E/HighPtJet80/AOD/PromptReco-v1/000/262/272/00000/803A4255-7696-E511-B178-02163E0142DD.root'
                             )
 )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1))
+    input = cms.untracked.int32(5))
 
 
 #####################################################################################
@@ -47,7 +49,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '92X_dataRun2_Express_v8', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '92X_dataRun2_Prompt_v11', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
 from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
@@ -177,7 +179,7 @@ for idmod in my_id_modules:
 
 
 process.ana_step = cms.Path(process.hltanalysisReco*
-			    #process.hltobject *
+			    process.hltobject *
                             process.hiEvtAnalyzer *
                             process.jetSequences +
                             process.egmGsfElectronIDSequence + #Should be added in the path for VID module
