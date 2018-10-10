@@ -18,12 +18,12 @@ then
   echo Samples found.
 else
   printf "Grabbing samples."
-  wget http://web.mit.edu/mithig/samples/PbPb_DATA_AOD.root &> /dev/null
-  printf "."
-  wget http://web.mit.edu/mithig/samples/PbPb_MC_AODSIM.root &> /dev/null
-  printf "."
-  wget http://web.mit.edu/mithig/samples/PbPb_MC_RECODEBUG.root &> /dev/null
-  printf "."
+  #wget http://web.mit.edu/mithig/samples/PbPb_DATA_AOD.root &> /dev/null
+  #printf "."
+  #wget http://web.mit.edu/mithig/samples/PbPb_MC_AODSIM.root &> /dev/null
+  #printf "."
+  #wget http://web.mit.edu/mithig/samples/PbPb_MC_RECODEBUG.root &> /dev/null
+  #printf "."
   wget http://web.mit.edu/mithig/samples/pp_DATA_AOD.root &> /dev/null
   printf "."
   wget http://web.mit.edu/mithig/samples/pp_DATA_RECO.root &> /dev/null
@@ -32,9 +32,9 @@ else
   printf "."
   wget http://web.mit.edu/mithig/samples/pp_MC_RECODEBUG.root &> /dev/null
   printf "."
-  wget http://web.mit.edu/mithig/samples/pPb_MC_AODSIM.root &> /dev/null
+  #wget http://web.mit.edu/mithig/samples/pPb_MC_AODSIM.root &> /dev/null
   mkdir samples
-  mv PbPb_DATA_AOD.root PbPb_MC_AODSIM.root PbPb_MC_RECODEBUG.root pp_DATA_AOD.root pp_DATA_RECO.root pp_MC_AODSIM.root pp_MC_RECODEBUG.root pPb_MC_AODSIM.root samples/
+  mv pp_DATA_AOD.root pp_DATA_RECO.root pp_MC_AODSIM.root pp_MC_RECODEBUG.root  samples/
   echo Done.
 fi
 
@@ -45,8 +45,8 @@ fi
 #replacename=`cat runForestAOD_PbPb_DATA_75X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
 #cat runForestAOD_PbPb_DATA_75X.py | sed 's@'$replacename'@"file:samples/PbPb_DATA_AOD.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_PbPb_DATA_AOD.root@g' > test_runForestAOD_PbPb_DATA_75X.py
 
-#replacename=`cat runForestAOD_pp_DATA_75X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
-#cat runForestAOD_pp_DATA_75X.py | sed 's@'$replacename'@"file:samples/pp_DATA_AOD.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pp_DATA_AOD.root@g' > test_runForestAOD_pp_DATA_75X.py
+replacename=`cat runForestAOD_pp_DATA_92X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
+cat runForestAOD_pp_DATA_92X.py | sed 's@'$replacename'@"file:samples/pp_DATA_AOD.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pp_DATA_AOD.root@g' > test_runForestAOD_pp_DATA_92X.py
 
 #replacename=`cat runForestAOD_PbPb_MIX_75X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
 #cat runForestAOD_PbPb_MIX_75X.py | sed 's@'$replacename'@"file:samples/PbPb_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_PbPb_MCMIX_AODSIM.root@g' > test_runForestAOD_PbPb_MIX_75X.py
@@ -54,14 +54,14 @@ fi
 #replacename=`cat runForestAOD_PbPb_MB_75X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
 #cat runForestAOD_PbPb_MB_75X.py | sed 's@'$replacename'@"file:samples/PbPb_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_PbPb_MCMB_AODSIM.root@g' > test_runForestAOD_PbPb_MB_75X.py
 
-#replacename=`cat runForestAOD_pp_MC_75X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
-#cat runForestAOD_pp_MC_75X.py | sed 's@'$replacename'@"file:samples/pp_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pp_MC_AODSIM.root@g' > test_runForestAOD_pp_MC_75X.py
+replacename=`cat runForestAOD_pp_MC_92X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
+cat runForestAOD_pp_MC_92X.py | sed 's@'$replacename'@"file:samples/pp_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pp_MC_AODSIM.root@g' > test_runForestAOD_pp_MC_92X.py
 
-replacename=`cat runForestAOD_pPb_MC_80X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
-cat runForestAOD_pPb_MC_80X.py | sed 's@'$replacename'@"file:samples/pPb_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pPb_MC_AODSIM.root@g' > test_runForestAOD_pPb_MC_80X.py
+#replacename=`cat runForestAOD_pPb_MC_80X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
+#cat runForestAOD_pPb_MC_80X.py | sed 's@'$replacename'@"file:samples/pPb_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pPb_MC_AODSIM.root@g' > test_runForestAOD_pPb_MC_80X.py
 
-replacename=`cat runForestAOD_pPb_DATA_80X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
-cat runForestAOD_pPb_DATA_80X.py | sed 's@'$replacename'@"file:samples/pPb_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pPb_MC_AODSIM.root@g' > test_runForestAOD_pPb_DATA_80X.py
+#replacename=`cat runForestAOD_pPb_DATA_80X.py | grep -v '#' | grep -A10 process.source | grep root | sed 's@,@@g' | awk '{print $1}'`
+#cat runForestAOD_pPb_DATA_80X.py | sed 's@'$replacename'@"file:samples/pPb_MC_AODSIM.root"@g' | sed 's@HiForestAOD.root@HiForestAOD_pPb_MC_AODSIM.root@g' > test_runForestAOD_pPb_DATA_80X.py
 
 #############################################################
 # Step 3: cmsRun each runForest                             #

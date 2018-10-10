@@ -1,11 +1,12 @@
 ### HiForest Configuration
 # Collisions: pp
-# Type: MC
+# Type: Data
 # Input: AOD
 
 import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet()
+
 
 #####################################################################################
 # HiForest labelling info
@@ -15,7 +16,6 @@ process.load("HeavyIonsAnalysis.JetAnalysis.HiForest_cff")
 process.HiForest.inputLines = cms.vstring("HiForest V3",)
 import subprocess
 version = subprocess.Popen(["(cd $CMSSW_BASE/src && git describe --tags)"], stdout=subprocess.PIPE, shell=True).stdout.read()
-
 if version == '':
     version = 'no git info'
 process.HiForest.HiForestVersion = cms.string(version)
@@ -25,18 +25,14 @@ process.HiForest.HiForestVersion = cms.string(version)
 #####################################################################################
 
 process.source = cms.Source("PoolSource",
-                            duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-				#"/store/user/gsfs/ReggeGribovPartonMC_EposLHC_pPb_4080_4080/EPOS_MinBias_pPb_RECO25ns_10272016/161027_121447/0000/step3_25ns_RAW2DIGI_L1Reco_RECO_1.root"
-                           #'/store/group/phys_heavyions/kjung/Pythia8Epos_RECOStep/pPb_Pythia8Epos_8TeV_HLT_pthat15/HIRun2016PA/crab_pPb_Pythia8Epos_8022Validation_RECO_pthat15/161102_015603/0000/pPb_Pythia8Epos_RECO_101.root'    
-			#	'file:/afs/cern.ch/user/k/kjung/run2Validation/HLTchecks/CMSSW_8_0_22/src/pPb_5TeVEpos_RECO.root'
-			'/store/group/phys_heavyions/kjung/Epos5TeV_8022Valid_RECO/EPOS5TeV_GEN_SIM/crab_pPb_5TeVEpos_8022Validation_RECO/161104_192347/0000/pPb_5TeVEpos_RECO_1.root'	
-			)
+        '/store/data/Run2017G/DoubleMuon/AOD/17Nov2017-v1/80000/B674434A-EE3C-E811-95AA-0CC47A7E6A5C.root'
+                            )
 )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000))
+    input = cms.untracked.int32(5))
 
 
 #####################################################################################
@@ -44,41 +40,25 @@ process.maxEvents = cms.untracked.PSet(
 #####################################################################################
 
 process.load('Configuration.StandardSequences.Services_cff')
-process.load('Configuration.Geometry.GeometryDB_cff')
+process.load('Configuration.Geometry.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
-process.load("CondCore.CondDB.CondDB_cfi")
- 
+
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_miniAODv2_v1', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_ReReco_EOY17_v6', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
-
-# Customization
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pPb8TeV
-process = overrideJEC_pPb8TeV(process)
-
-process.GlobalTag.toGet.extend([
-		cms.PSet(record = cms.string("HeavyIonRcd"),
-			#tag = cms.string("CentralityTable_HFtowersPlusTrunc200_EPOS8TeV_v80x01_mc"),
-			tag = cms.string("CentralityTable_HFtowersPlusTrunc200_EPOS5TeV_v80x01_mc"),
-			connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS"),
-			label = cms.untracked.string("HFtowersPlusTruncEpos")
-			),
-		cms.PSet(record = cms.string("L1TUtmTriggerMenuRcd"),
-			tag = cms.string("L1Menu_HeavyIon2016_v1_xml"),
-			connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-			)
-])
-
+from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
+process = overrideJEC_pp5020(process)
 
 #####################################################################################
 # Define tree output
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("HiForestAOD.root"))
+                                   fileName=cms.string("HiForestAOD.root")
+                                  )
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body
@@ -90,48 +70,59 @@ process.TFileService = cms.Service("TFileService",
 # Jets
 #############################
 
-#Pu v2 settings with minimum tower threshold
-process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_puLimitedpPb")
-#nominal (Pu v1 settings)
-#process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPPb")
-# Use this version for JEC
-#process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPP")
+### PP RECO does not include R=3 or R=5 jets.
+### re-RECO is only possible for PF, RECO is missing calotowers
+from RecoJets.JetProducers.ak5PFJets_cfi import ak5PFJets
+ak5PFJets.doAreaFastjet = True
+process.ak5PFJets = ak5PFJets
+process.ak3PFJets = ak5PFJets.clone(rParam = 0.3)
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4CaloJetSequence_pp_data_cff')
+
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak3PFJetSequence_pp_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak4PFJetSequence_pp_data_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.jets.ak5PFJetSequence_pp_data_cff')
+
+process.highPurityTracks = cms.EDFilter("TrackSelector",
+                                        src = cms.InputTag("generalTracks"),
+                                        cut = cms.string('quality("highPurity")')
+                                        )
+
+
+
+process.jetSequences = cms.Sequence(
+    process.ak3PFJets +
+    process.ak5PFJets +
+    process.highPurityTracks +
+    process.ak4CaloJetSequence +
+    process.ak3PFJetSequence +
+    process.ak4PFJetSequence +
+    process.ak5PFJetSequence
+    )
 
 #####################################################################################
 
 ############################
 # Event Analysis
 ############################
-
-## temporary centrality bin
-process.load("RecoHI.HiCentralityAlgos.CentralityBin_cfi")
-process.centralityBin.Centrality = cms.InputTag("pACentrality")
-process.centralityBin.centralityVariable = cms.string("HFtowersPlusTrunc")
-#process.centralityBin.nonDefaultGlauberModel = cms.string("Hydjet_Drum")
-process.centralityBin.nonDefaultGlauberModel = cms.string("Epos")
+process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_data_cfi')
+process.load('HeavyIonsAnalysis.EventAnalysis.hltobject_cfi')
+process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVertices")
+process.hiEvtAnalyzer.doCentrality = cms.bool(False)
+process.hiEvtAnalyzer.doEvtPlane = cms.bool(False)
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
-process.load('HeavyIonsAnalysis.EventAnalysis.hltobject_pPb_cfi')
-process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_data_cfi') #use data version to avoid PbPb MC
-process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVertices")
-process.hiEvtAnalyzer.doCentrality = cms.bool(True)
-process.hiEvtAnalyzer.CentralitySrc = cms.InputTag("pACentrality")
-process.hiEvtAnalyzer.CentralityBinSrc = cms.InputTag("centralityBin","HFtowersPlusTrunc")
-process.hiEvtAnalyzer.doEvtPlane = cms.bool(False)
-process.hiEvtAnalyzer.doMC = cms.bool(True) #general MC info
-process.hiEvtAnalyzer.doHiMC = cms.bool(False) #HI specific MC info
+from HeavyIonsAnalysis.EventAnalysis.dummybranches_cff import addHLTdummybranchesForPP
+addHLTdummybranchesForPP(process)
 
-process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
-process.HiGenParticleAna.genParticleSrc = cms.untracked.InputTag("genParticles")
-process.HiGenParticleAna.doHI = False
-process.load('HeavyIonsAnalysis.EventAnalysis.runanalyzer_cff')
-process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_pp_cfi")
+process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
 process.pfcandAnalyzer.pfCandidateLabel = cms.InputTag("particleFlow")
 process.pfcandAnalyzer.doVS = cms.untracked.bool(False)
 process.pfcandAnalyzer.doUEraw_ = cms.untracked.bool(False)
 process.pfcandAnalyzer.genLabel = cms.InputTag("genParticles")
+process.load("HeavyIonsAnalysis.JetAnalysis.hcalNoise_cff")
 
 #####################################################################################
 
@@ -141,25 +132,25 @@ process.pfcandAnalyzer.genLabel = cms.InputTag("genParticles")
 process.load('HeavyIonsAnalysis.JetAnalysis.ExtraTrackReco_cff')
 process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 
-# Use this instead for track corrections
-## process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_Corr_cff')
-
-#####################################################################################
+####################################################################################
 
 #####################
-# photons
-######################
+# Photons
+#####################
 process.load('HeavyIonsAnalysis.PhotonAnalysis.ggHiNtuplizer_cfi')
 process.ggHiNtuplizer.gsfElectronLabel   = cms.InputTag("gedGsfElectrons")
 process.ggHiNtuplizer.recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerpp')
-process.ggHiNtuplizer.VtxLabel           = cms.InputTag("offlinePrimaryVertices")
+process.ggHiNtuplizer.useValMapIso = cms.bool(True) # set to False if it gives error due to "not found" photonIsolationHIProducer
+process.ggHiNtuplizer.VtxLabel  = cms.InputTag("offlinePrimaryVertices")
 process.ggHiNtuplizer.particleFlowCollection = cms.InputTag("particleFlow")
-process.ggHiNtuplizer.doVsIso            = cms.bool(False)
-process.ggHiNtuplizer.doElectronVID      = cms.bool(True)
+process.ggHiNtuplizer.doVsIso   = cms.bool(False)
+process.ggHiNtuplizer.doGenParticles = False
+process.ggHiNtuplizer.doElectronVID = cms.bool(True)
 process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.InputTag('gedPhotons'),
                                                        recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerppGED'))
 
 ####################################################################################
+
 #####################
 # Electron ID
 #####################
@@ -176,57 +167,25 @@ my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElect
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
 #####################################################################################
-#####################
-# Rechit analyzer
-#####################
-process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_pp_cfi')
-process.rechitanalyzer.doVS = cms.untracked.bool(False)
-process.rechitanalyzer.doEcal = cms.untracked.bool(False)
-process.rechitanalyzer.doHcal = cms.untracked.bool(False)
-process.rechitanalyzer.doHF = cms.untracked.bool(False)
-process.rechitanalyzer.JetSrc = cms.untracked.InputTag("ak4CaloJets")
-process.pfTowers.JetSrc = cms.untracked.InputTag("ak4CaloJets")
-
-#####################
-# New rho analyzer
-#####################
-process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzer_cff')
-
-#####################
-# D-Meson Analyzer
-#####################
-#from Bfinder.finderMaker.OnlyTrack_finderMaker_80X_pPb_cff import OnlyTrack_finderMaker_80X_pPb
-#OnlyTrack_finderMaker_80X_pPb(process)
-
-#####################
-# Muon Analyzer
-#####################
-process.load('HeavyIonsAnalysis.MuonAnalysis.hltMuTree_cfi')
-process.hltMuTree.vertices = cms.InputTag("offlinePrimaryVertices")
-process.hltMuTree.genparticle = cms.InputTag("genParticles")
 
 #########################
 # Main analysis list
 #########################
-process.ana_step = cms.Path(process.hltanalysis *
+
+
+process.ana_step = cms.Path(process.hltanalysisReco*
 			    process.hltobject *
-                            process.centralityBin *
-			    process.hiEvtAnalyzer *
-                            process.HiGenParticleAna*
+                            process.hiEvtAnalyzer *
                             process.jetSequences +
                             process.egmGsfElectronIDSequence + #Should be added in the path for VID module
                             process.ggHiNtuplizer +
                             process.ggHiNtuplizerGED +
-                            process.hiFJRhoAnalyzer +
-			    process.pfcandAnalyzer +
-#			    process.DfinderSequence +
-			    process.hltMuTree +
+                            process.pfcandAnalyzer +
                             process.HiForest +
-			    process.trackSequencesPP +
-                            process.runAnalyzer +
-                            process.rechitanalyzer
-)
+                            process.trackSequencesPP
+                            )
 
 #####################################################################################
 
@@ -270,3 +229,15 @@ process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
+
+process.ak3PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak3PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+
+process.ak4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+
+process.ak5PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak5PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
+
+process.ak4CaloJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4CaloJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter

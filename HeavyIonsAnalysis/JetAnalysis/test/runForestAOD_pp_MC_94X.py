@@ -26,7 +26,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                "root://eoscms.cern.ch//eos/cms/store/cmst3/group/hintt/CMSSW_7_5_8_patch2/TTbar/RECO/Events_1.root"
+                                "/store/user/gsfs/Pythia8_Dijet80_pp_CUETP8M1_5020GeV/RECO__201711004/171004_122752/0000/step3_pp_RAW2DIGI_L1Reco_RECO_102.root"
                             )
 )
 
@@ -46,13 +46,24 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.load('FWCore.MessageService.MessageLogger_cfi')
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_v12', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '91X_mcRun2_asymptotic_v3', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
+## TEMPORARY Fix until a proper L1 menu with prescales is added to the GT
+process.GlobalTag.toGet.extend([
+	cms.PSet(record = cms.string("L1TUtmTriggerMenuRcd"),
+                tag = cms.string("L1Menu_HeavyIons2016_v3_m2_xml"),
+                connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                ),
+	cms.PSet(record = cms.string("L1TGlobalPrescalesVetosRcd"),
+                tag = cms.string("L1TGlobalPrescalesVetos_Stage2v0_hlt"),
+                connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                )
+])
 
 # Customization
-from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
-process = overrideJEC_pp5020(process)
+#from HeavyIonsAnalysis.Configuration.CommonFunctions_cff import overrideJEC_pp5020
+#process = overrideJEC_pp5020(process)
 
 #####################################################################################
 # Define tree output
@@ -72,6 +83,7 @@ process.TFileService = cms.Service("TFileService",
 #############################
 
 process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_nominalPP")
+process.ak4PFcorr.payload = "AK4PF"
 # Use this version for JEC
 #process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_JECPP")
 
@@ -119,6 +131,7 @@ process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 process.load('HeavyIonsAnalysis.PhotonAnalysis.ggHiNtuplizer_cfi')
 process.ggHiNtuplizer.gsfElectronLabel   = cms.InputTag("gedGsfElectrons")
 process.ggHiNtuplizer.recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerpp')
+process.ggHiNtuplizer.useValMapIso = cms.bool(True) # set to False if it gives error due to "not found" photonIsolationHIProducer
 process.ggHiNtuplizer.VtxLabel           = cms.InputTag("offlinePrimaryVertices")
 process.ggHiNtuplizer.particleFlowCollection = cms.InputTag("particleFlow")
 process.ggHiNtuplizer.doVsIso            = cms.bool(False)
@@ -148,11 +161,12 @@ for idmod in my_id_modules:
 #########################
 # Main analysis list
 #########################
-process.ana_step = cms.Path(process.hltanalysis *
+process.ana_step = cms.Path(
+			    process.hltanalysis *
                             process.hiEvtAnalyzer *
                             process.HiGenParticleAna*
                             process.jetSequences +
-                            process.egmGsfElectronIDSequence + #Should be added in the path for VID module
+                            #process.egmGsfElectronIDSequence + #Should be added in the path for VID module
                             process.ggHiNtuplizer +
                             process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +
@@ -203,3 +217,5 @@ process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
+process.ak4PFJetAnalyzer.trackSelection = process.ak4PFSecondaryVertexTagInfos.trackSelection
+process.ak4PFJetAnalyzer.trackPairV0Filter = process.ak4PFSecondaryVertexTagInfos.vertexCuts.v0Filter
