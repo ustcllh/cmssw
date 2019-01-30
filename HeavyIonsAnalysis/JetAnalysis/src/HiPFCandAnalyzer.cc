@@ -108,11 +108,14 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	 type == reco::PFCandidate::mu      //type3
 	 )
       ){
+        pfEvt_.trkidx_.push_back( -9999 );
+      /*
         pfEvt_.trkAlgo_.push_back( -999 );  
         pfEvt_.trkPtError_.push_back( -999 );  
         pfEvt_.trkNHit_.push_back( -999 );  
         pfEvt_.trkChi2_.push_back( 0 );  
         pfEvt_.trkNdof_.push_back( -999 );  
+      */
         continue;
       }
 
@@ -120,19 +123,25 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       unsigned int trackKey = pfcand.trackRef().key();     
 
       if(trackKey < tracks->size()){
+      pfEvt_.trkidx_push_back( (Int_t_) trackKey );
+      /*
           const reco::Track & trk = (*tracks)[trackKey];
           pfEvt_.trkAlgo_.push_back( trk.algo() );  
           pfEvt_.trkPtError_.push_back( trk.ptError() );  
           pfEvt_.trkNHit_.push_back( trk.numberOfValidHits() );  
           pfEvt_.trkChi2_.push_back( trk.chi2() );  
           pfEvt_.trkNdof_.push_back( trk.ndof() );  
+      */
       }
       else{
+      pfEvt_.trkidx_.push_back( -9999 );
+      /*
         pfEvt_.trkAlgo_.push_back( -999 );  
         pfEvt_.trkPtError_.push_back( -999 );  
         pfEvt_.trkNHit_.push_back( -999 );  
         pfEvt_.trkChi2_.push_back( 0 );  
         pfEvt_.trkNdof_.push_back( -999 );  
+      */
       }
     }
   }
@@ -211,11 +220,14 @@ void TreePFCandEventData::SetBranches(bool doJets, bool doMC, bool doCaloEnergy,
   }
 
   if(doTrackMatching) {
+    tree_->Branch("trkidx",&trkidx_);
+    /*
     tree_->Branch("trkAlgo",&trkAlgo_);
     tree_->Branch("trkPtError",&trkPtError_);
     tree_->Branch("trkNHit",&trkNHit_);
     tree_->Branch("trkChi2",&trkChi2_);
     tree_->Branch("trkNdof",&trkNdof_);
+    */
   }
 
   // -- jet info --
@@ -251,11 +263,14 @@ void TreePFCandEventData::Clear()
   pfHcalE_.clear();
   pfHcalEraw_.clear();
 
+  trkidx_.clear();
+  /*
   trkAlgo_.clear();
   trkPtError_.clear();
   trkNHit_.clear();
   trkChi2_.clear();
   trkNdof_.clear();  
+  */
 
   nGENpart_ = 0;
   genPDGId_.clear();
